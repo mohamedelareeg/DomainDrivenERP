@@ -1,9 +1,11 @@
 ﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
 using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.ValueObjects;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +15,13 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
     {
         public Task<Customer> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var firstNameResult = FirstName.Create(request.FirstName);
+            var lastNameResult = LastName.Create(request.LastName);
+            if (firstNameResult.IsFailure || lastNameResult.IsFailure)
+            {
+                return null;
+            }
+            var customer = new Customer(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, request.Email, request.Phone);
         }
 
         public Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)

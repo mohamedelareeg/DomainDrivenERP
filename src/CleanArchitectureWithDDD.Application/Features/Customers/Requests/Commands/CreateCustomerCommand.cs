@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.ValueObjects;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,9 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Comma
 {
     public class CreateCustomerCommand : IRequest<Customer>
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 }

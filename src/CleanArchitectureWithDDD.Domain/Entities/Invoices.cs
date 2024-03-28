@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Domain.Entities
 {
-    public sealed class Invoices : BaseEntity
+    public class Invoices : BaseEntity
     {
-        public Invoices(
+        internal Invoices(
             Guid id,
             string invoiceId,
             DateTime invoiceDate,
