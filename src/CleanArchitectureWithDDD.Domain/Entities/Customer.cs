@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Errors;
+﻿using CleanArchitectureWithDDD.Domain.Enums;
+using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Domain.Entities
 {
-    public sealed class Customer : BaseEntity
+    public sealed class Customer : AggregateRoot
     {
-        private readonly List<Invoices> _invoices = new();
+        private readonly List<Invoice> _invoices = new();
         public Customer(
             Guid id,
             FirstName firstName,
@@ -29,8 +30,8 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         public LastName LastName { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
-        public IReadOnlyCollection<Invoices> Invoices => _invoices;
-        public Result<Invoices> CreateInvoice(
+        public IReadOnlyCollection<Invoice> Invoices => _invoices;
+        public Result<Invoice> CreateInvoice(
             string invoiceId,
             DateTime invoiceDate,
             decimal invoiceAmount,
@@ -45,7 +46,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 // They allow developers to convey both success and failure outcomes in a unified way.
                 // Disadvantage: No Stack Trace
                 // Custom result objects typically don't include stack trace information, which can be useful for debugging.
-                return Result.Failure<Invoices>(DomainErrors.Customers.IsNulledCustomer);
+                return Result.Failure<Invoice>(DomainErrors.Customers.IsNulledCustomer);
 
                 // Way 2 :
                 // Advantage: Custom Exception
@@ -61,9 +62,19 @@ namespace CleanArchitectureWithDDD.Domain.Entities
             decimal invoiceDiscount = invoiceAmount * discountRate;
             decimal invoiceTotal = invoiceAmount + invoiceTax - invoiceDiscount;
 
-            var invoice = new Invoices(Guid.NewGuid(), invoiceId, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
+            var invoice = new Invoice(Guid.NewGuid(), invoiceId, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
             _invoices.Add(invoice);
             return invoice;
+        }
+        public Result UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
+        {
+            var invoiceToUpdate = _invoices.FirstOrDefault(i => i.Id == invoice.Id);
+            if (invoiceToUpdate == null)
+            {
+                return Result.Failure(new Error("Invoice.NotFound", "Invoice not found."));
+            }
+            invoiceToUpdate.UpdateInvoiceStatus(newStatus);
+            return Result.Success();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
 {
     public class CustomersCommandHandler : IRequestHandler<CreateCustomerCommand, Customer>, IRequestHandler<UpdateCustomerCommand, bool>, IRequestHandler<DeleteCustomerCommand, bool>
     {
-        public Task<Customer> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Customer> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var firstNameResult = FirstName.Create(request.FirstName);
             var lastNameResult = LastName.Create(request.LastName);
@@ -21,7 +21,7 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
             {
                 return null;
             }
-            var customer = new Customer(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, request.Email, request.Phone);
+            return new Customer(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, request.Email, request.Phone);
         }
 
         public Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)

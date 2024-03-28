@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Primitives;
+﻿using CleanArchitectureWithDDD.Domain.Enums;
+using CleanArchitectureWithDDD.Domain.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Domain.Entities
 {
-    public class Invoices : BaseEntity
+    public class Invoice : BaseEntity
     {
-        internal Invoices(
+        internal Invoice(
             Guid id,
             string invoiceId,
             DateTime invoiceDate,
@@ -24,6 +25,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
             InvoiceDiscount = invoiceDiscount;
             InvoiceTax = invoiceTax;
             InvoiceTotal = invoiceTotal;
+            InvoiceStatus = InvoiceStatus.Pending;
         }
         public string InvoiceId { get; private set; }
         public DateTime InvoiceDate { get; private set; }
@@ -31,5 +33,13 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         public decimal InvoiceDiscount { get; private set; }
         public decimal InvoiceTax { get; private set; }
         public decimal InvoiceTotal { get; private set; }
+        public InvoiceStatus InvoiceStatus { get; private set; }
+        public void UpdateInvoiceStatus(InvoiceStatus newStatus)
+        {
+            InvoiceStatus = newStatus;
+        }
+
+
+
     }
 }
