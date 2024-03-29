@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.DomainEvents;
+﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
+using CleanArchitectureWithDDD.Domain.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
@@ -28,13 +29,68 @@ namespace CleanArchitectureWithDDD.Domain.Entities
             Email = email;
             Phone = phone;
         }
-        public static Customer Create(
+        public static Customer Create(//Factory Method
+          Guid id,
+          FirstName firstName,
+          LastName lastName,
+          Email email,
+          string phone)
+        {
+
+            var customer = new Customer(id, firstName, lastName, email, phone);
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            return customer;
+
+        }
+        //Completeness & Performance
+        public static async Task<Result<Customer>> Create(//Domain Model Completeness & Domain Model Performance & Losing Domain Model Purity
             Guid id,
             FirstName firstName,
             LastName lastName,
             Email email,
-            string phone)
+            string phone,
+            ICustomerRespository customerRespository)
         {
+            if(!await customerRespository.IsEmailUniqueAsync(email))
+            {
+                return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
+            }
+            var customer = new Customer(id, firstName, lastName, email, phone);
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            return customer;
+
+        }
+        //Completeness & Purity
+        public static async Task<Result<Customer>> Create(//Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
+           Guid id,
+           FirstName firstName,
+           LastName lastName,
+           Email email,
+           string phone,
+           Customer[] customers)
+        {
+           if(customers.Any(m=>m.Email == email))
+            {
+                return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
+            }
+            var customer = new Customer(id, firstName, lastName, email, phone);
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            return customer;
+
+        }
+        //Completeness & Purity & Performance Are Achieved
+        public static Result<Customer> Create(//Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
+           Guid id,
+           FirstName firstName,
+           LastName lastName,
+           Email email,
+           string phone,
+           bool isEmailUnique)
+        {
+            if (!isEmailUnique)
+            {
+                return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
+            }
             var customer = new Customer(id, firstName, lastName, email, phone);
             customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
             return customer;

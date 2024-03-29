@@ -27,7 +27,7 @@ namespace CleanArchitectureWithDDD.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<Customer>> GetAllCustomers(CancellationToken cancellationToken)
+        public async Task<List<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
         {
             return await _context.Set<Customer>().ToListAsync(cancellationToken);
         }
@@ -37,7 +37,7 @@ namespace CleanArchitectureWithDDD.Persistence.Repositories
             return await _context.Set<Customer>().FirstOrDefaultAsync(x => x.Id == CustomerId, cancellationToken);
         }
 
-        public async Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken)
+        public async Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default)
         {
             return !await _context.Set<Customer>().AnyAsync(x=>x.Email==value, cancellationToken);
         }

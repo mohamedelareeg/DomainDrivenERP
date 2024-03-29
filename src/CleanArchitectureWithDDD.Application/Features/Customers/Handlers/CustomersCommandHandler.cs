@@ -25,6 +25,11 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
         }
         public async Task<Result<Customer>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
+            // Domain Model Principles:
+            // 1. Completeness: All the imported business logic is completely encapsulated inside the Domain.
+            // 2. Purity: Our Domain Model doesn't reach out of processing dependencies (e.g., Repositories) to perform business logic.
+            // 3. Performance: Ensuring efficient processing within the Domain Model.
+
             var firstNameResult = FirstName.Create(request.FirstName);
             var lastNameResult = LastName.Create(request.LastName);
             var emailResult = Email.Create(request.Email);
@@ -32,9 +37,15 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
             {
                 return null;
             }
-            if (!await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken)) return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
-            var customer = Customer.Create(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, emailResult.Value, request.Phone);
-            await _customerRespository.AddAsync(customer);
+            bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
+            var customer = Customer.Create(//Achieve the 3 Principles
+                Guid.NewGuid(),
+                firstNameResult.Value,
+                lastNameResult.Value,
+                emailResult.Value,
+                request.Phone,
+                !isEmailUnique);
+            await _customerRespository.AddAsync(customer.Value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return customer;
         }

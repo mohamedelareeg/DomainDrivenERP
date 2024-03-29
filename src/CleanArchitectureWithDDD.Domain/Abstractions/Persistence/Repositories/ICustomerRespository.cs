@@ -13,9 +13,9 @@ namespace CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories
     {
         Task AddAsync(Customer customer);
         Task AddCustomerInvoiceAsync(Guid id, Invoice invoice);
-        Task<List<Customer>> GetAllCustomers(CancellationToken cancellationToken);
+        Task<List<Customer>> GetAllCustomers(CancellationToken cancellationToken = default);
         Task<Customer?> GetByIdAsync(Guid CustomerId, CancellationToken cancellationToken = default);
-        Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken);
+        Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default);
         Task UpdateAsync(Customer customer);
         Task UpdateInvoiceStatusAsync(Invoice invoiceUpdated);
     }
