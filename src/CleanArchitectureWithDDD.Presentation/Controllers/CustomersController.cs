@@ -27,7 +27,7 @@ namespace CleanArchitectureWithDDD.Presentation.Controllers
             var result = await Sender.Send(request, cancellationToken);
             if (result.IsFailure)
             {
-                return BadRequest(result.Error);
+                return HandleFailure(result);
             }
             return Ok(result.Value);
         }
@@ -37,7 +37,7 @@ namespace CleanArchitectureWithDDD.Presentation.Controllers
             var result = await Sender.Send(new RetriveCustomerQuery(id), cancellationToken);
             if (result.IsFailure)
             {
-                return BadRequest(result.Error);
+                return HandleFailure(result);
             }
             return Ok(result.Value);
         }
@@ -47,7 +47,7 @@ namespace CleanArchitectureWithDDD.Presentation.Controllers
             var result = await Sender.Send(request,cancellationToken);
             if (result.IsFailure)
             {
-                return BadRequest(result.Error);
+                return HandleFailure(result);
             }
             return Ok(result.Value);
         }

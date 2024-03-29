@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CleanArchitectureWithDDD.Application.Behaviors;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,8 @@ namespace CleanArchitectureWithDDD.Application
             {
                 cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly);
             });
+            services.AddScoped(typeof(IPipelineBehavior<,>),typeof(ValidationPiplineBehavior<,>));
+            services.AddValidatorsFromAssembly(AssemblyReference.Assembly,includeInternalTypes:true);
             return services;
         }
     }

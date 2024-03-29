@@ -36,7 +36,7 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
             var emailResult = Email.Create(request.Email);
             if (firstNameResult.IsFailure || lastNameResult.IsFailure)
             {
-                return null;
+                return Result.Failure<Customer>(new Error("Customer.CreateCustomer","First name or Last Name is Not Valid"));
             }
             bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
             var customer = Customer.Create(//Achieve the 3 Principles
@@ -45,7 +45,11 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
                 lastNameResult.Value,
                 emailResult.Value,
                 request.Phone,
-                !isEmailUnique);
+                isEmailUnique);
+            if(customer.IsFailure)
+            {
+                return Result.Failure<Customer>(customer.Error);
+            }
             await _customerRespository.AddAsync(customer.Value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return customer;
