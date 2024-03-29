@@ -13,6 +13,10 @@ namespace CleanArchitectureWithDDD.Domain.Primitives
         {
             Id = id;
         }
+        protected BaseEntity()
+        {
+        }
+
         public static bool operator ==(BaseEntity? first , BaseEntity? second)
         {
             return first is not null && second is not null && first.Equals(second);

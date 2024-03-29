@@ -12,14 +12,14 @@ namespace CleanArchitectureWithDDD.Domain.Entities
     {
         internal Invoice(
             Guid id,
-            string invoiceId,
+            string invoiceSerial,
             DateTime invoiceDate,
             decimal invoiceAmount,
             decimal invoiceDiscount,
             decimal invoiceTax,
             decimal invoiceTotal):base(id)
         {
-            InvoiceId = invoiceId;
+            InvoiceSerial = invoiceSerial;
             InvoiceDate = invoiceDate;
             InvoiceAmount = invoiceAmount;
             InvoiceDiscount = invoiceDiscount;
@@ -27,7 +27,8 @@ namespace CleanArchitectureWithDDD.Domain.Entities
             InvoiceTotal = invoiceTotal;
             InvoiceStatus = InvoiceStatus.Pending;
         }
-        public string InvoiceId { get; private set; }
+        public Guid CustomerId { get; private set; }
+        public string InvoiceSerial { get; private set; }
         public DateTime InvoiceDate { get; private set; }
         public decimal InvoiceAmount { get; private set; }
         public decimal InvoiceDiscount { get; private set; }

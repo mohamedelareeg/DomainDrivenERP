@@ -9,12 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\src\CleanArchitectureWithDDD.Infrastructure\CleanArchitectureWithDDD.Infrastructure.csproj" />
     <ProjectReference Include="..\src\CleanArchitectureWithDDD.Persistence\CleanArchitectureWithDDD.Persistence.csproj" />
+    <ProjectReference Include="..\src\CleanArchitectureWithDDD.Presentation\CleanArchitectureWithDDD.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

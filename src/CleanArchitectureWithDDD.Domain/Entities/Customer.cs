@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Enums;
+﻿using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
 using CleanArchitectureWithDDD.Domain.Primitives;
@@ -15,24 +16,37 @@ namespace CleanArchitectureWithDDD.Domain.Entities
     public sealed class Customer : AggregateRoot
     {
         private readonly List<Invoice> _invoices = new();
-        public Customer(
+        private Customer() { }
+        private Customer(
             Guid id,
             FirstName firstName,
             LastName lastName,
-            string email,
+            Email email,
             string phone) : base(id) { 
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Phone = phone;
         }
+        public static Customer Create(
+            Guid id,
+            FirstName firstName,
+            LastName lastName,
+            Email email,
+            string phone)
+        {
+            var customer = new Customer(id, firstName, lastName, email, phone);
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            return customer;
+
+        }
         public FirstName FirstName { get; private set; }
         public LastName LastName { get; private set; }
-        public string Email { get; private set; }
+        public Email Email { get; private set; }
         public string Phone { get; private set; }
         public IReadOnlyCollection<Invoice> Invoices => _invoices;
         public Result<Invoice> CreateInvoice(
-            string invoiceId,
+            string invoiceSerial,
             DateTime invoiceDate,
             decimal invoiceAmount,
             decimal taxRate = 0.14m,
@@ -62,19 +76,21 @@ namespace CleanArchitectureWithDDD.Domain.Entities
             decimal invoiceDiscount = invoiceAmount * discountRate;
             decimal invoiceTotal = invoiceAmount + invoiceTax - invoiceDiscount;
 
-            var invoice = new Invoice(Guid.NewGuid(), invoiceId, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
+            var invoice = new Invoice(Guid.NewGuid(), invoiceSerial, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
             _invoices.Add(invoice);
+            RaiseDomainEvent(new CreateInvoiceDomainEvent(Id, invoice));
             return invoice;
         }
-        public Result UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
+        public Result<Invoice> UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
         {
             var invoiceToUpdate = _invoices.FirstOrDefault(i => i.Id == invoice.Id);
             if (invoiceToUpdate == null)
             {
-                return Result.Failure(new Error("Invoice.NotFound", "Invoice not found."));
+                return Result.Failure<Invoice>(new Error("Invoice.NotFound", "Invoice not found."));
             }
             invoiceToUpdate.UpdateInvoiceStatus(newStatus);
-            return Result.Success();
+            RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Id, invoice, newStatus));
+            return invoiceToUpdate;
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using MediatR;
 using System;
@@ -11,17 +14,29 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
 {
-    public class CustomersCommandHandler : IRequestHandler<CreateCustomerCommand, Customer>, IRequestHandler<UpdateCustomerCommand, bool>, IRequestHandler<DeleteCustomerCommand, bool>
+    public class CustomersCommandHandler : IRequestHandler<CreateCustomerCommand, Result<Customer>>, IRequestHandler<UpdateCustomerCommand, bool>, IRequestHandler<DeleteCustomerCommand, bool>
     {
-        public async Task<Customer> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        private readonly ICustomerRespository _customerRespository;
+        private readonly IUnitOfWork _unitOfWork;
+        public CustomersCommandHandler(ICustomerRespository customerRespository , IUnitOfWork unitOfWork)
+        {
+            _customerRespository = customerRespository;
+            _unitOfWork = unitOfWork;
+        }
+        public async Task<Result<Customer>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var firstNameResult = FirstName.Create(request.FirstName);
             var lastNameResult = LastName.Create(request.LastName);
+            var emailResult = Email.Create(request.Email);
             if (firstNameResult.IsFailure || lastNameResult.IsFailure)
             {
                 return null;
             }
-            return new Customer(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, request.Email, request.Phone);
+            if (!await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken)) return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
+            var customer = Customer.Create(Guid.NewGuid(), firstNameResult.Value, lastNameResult.Value, emailResult.Value, request.Phone);
+            await _customerRespository.AddAsync(customer);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return customer;
         }
 
         public Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
