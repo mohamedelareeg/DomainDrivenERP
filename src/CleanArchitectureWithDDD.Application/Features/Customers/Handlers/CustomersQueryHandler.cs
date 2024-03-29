@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Queries;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Queries;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
@@ -12,7 +13,7 @@ using static CleanArchitectureWithDDD.Domain.Errors.DomainErrors;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
 {
-    public class CustomersQueryHandler : IRequestHandler<RetriveCustomerQuery, Result<Customer>>, IRequestHandler<RetriveCustomersQuery, Result<List<Customer>>>
+    public class CustomersQueryHandler : IQueryHandler<RetriveCustomerQuery, Customer>, IQueryHandler<RetriveCustomersQuery, List<Customer>>
     {
         private ICustomerRespository _customerRespository;
         public CustomersQueryHandler(ICustomerRespository customerRespository)

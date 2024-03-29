@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands
 {
-    public class UpdateCustomerCommand : IRequest<bool>
+    public class UpdateCustomerCommand : ICommand<bool>
     {
     }
 }

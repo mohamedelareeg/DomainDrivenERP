@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
 {
-    public class CustomersCommandHandler : IRequestHandler<CreateCustomerCommand, Result<Customer>>, IRequestHandler<UpdateCustomerCommand, bool>, IRequestHandler<DeleteCustomerCommand, bool>
+    public class CustomersCommandHandler : ICommandHandler<CreateCustomerCommand, Customer>, ICommandHandler<UpdateCustomerCommand, bool>, ICommandHandler<DeleteCustomerCommand, bool>
     {
         private readonly ICustomerRespository _customerRespository;
         private readonly IUnitOfWork _unitOfWork;
@@ -50,12 +51,12 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
             return customer;
         }
 
-        public Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        public Task<Result<bool>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        public Task<Result<bool>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

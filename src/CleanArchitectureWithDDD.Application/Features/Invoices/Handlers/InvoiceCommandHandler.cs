@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Commands;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Commands;
 using CleanArchitectureWithDDD.Domain.Abstractions.Infrastructure.Services;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Handlers
 {
-    public class InvoiceCommandHandler : IRequestHandler<CreateCustomerInvoiceCommand, Result<bool>>, IRequestHandler<UpdateCustomerInvoiceStatusCommand , Result<bool>>
+    public class InvoiceCommandHandler : ICommandHandler<CreateCustomerInvoiceCommand, bool>, ICommandHandler<UpdateCustomerInvoiceStatusCommand , bool>
     {
         private readonly ICustomerRespository _customerRespository;
         private readonly IUnitOfWork _unitOfWork;

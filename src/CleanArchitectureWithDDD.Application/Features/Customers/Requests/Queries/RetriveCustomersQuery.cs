@@ -1,8 +1,9 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 
-public class RetriveCustomersQuery : IRequest<Result<List<Customer>>>
+public class RetriveCustomersQuery : IQuery<List<Customer>>
 {
     public int? Page { get; }
     public int? PageSize { get; }

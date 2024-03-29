@@ -1,4 +1,6 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Queries;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Queries;
+using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Handlers
 {
-    public class InvoiceQueryHandler : IRequestHandler<RetriveCustomerInvoiceQuery, bool>
+    public class InvoiceQueryHandler : IQueryHandler<RetriveCustomerInvoiceQuery, bool>
     {
-        public Task<bool> Handle(RetriveCustomerInvoiceQuery request, CancellationToken cancellationToken)
+        public Task<Result<bool>> Handle(RetriveCustomerInvoiceQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

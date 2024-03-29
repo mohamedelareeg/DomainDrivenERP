@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Shared;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Commands
 {
-    public class UpdateCustomerInvoiceStatusCommand : IRequest<Result<bool>>
+    public class UpdateCustomerInvoiceStatusCommand : ICommand<bool>
     {
         public UpdateCustomerInvoiceStatusCommand(Guid customerId, Guid invoiceId)
         {

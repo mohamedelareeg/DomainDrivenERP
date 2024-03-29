@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Shared;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Commands
 {
-    public class CreateCustomerInvoiceCommand : IRequest<Result<bool>>
+    public class CreateCustomerInvoiceCommand : ICommand<bool>
     {
         public Guid CustomerId { get;}
         public string InvoiceSerial { get; }

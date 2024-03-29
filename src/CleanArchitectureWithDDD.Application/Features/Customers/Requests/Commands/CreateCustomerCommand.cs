@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands
 {
-    public class CreateCustomerCommand : IRequest<Result<Customer>>
+    public class CreateCustomerCommand : ICommand<Customer>
     {
         public string FirstName { get; }
         public string LastName { get; }

@@ -16,7 +16,6 @@ namespace CleanArchitectureWithDDD.Persistence
 {
     public static class PersistenceDependencies
     {
-        [Obsolete]
         public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services)
         {
             //DB
