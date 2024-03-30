@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
+﻿using CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer;
 using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Queries;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;

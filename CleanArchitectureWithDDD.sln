@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitectureWithDDD.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitectureWithDDD.Persistence", "src\CleanArchitectureWithDDD.Persistence\CleanArchitectureWithDDD.Persistence.csproj", "{0D6EFD9B-C546-44C3-9B16-3E2FB76EB106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitectureWithDDD.Presentation", "src\CleanArchitectureWithDDD.Presentation\CleanArchitectureWithDDD.Presentation.csproj", "{89C51F65-D4B7-4A20-A3AF-5A13D5555116}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitectureWithDDD.Presentation", "src\CleanArchitectureWithDDD.Presentation\CleanArchitectureWithDDD.Presentation.csproj", "{89C51F65-D4B7-4A20-A3AF-5A13D5555116}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

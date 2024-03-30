@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.UpdateCustomer
 {
-    public class DeleteCustomerCommand : ICommand<bool>
+    public class UpdateCustomerCommand : ICommand<bool>
     {
     }
 }

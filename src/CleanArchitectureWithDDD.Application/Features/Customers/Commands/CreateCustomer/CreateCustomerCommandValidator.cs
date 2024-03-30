@@ -1,5 +1,4 @@
-﻿using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
-using CleanArchitectureWithDDD.Domain.ValueObjects;
+﻿using CleanArchitectureWithDDD.Domain.ValueObjects;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Validators.Commands
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
     {

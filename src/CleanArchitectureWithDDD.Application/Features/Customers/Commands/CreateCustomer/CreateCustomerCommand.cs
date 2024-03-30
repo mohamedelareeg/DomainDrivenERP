@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommand : ICommand<Customer>
     {

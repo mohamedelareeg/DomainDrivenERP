@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Persistence.Idempotentence
+namespace CleanArchitectureWithDDD.Persistence.Idempotence
 {
     public sealed class IdempotentDomainEventHandler<TDomainEvent> : IDomainEventHandler<TDomainEvent>
         where TDomainEvent : IDomainEvent

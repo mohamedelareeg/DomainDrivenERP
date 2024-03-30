@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Commands
+namespace CleanArchitectureWithDDD.Application.Features.Invoices.Commands.UpdateCustomerInvoiceStatus
 {
     public class UpdateCustomerInvoiceStatusCommand : ICommand<bool>
     {

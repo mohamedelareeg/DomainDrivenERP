@@ -1,7 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
-using CleanArchitectureWithDDD.Persistence.Idempotentence;
+using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
 using CleanArchitectureWithDDD.Persistence.Repositories;
 using MediatR;

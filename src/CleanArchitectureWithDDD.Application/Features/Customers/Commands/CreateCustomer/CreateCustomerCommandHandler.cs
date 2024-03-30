@@ -1,25 +1,22 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands;
-using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer
 {
-    public class CustomersCommandHandler : ICommandHandler<CreateCustomerCommand, Customer>, ICommandHandler<UpdateCustomerCommand, bool>, ICommandHandler<DeleteCustomerCommand, bool>
+    internal class CreateCustomerCommandHandler : ICommandHandler<CreateCustomerCommand, Customer>
     {
         private readonly ICustomerRespository _customerRespository;
         private readonly IUnitOfWork _unitOfWork;
-        public CustomersCommandHandler(ICustomerRespository customerRespository , IUnitOfWork unitOfWork)
+        public CreateCustomerCommandHandler(ICustomerRespository customerRespository, IUnitOfWork unitOfWork)
         {
             _customerRespository = customerRespository;
             _unitOfWork = unitOfWork;
@@ -36,7 +33,7 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
             var emailResult = Email.Create(request.Email);
             if (firstNameResult.IsFailure || lastNameResult.IsFailure)
             {
-                return Result.Failure<Customer>(new Error("Customer.CreateCustomer","First name or Last Name is Not Valid"));
+                return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "First name or Last Name is Not Valid"));
             }
             bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
             var customer = Customer.Create(//Achieve the 3 Principles
@@ -46,23 +43,13 @@ namespace CleanArchitectureWithDDD.Application.Features.Customers.Handlers
                 emailResult.Value,
                 request.Phone,
                 isEmailUnique);
-            if(customer.IsFailure)
+            if (customer.IsFailure)
             {
                 return Result.Failure<Customer>(customer.Error);
             }
             await _customerRespository.AddAsync(customer.Value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return customer;
-        }
-
-        public Task<Result<bool>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result<bool>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

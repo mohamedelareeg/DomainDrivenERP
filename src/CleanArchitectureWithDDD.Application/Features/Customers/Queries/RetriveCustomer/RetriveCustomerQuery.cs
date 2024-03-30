@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Queries
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer
 {
     public class RetriveCustomerQuery : IQuery<Customer>
     {
         public Guid CustomerId { get; }
         public RetriveCustomerQuery()
         {
-            
+
         }
         public RetriveCustomerQuery(Guid customerId)
         {

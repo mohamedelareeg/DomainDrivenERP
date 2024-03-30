@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Customers.Requests.Commands
+namespace CleanArchitectureWithDDD.Application.Features.Invoices.Queries.RetriveCustomerInvoice
 {
-    public class UpdateCustomerCommand : ICommand<bool>
+    public class RetriveCustomerInvoiceQuery : IQuery<bool>
     {
     }
 }

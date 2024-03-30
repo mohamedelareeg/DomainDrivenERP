@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Invoices.Requests.Queries
+namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.DeleteCustomer
 {
-    public class RetriveCustomerInvoiceQuery : IQuery<bool>
+    public class DeleteCustomerCommand : ICommand<bool>
     {
     }
 }
