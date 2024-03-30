@@ -17,6 +17,7 @@ namespace CleanArchitectureWithDDD.Domain.Shared
             IsSuccess = isSuccess;
             Error = error;
         }
+
         public bool IsSuccess { get; }
         public bool IsFailure => !IsSuccess;
         public Error Error { get; }
@@ -26,7 +27,7 @@ namespace CleanArchitectureWithDDD.Domain.Shared
         public static Result Failure(Error error) => new(false, error);
 
         public static Result Created() => new(true, Error.None);
-
+        public static Result<TValue> Create<TValue>(TValue? value) => value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
         public static Result NotFound(string message = "The requested resource was not found.") =>
             new(false, new Error("NotFound", message));
 

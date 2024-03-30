@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Primitives;
+﻿using CleanArchitectureWithDDD.Domain.Errors;
+using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
 using System;
 using System.Collections.Generic;
@@ -18,17 +19,32 @@ namespace CleanArchitectureWithDDD.Domain.ValueObjects
 
         public static Result<Email> Create(string email)
         {
-            if (string.IsNullOrWhiteSpace(email))
-                return Result.Failure<Email>(new Error("Email.Empty", "Email is Empty"));
-
-            if (email.Length > MaxLength)
-                return Result.Failure<Email>(new Error("Email.TooLong", "Email is Too Long"));
-
             string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            if (!Regex.IsMatch(email, emailPattern))
-                return Result.Failure<Email>(new Error("Email.InvalidFormat", "Email is not in a valid format"));
 
-            return new Email(email);
+            // Railway-Oriented Programming (ROP) approach for validating email.
+            // Debug is Not Good
+            // More Complex
+            return  Result.Create(email)
+                .Ensure(e => !string.IsNullOrWhiteSpace(e), DomainErrors.Email.Empty)
+                .Ensure(e => e.Length <= MaxLength, DomainErrors.Email.TooLong)
+                .Ensure(e => Regex.IsMatch(e, emailPattern), DomainErrors.Email.NotValid)
+                .Map(e=> new Email(e));
+
+            /* 
+               // Traditional approach
+               // In the traditional approach, each validation is performed individually, and if any validation fails, a failure result with the corresponding error is returned immediately.
+               if (string.IsNullOrWhiteSpace(email))
+                   return Result.Failure<Email>(DomainErrors.Email.Empty);
+
+               if (email.Length > MaxLength)
+                   return Result.Failure<Email>(DomainErrors.Email.TooLong);
+
+               if (!Regex.IsMatch(email, emailPattern))
+                   return Result.Failure<Email>(DomainErrors.Email.NotValid);
+
+               return new Email(email);
+            */
+
         }
 
         public override IEnumerable<object> GetAtomicValues()
