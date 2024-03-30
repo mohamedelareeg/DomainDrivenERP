@@ -12,6 +12,7 @@ namespace CleanArchitectureWithDDD.Domain.Errors
         public static class Customers
         {
             public static readonly Error IsNulledCustomer = new Error("Customers.CreateInvoice", "Cannot create invoice for null customer.");
+            public static readonly Error IsCustomerEmailAlreadyExist = new Error("Customer.CreateCustomer", "Email Already Exist");
         }
     }
 }

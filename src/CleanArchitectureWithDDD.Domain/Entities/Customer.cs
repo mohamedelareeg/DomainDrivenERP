@@ -89,7 +89,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         {
             if (!isEmailUnique)
             {
-                return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
+                return Result.Failure<Customer>(DomainErrors.Customers.IsCustomerEmailAlreadyExist);
             }
             var customer = new Customer(id, firstName, lastName, email, phone);
             customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
