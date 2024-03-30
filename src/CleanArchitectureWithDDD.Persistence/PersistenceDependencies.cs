@@ -21,8 +21,11 @@ namespace CleanArchitectureWithDDD.Persistence
         public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services)
         {
             //DB
-            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-            services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+            #region Interceptors
+            // I Moved The Logic Inside UnitOfWork SaveChanges so I Remove the Interceptors DI 
+            //services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>(); 
+            //services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+            #endregion
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
                 var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
