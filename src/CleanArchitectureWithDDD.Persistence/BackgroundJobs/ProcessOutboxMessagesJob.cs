@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Persistence.OutBox;
+using CleanArchitectureWithDDD.Persistence.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -27,7 +27,7 @@ namespace CleanArchitectureWithDDD.Persistence.BackgroundJobs
         {
             TypeNameHandling = TypeNameHandling.All,
         };
-        
+        //Idempotency >> Certain Operation Multiple times without change intial result
         public async Task Execute(IJobExecutionContext context)
         {
             try
@@ -63,10 +63,11 @@ namespace CleanArchitectureWithDDD.Persistence.BackgroundJobs
             }
             catch (Exception ex)
             {
-
+                // Its return duplicate 
+                //Violation of PRIMARY KEY constraint 'PK_OutboxMessageConsumers'. Cannot insert duplicate key in object 'dbo.OutboxMessageConsumers'
                 //TODO Logging
             }
-           
+
         }
     }
 }

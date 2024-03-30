@@ -38,7 +38,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         {
 
             var customer = new Customer(id, firstName, lastName, email, phone);
-            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(),customer.Id));
             return customer;
 
         }
@@ -56,7 +56,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
             }
             var customer = new Customer(id, firstName, lastName, email, phone);
-            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
             return customer;
 
         }
@@ -74,7 +74,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
             }
             var customer = new Customer(id, firstName, lastName, email, phone);
-            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
             return customer;
 
         }
@@ -92,7 +92,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
             }
             var customer = new Customer(id, firstName, lastName, email, phone);
-            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
+            customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
             return customer;
 
         }
@@ -134,7 +134,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
 
             var invoice = new Invoice(Guid.NewGuid(), invoiceSerial, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
             _invoices.Add(invoice);
-            RaiseDomainEvent(new CreateInvoiceDomainEvent(Id, invoice));
+            RaiseDomainEvent(new CreateInvoiceDomainEvent(Guid.NewGuid(), Id, invoice));
             return invoice;
         }
         public Result<Invoice> UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
@@ -145,7 +145,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 return Result.Failure<Invoice>(new Error("Invoice.NotFound", "Invoice not found."));
             }
             invoiceToUpdate.UpdateInvoiceStatus(newStatus);
-            RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Id, invoice, newStatus));
+            RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Guid.NewGuid(), Id, invoice, newStatus));
             return invoiceToUpdate;
         }
     }

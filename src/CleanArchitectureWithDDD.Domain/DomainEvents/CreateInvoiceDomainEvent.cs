@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CleanArchitectureWithDDD.Domain.DomainEvents
 {
     //Record is Immutable
-    public sealed record CreateInvoiceDomainEvent(Guid CustomerId , Invoice Invoice) : IDomainEvent
+    public sealed record CreateInvoiceDomainEvent(Guid Id,Guid CustomerId , Invoice Invoice) : DomainEvent(Id)
     {
     }
 }

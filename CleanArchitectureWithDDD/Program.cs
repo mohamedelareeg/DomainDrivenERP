@@ -19,6 +19,7 @@ builder.Services.AddApplicationDependencies()
                 .AddInfrustructureDependencies()
                 .AddPersistenceDependencies();
 
+
 #endregion
 #region MiddleWare
 var app = builder.Build();

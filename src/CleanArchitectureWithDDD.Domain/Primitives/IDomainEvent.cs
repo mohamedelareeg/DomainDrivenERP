@@ -11,6 +11,7 @@ namespace CleanArchitectureWithDDD.Domain.Primitives
     //Domain Event Pattern
     public interface IDomainEvent : INotification
     {
+        Guid Id { get; }
     }
 
 }

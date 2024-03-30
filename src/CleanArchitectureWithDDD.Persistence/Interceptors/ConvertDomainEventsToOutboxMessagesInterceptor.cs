@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Persistence.OutBox;
+using CleanArchitectureWithDDD.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Domain.DomainEvents
 {
-    public sealed record CreateCustomerDomainEvent(Guid CustomerId) : IDomainEvent
+    public sealed record CreateCustomerDomainEvent(Guid Id,Guid CustomerId) : DomainEvent(Id)
     {
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
+using CleanArchitectureWithDDD.Persistence.Idempotentence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
 using CleanArchitectureWithDDD.Persistence.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -39,6 +41,9 @@ namespace CleanArchitectureWithDDD.Persistence
                 configure.UseMicrosoftDependencyInjectionJobFactory();
             });
             services.AddQuartzHostedService();
+
+            //Idempotency With MediatR Notification || Scrutor for Decorate
+            services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
 
             //Repositories
             services.AddScoped<ICustomerRespository,CustomerRespository>();
