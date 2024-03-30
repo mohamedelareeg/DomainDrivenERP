@@ -2,32 +2,26 @@
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Application.Features.Invoices.Events
+namespace CleanArchitectureWithDDD.Application.Features.Invoices.Events;
+
+internal class SendInvoiceStatusUpdateToCustomerViaEmailDomainEventHandler : INotificationHandler<UpdateInvoiceStatusDomainEvent>
 {
-    internal class SendInvoiceStatusUpdateToCustomerViaEmailDomainEventHandler : INotificationHandler<UpdateInvoiceStatusDomainEvent>
+    private readonly IEmailService _emailService;
+    private readonly ICustomerRespository _customerRespository;
+    public SendInvoiceStatusUpdateToCustomerViaEmailDomainEventHandler(IEmailService emailService, ICustomerRespository customerRespository)
     {
-        private readonly IEmailService _emailService;
-        private readonly ICustomerRespository _customerRespository;
-        public SendInvoiceStatusUpdateToCustomerViaEmailDomainEventHandler(IEmailService emailService, ICustomerRespository customerRespository)
-        {
-            _emailService = emailService;
-            _customerRespository = customerRespository;
-        }
+        _emailService = emailService;
+        _customerRespository = customerRespository;
+    }
 
-        public async Task Handle(UpdateInvoiceStatusDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UpdateInvoiceStatusDomainEvent notification, CancellationToken cancellationToken)
+    {
+        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(notification.CustomerId, cancellationToken);
+        if (customer is null)
         {
-            var customer = await _customerRespository.GetByIdAsync(notification.CustomerId, cancellationToken);
-            if (customer is null)
-            {
-                return;
-            }
-            await _emailService.SendInvoiceStatusUpdateToCustomerViaEmailAsync(customer, notification.Invoice, notification.InvoiceStatus);
+            return;
         }
+        await _emailService.SendInvoiceStatusUpdateToCustomerViaEmailAsync(customer, notification.Invoice, notification.InvoiceStatus);
     }
 }

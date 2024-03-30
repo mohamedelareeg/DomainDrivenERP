@@ -1,12 +1,10 @@
 
-using Microsoft.OpenApi.Models;
 using CleanArchitectureWithDDD.Application;
 using CleanArchitectureWithDDD.Infrastructure;
 using CleanArchitectureWithDDD.Persistence;
-using CleanArchitectureWithDDD.Presentation;
 using CleanArchitectureWithDDD.Presentation.Configuration.Extensions.Swagger;
 #region DI
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder
     .Services
@@ -22,7 +20,7 @@ builder.Services.AddApplicationDependencies()
 
 #endregion
 #region MiddleWare
-var app = builder.Build();
+WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

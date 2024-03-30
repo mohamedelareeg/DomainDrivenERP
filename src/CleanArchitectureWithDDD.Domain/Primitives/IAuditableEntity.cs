@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CleanArchitectureWithDDD.Domain.Primitives;
 
-namespace CleanArchitectureWithDDD.Domain.Primitives
+public interface IAuditableEntity
 {
-    public interface IAuditableEntity
-    {
-        DateTime CreatedOnUtc { get; set; }
+    DateTime CreatedOnUtc { get; set; }
 
-        DateTime? ModifiedOnUtc { get; set; }
-    }
+    DateTime? ModifiedOnUtc { get; set; }
 }

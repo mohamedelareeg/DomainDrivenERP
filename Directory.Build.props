@@ -1,0 +1,21 @@
+<Project>
+	<!-- Apply configuration across all projects -->
+	<PropertyGroup>
+		<!-- 
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors> 
+		If I use this line, all warnings will be treated as errors.
+		-->
+	</PropertyGroup>
+
+	<!-- References to SonarAnalyzer.CSharp and StyleCop.Analyzers packages -->
+	<ItemGroup>
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.23.0.88079">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
