@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Domain.Entities
 {
-    public sealed class Customer : AggregateRoot
+    public sealed class Customer : AggregateRoot, IAuditableEntity
     {
         private readonly List<Invoice> _invoices = new();
         private Customer() { }
@@ -101,6 +101,10 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         public Email Email { get; private set; }
         public string Phone { get; private set; }
         public IReadOnlyCollection<Invoice> Invoices => _invoices;
+
+        public DateTime CreatedOnUtc { get; set; }
+
+        public DateTime? ModifiedOnUtc { get; set; }
         public Result<Invoice> CreateInvoice(
             string invoiceSerial,
             DateTime invoiceDate,
