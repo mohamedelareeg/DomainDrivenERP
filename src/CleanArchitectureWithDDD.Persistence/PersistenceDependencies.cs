@@ -22,6 +22,7 @@ namespace CleanArchitectureWithDDD.Persistence
         {
             //DB
             services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+            services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
                 var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
