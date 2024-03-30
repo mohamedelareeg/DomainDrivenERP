@@ -17,7 +17,7 @@ builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddApplicationDependencies()
                 .AddInfrustructureDependencies()
-                .AddPersistenceDependencies();
+                .AddPersistenceDependencies(builder.Configuration);
 
 
 #endregion

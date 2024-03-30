@@ -1,11 +1,13 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
+using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
 using CleanArchitectureWithDDD.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
@@ -18,7 +20,7 @@ namespace CleanArchitectureWithDDD.Persistence
 {
     public static class PersistenceDependencies
     {
-        public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             //DB
             #region Interceptors
@@ -29,12 +31,13 @@ namespace CleanArchitectureWithDDD.Persistence
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
                 var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
-                var connectionString = "Server=.;Database=CleanDDD;Integrated Security=true;MultipleActiveResultSets=true;TrustServerCertificate=true;";
+                //var connectionString = "Server=.;Database=CleanDDD;Integrated Security=true;MultipleActiveResultSets=true;TrustServerCertificate=true;";
+                string connectionString = configuration.GetConnectionString("Database");
                 options.UseSqlServer(connectionString).AddInterceptors(interceptor);
             }
             );
             services.AddTransient<IUnitOfWork,UnitOfWork>();
-
+            services.AddSingleton<ISqlConnectionFactory,SqlConnectionFactory>();
             //Quartz
             services.AddQuartz(configure =>
             {

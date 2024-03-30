@@ -89,7 +89,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
         {
             if (!isEmailUnique)
             {
-                return Result.Failure<Customer>(DomainErrors.Customers.IsCustomerEmailAlreadyExist);
+                return Result.Failure<Customer>(DomainErrors.CustomerErrors.IsCustomerEmailAlreadyExist);
             }
             var customer = new Customer(id, firstName, lastName, email, phone);
             customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
@@ -120,7 +120,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities
                 // They allow developers to convey both success and failure outcomes in a unified way.
                 // Disadvantage: No Stack Trace
                 // Custom result objects typically don't include stack trace information, which can be useful for debugging.
-                return Result.Failure<Invoice>(DomainErrors.Customers.IsNulledCustomer);
+                return Result.Failure<Invoice>(DomainErrors.CustomerErrors.IsNulledCustomer);
 
                 // Way 2 :
                 // Advantage: Custom Exception

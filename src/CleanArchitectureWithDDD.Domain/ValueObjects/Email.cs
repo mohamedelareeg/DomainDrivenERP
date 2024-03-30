@@ -25,22 +25,22 @@ namespace CleanArchitectureWithDDD.Domain.ValueObjects
             // Debug is Not Good
             // More Complex
             return  Result.Create(email)
-                .Ensure(e => !string.IsNullOrWhiteSpace(e), DomainErrors.Email.Empty)
-                .Ensure(e => e.Length <= MaxLength, DomainErrors.Email.TooLong)
-                .Ensure(e => Regex.IsMatch(e, emailPattern), DomainErrors.Email.NotValid)
+                .Ensure(e => !string.IsNullOrWhiteSpace(e), DomainErrors.EmailErrors.Empty)
+                .Ensure(e => e.Length <= MaxLength, DomainErrors.EmailErrors.TooLong)
+                .Ensure(e => Regex.IsMatch(e, emailPattern), DomainErrors.EmailErrors.NotValid)
                 .Map(e=> new Email(e));
 
             /* 
                // Traditional approach
                // In the traditional approach, each validation is performed individually, and if any validation fails, a failure result with the corresponding error is returned immediately.
                if (string.IsNullOrWhiteSpace(email))
-                   return Result.Failure<Email>(DomainErrors.Email.Empty);
+                   return Result.Failure<Email>(DomainErrors.EmailErrors.Empty);
 
                if (email.Length > MaxLength)
-                   return Result.Failure<Email>(DomainErrors.Email.TooLong);
+                   return Result.Failure<Email>(DomainErrors.EmailErrors.TooLong);
 
                if (!Regex.IsMatch(email, emailPattern))
-                   return Result.Failure<Email>(DomainErrors.Email.NotValid);
+                   return Result.Failure<Email>(DomainErrors.EmailErrors.NotValid);
 
                return new Email(email);
             */

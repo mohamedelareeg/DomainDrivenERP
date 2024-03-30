@@ -55,7 +55,7 @@ namespace CleanArchitectureWithDDD.Application.UnitTests.Features.Customers.Comm
             Result<Customer> result = await handler.Handle(command, default);
             // Assert
             result.IsFailure.Should().BeTrue();//FluentAssertions
-            result.Error.Should().Be(DomainErrors.Customers.IsCustomerEmailAlreadyExist);
+            result.Error.Should().Be(DomainErrors.CustomerErrors.IsCustomerEmailAlreadyExist);
 
         }
         [Fact]

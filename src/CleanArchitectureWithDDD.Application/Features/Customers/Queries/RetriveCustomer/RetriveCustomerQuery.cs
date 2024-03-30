@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer
 {
-    public class RetriveCustomerQuery : IQuery<Customer>
+    public class RetriveCustomerQuery : IQuery<RetriveCustomerResponse>
     {
         public Guid CustomerId { get; }
         public RetriveCustomerQuery()

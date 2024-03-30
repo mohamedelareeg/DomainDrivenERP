@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Application.Behaviors;
+using CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,9 @@ namespace CleanArchitectureWithDDD.Application
             });
             services.AddScoped(typeof(IPipelineBehavior<,>),typeof(ValidationPiplineBehavior<,>));
             services.AddValidatorsFromAssembly(AssemblyReference.Assembly,includeInternalTypes:true);
+
+            //Mapping Profiles
+            services.AddAutoMapper(typeof(RetriveCustomerMapping));
             return services;
         }
     }
