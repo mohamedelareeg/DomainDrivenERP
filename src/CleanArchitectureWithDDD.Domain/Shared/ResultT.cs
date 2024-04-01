@@ -1,10 +1,12 @@
-﻿namespace CleanArchitectureWithDDD.Domain.Shared;
+﻿using System.Net;
+
+namespace CleanArchitectureWithDDD.Domain.Shared;
 
 public class Result<TValue> : Result
 {
     private readonly TValue? _value;
 
-    protected internal Result(TValue? value, bool isSuccess, Error error) : base(isSuccess, error)
+    protected internal Result(TValue? value, bool isSuccess, Error error, HttpStatusCode statusCode) : base(isSuccess, error, statusCode)
     {
         _value = value;
     }

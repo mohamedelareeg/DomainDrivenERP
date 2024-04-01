@@ -19,19 +19,22 @@ public sealed class CustomersController : AppControllerBase
     public async Task<IActionResult> CreateCustomer(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         Result<Customer> result = await Sender.Send(request, cancellationToken);
-        return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        return CustomResult(result);
+        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
     }
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCustomerById(Guid id, CancellationToken cancellationToken)
     {
         Result<RetriveCustomerResponse> result = await Sender.Send(new RetriveCustomerQuery(id), cancellationToken);
-        return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        return CustomResult(result);
+        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
     }
     [HttpGet]
     public async Task<IActionResult> GetCustomers([FromQuery] RetriveCustomersQuery request, CancellationToken cancellationToken)
     {
         Result<List<Customer>> result = await Sender.Send(request, cancellationToken);
-        return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        return CustomResult(result);
+        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
     }
 
 }

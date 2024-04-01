@@ -1,11 +1,12 @@
 
 using CleanArchitectureWithDDD.Application;
 using CleanArchitectureWithDDD.Infrastructure;
+using CleanArchitectureWithDDD.MiddleWares;
 using CleanArchitectureWithDDD.Persistence;
 using CleanArchitectureWithDDD.Presentation.Configuration.Extensions.Swagger;
 #region DI
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleWare>();
 builder
     .Services
     .AddControllers()
@@ -31,10 +32,11 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
+app.UseMiddleware<GlobalExceptionHandlerMiddleWare>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

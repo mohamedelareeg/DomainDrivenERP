@@ -44,10 +44,10 @@ public static class PersistenceDependencies
         });
         services.AddQuartzHostedService();
 
-        //Idempotency With MediatR Notification || Scrutor for Decorate
+        // Idempotency With MediatR Notification || Scrutor for Decorate
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
 
-        //Repositories
+        // Repositories
         services.AddScoped<ICustomerRespository, CustomerRespository>();
         return services;
 

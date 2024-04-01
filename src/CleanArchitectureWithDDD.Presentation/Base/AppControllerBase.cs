@@ -14,6 +14,36 @@ public class AppControllerBase : ControllerBase
     {
         Sender = sender;
     }
+    public IActionResult CustomResult<T>(Result<T> result)
+    {
+        if (result.IsSuccess)
+        {
+            return new OkObjectResult(new BaseResponse<T>(result.Value, result.StatusCode));
+        }
+        else
+        {
+            if (result is IValidationResult validationResult)
+            {
+                var errorMessages = validationResult.Errors.Select(error => $"{error.Code} : {error.Message}").ToList();
+                return new ObjectResult(new BaseResponse<T>(result.Error, errorMessages, result.StatusCode, succeeded: false))
+                {
+                    StatusCode = (int)result.StatusCode
+                };
+
+            }
+            else
+            {
+                return new ObjectResult(new BaseResponse<T>(result.Error , result.StatusCode, succeeded: false))
+                {
+                    StatusCode = (int)result.StatusCode
+                };
+            }
+        }
+    }
+
+
+    #region HandleFailure
+    //No need for this but i doesn't remove the code of it
     protected IActionResult HandleFailure<T>(Result<T> result)
     {
         return result switch
@@ -44,5 +74,6 @@ public class AppControllerBase : ControllerBase
         Detail = error.Message,
         Extensions = { { nameof(errors), errors } }
     };
+    #endregion
 
 }

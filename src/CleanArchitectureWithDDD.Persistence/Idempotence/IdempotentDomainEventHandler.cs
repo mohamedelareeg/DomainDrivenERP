@@ -20,13 +20,14 @@ public sealed class IdempotentDomainEventHandler<TDomainEvent> : IDomainEventHan
 
     public async Task Handle(TDomainEvent notification, CancellationToken cancellationToken)
     {
-        //TODO: Search on How to Order The DomainEvents if it has many Handlers for one DomainEvent
+        // TODO: Search on How to Order The DomainEvents if it has many Handlers for one DomainEvent
         string consumer = _decorated.GetType().Name;
         bool exists = await _context.Set<OutboxMessageConsumer>()
-            .AnyAsync(outboxMessageConsumer =>
+            .AnyAsync(
+                outboxMessageConsumer =>
                 outboxMessageConsumer.Id == notification.Id &&
                 outboxMessageConsumer.Name == consumer,
-            cancellationToken);
+                cancellationToken);
         if (exists)
         {
             return;
