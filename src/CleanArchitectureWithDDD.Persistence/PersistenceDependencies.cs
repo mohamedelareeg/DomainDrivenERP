@@ -53,6 +53,7 @@ public static class PersistenceDependencies
         services.AddScoped<ICustomerRespository, CustomerRespository>();
 
         //Caching
+        services.AddMemoryCache();
         //services.AddScoped<CustomerRespository>();
         //services.AddScoped<ICustomerRespository, CachedCustomerRepository>(); // First Way
         //services.AddScoped<ICustomerRespository>(provider => // Second Way
