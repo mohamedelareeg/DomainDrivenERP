@@ -5,8 +5,10 @@ using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
 using CleanArchitectureWithDDD.Persistence.Repositories;
+using CleanArchitectureWithDDD.Persistence.Repositories.Cached;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -46,9 +48,20 @@ public static class PersistenceDependencies
 
         // Idempotency With MediatR Notification || Scrutor for Decorate
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
-
+        
         // Repositories
         services.AddScoped<ICustomerRespository, CustomerRespository>();
+
+        //Caching
+        //services.AddScoped<CustomerRespository>();
+        //services.AddScoped<ICustomerRespository, CachedCustomerRepository>(); // First Way
+        //services.AddScoped<ICustomerRespository>(provider => // Second Way
+        //{
+        //    CustomerRespository? customerRespository = provider.GetService<CustomerRespository>();
+        //    return new CachedCustomerRepository(customerRespository,provider.GetService<IMemoryCache>());
+        //});
+        services.Decorate<ICustomerRespository, CachedCustomerRepository>();
+
         return services;
 
     }
