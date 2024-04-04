@@ -9,7 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleWare>();
 builder
     .Services
-    .AddControllers()
+    .AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve)
     .AddApplicationPart(CleanArchitectureWithDDD.Presentation.AssemblyReference.Assembly);
 
 builder.Services.AddSwaggerDocumentation();

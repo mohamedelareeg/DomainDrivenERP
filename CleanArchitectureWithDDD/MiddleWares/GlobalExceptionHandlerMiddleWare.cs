@@ -96,7 +96,8 @@ internal class GlobalExceptionHandlerMiddleWare : IMiddleware
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
-            string result = JsonSerializer.Serialize(responseModel);
+            var resultObj = new BaseResponse<Result>(responseModel.Error, new List<string> { responseModel.Error.Message }, responseModel.StatusCode, succeeded: false);
+            string result = JsonSerializer.Serialize(resultObj);
             await response.WriteAsync(result);
 
         }

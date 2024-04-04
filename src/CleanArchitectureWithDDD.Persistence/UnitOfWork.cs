@@ -3,6 +3,7 @@ using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CleanArchitectureWithDDD.Persistence;
@@ -10,18 +11,29 @@ namespace CleanArchitectureWithDDD.Persistence;
 // Acting like a Transaction Boundary
 public class UnitOfWork : IUnitOfWork
 {
+    private readonly ILogger<UnitOfWork> _logger;
     private readonly ApplicationDbContext _context;
-    public UnitOfWork(ApplicationDbContext context)
+    public UnitOfWork(ApplicationDbContext context, ILogger<UnitOfWork> logger)
     {
         _context = context;
+        _logger = logger;
     }
     //UnitOfWork Pattern & Move Outbox Interceptor and Auditable Interceptor inside UnitOfWork
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        //Move The Logic From Interceptors To UnitOfWork SaveChangesAsync
-        ConvertDomainEventsToOutboxMessages();
-        UpdateAuditableEntities();
-        return _context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            // Move The Logic From Interceptors To UnitOfWork SaveChangesAsync
+            ConvertDomainEventsToOutboxMessages();
+            UpdateAuditableEntities();
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while saving changes.");
+
+            throw;
+        }
     }
     private void ConvertDomainEventsToOutboxMessages()
     {

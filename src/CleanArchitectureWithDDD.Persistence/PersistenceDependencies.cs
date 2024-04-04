@@ -51,6 +51,7 @@ public static class PersistenceDependencies
         
         // Repositories
         services.AddScoped<ICustomerRespository, CustomerRespository>();
+        services.AddScoped<ICoaRepository, CoaRepository>();
 
         //Caching
         services.AddMemoryCache();

@@ -37,7 +37,4 @@ internal class RetriveCustomerQueryHandler : IQueryHandler<RetriveCustomerQuery,
         // Map the retrieved customer to RetriveCustomerResponse using AutoMapper
         return _mapper.Map<RetriveCustomerResponse>(customer);
     }
-
-
-
 }

@@ -34,7 +34,4 @@ public class Invoice : BaseEntity
     {
         InvoiceStatus = newStatus;
     }
-
-
-
 }

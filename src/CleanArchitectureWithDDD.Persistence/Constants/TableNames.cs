@@ -6,4 +6,7 @@ internal static class TableNames
     internal const string Invoices = nameof(Invoices);
     internal const string OutboxMessages = nameof(OutboxMessages);
     internal const string OutboxMessageConsumers = nameof(OutboxMessageConsumers);
+    internal const string Coas = nameof(Coas);
+    internal const string Journals = nameof(Journals);
+    internal const string Transactions = nameof(Transactions);
 }

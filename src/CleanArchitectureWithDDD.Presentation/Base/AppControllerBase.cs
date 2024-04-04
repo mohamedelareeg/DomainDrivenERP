@@ -33,7 +33,7 @@ public class AppControllerBase : ControllerBase
             }
             else
             {
-                return new ObjectResult(new BaseResponse<T>(result.Error , result.StatusCode, succeeded: false))
+                return new ObjectResult(new BaseResponse<T>(result.Error, new List<string> { result.Error.Message }, result.StatusCode, succeeded: false))
                 {
                     StatusCode = (int)result.StatusCode
                 };
