@@ -1,5 +1,7 @@
-﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
+﻿using CleanArchitectureWithDDD.Application.Extentions;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using Dapper;
@@ -22,19 +24,19 @@ internal sealed class CustomerRespository : ICustomerRespository
         await _context.Set<Customer>().AddAsync(customer);
     }
 
-    public Task AddCustomerInvoiceAsync(Guid id, Invoice invoice)
+    public async Task AddCustomerInvoiceAsync(Invoice invoice)
     {
-        throw new NotImplementedException();
+        await _context.Set<Invoice>().AddAsync(invoice);
     }
 
-    public async Task<List<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
+    public async Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
     {
-        return await _context.Set<Customer>().ToListAsync(cancellationToken);
+        return _context.Set<Customer>().ToCustomList();//TODO Fix the Async
     }
 
-    public async Task<Customer?> GetByIdAsync(Guid CustomerId, CancellationToken cancellationToken = default)
+    public async Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<Customer>().FirstOrDefaultAsync(x => x.Id == CustomerId, cancellationToken);
+        return await _context.Set<Customer>().FirstOrDefaultAsync(x => x.Id.ToString() == CustomerId, cancellationToken);
     }
 
     public async Task<dynamic?> GetByIdAsync_Dapper(Guid customerId)

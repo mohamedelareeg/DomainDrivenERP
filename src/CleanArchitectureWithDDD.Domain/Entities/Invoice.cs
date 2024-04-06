@@ -1,10 +1,14 @@
-﻿using CleanArchitectureWithDDD.Domain.Enums;
+﻿using System.Text.Json.Serialization;
+using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
 namespace CleanArchitectureWithDDD.Domain.Entities;
 
 public class Invoice : BaseEntity
 {
+    public Invoice()
+    {
+    }
     internal Invoice(
         Guid id,
         string invoiceSerial,
@@ -12,7 +16,8 @@ public class Invoice : BaseEntity
         decimal invoiceAmount,
         decimal invoiceDiscount,
         decimal invoiceTax,
-        decimal invoiceTotal) : base(id)
+        decimal invoiceTotal,
+        Guid customerId) : base(id)
     {
         InvoiceSerial = invoiceSerial;
         InvoiceDate = invoiceDate;
@@ -21,8 +26,11 @@ public class Invoice : BaseEntity
         InvoiceTax = invoiceTax;
         InvoiceTotal = invoiceTotal;
         InvoiceStatus = InvoiceStatus.Pending;
+        CustomerId = customerId;
     }
     public Guid CustomerId { get; private set; }
+    //[JsonIgnore]
+    //public Customer Customer { get; private set; }
     public string InvoiceSerial { get; private set; }
     public DateTime InvoiceDate { get; private set; }
     public decimal InvoiceAmount { get; private set; }

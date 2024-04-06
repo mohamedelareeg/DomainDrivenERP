@@ -5,7 +5,7 @@ using CleanArchitectureWithDDD.Domain.Shared;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomers;
 
-internal class RetriveCustomersQueryHandler : IQueryHandler<RetriveCustomersQuery, List<Customer>>
+internal class RetriveCustomersQueryHandler : IListQueryHandler<RetriveCustomersQuery, Customer>
 {
     private readonly ICustomerRespository _customerRespository;
     public RetriveCustomersQueryHandler(ICustomerRespository customerRespository)
@@ -13,11 +13,11 @@ internal class RetriveCustomersQueryHandler : IQueryHandler<RetriveCustomersQuer
         _customerRespository = customerRespository;
     }
 
-    public async Task<Result<List<Customer>>> Handle(RetriveCustomersQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CustomList<Customer>>> Handle(RetriveCustomersQuery request, CancellationToken cancellationToken)
     {
-        List<Customer> customers = await _customerRespository.GetAllCustomers(cancellationToken);
+        CustomList<Customer>? customers = await _customerRespository.GetAllCustomers(cancellationToken);
         return customers is null || customers.Count == 0
-            ? Result.Failure<List<Customer>>(new Error("Customer.RetriveCustomers", "No Customers Exist"))
-            : (Result<List<Customer>>)customers;
+            ? Result.Failure<CustomList<Customer>>(new Error("Customer.RetriveCustomers", "No Customers Exist"))
+            : (Result<CustomList<Customer>>)customers;
     }
 }

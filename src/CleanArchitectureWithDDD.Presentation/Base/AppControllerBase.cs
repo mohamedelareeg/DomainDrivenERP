@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Shared;
+﻿using System.Collections;
+using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,16 @@ public class AppControllerBase : ControllerBase
     {
         if (result.IsSuccess)
         {
-            return new OkObjectResult(new BaseResponse<T>(result.Value, result.StatusCode));
+            if (typeof(IEnumerable<object>).IsAssignableFrom(typeof(T)))
+            {
+                int count = (result.Value as IEnumerable<object>)?.Count() ?? 0;
+                var responseData = new { Count = count, Items = result.Value};
+                return new OkObjectResult(new BaseResponse<object>(responseData, result.StatusCode));
+            }
+            else
+            {
+                return new OkObjectResult(new BaseResponse<T>(result.Value, result.StatusCode));
+            }
         }
         else
         {

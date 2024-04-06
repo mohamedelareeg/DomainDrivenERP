@@ -19,7 +19,7 @@ public static class PersistenceDependencies
 {
     public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        //DB
+        // DB
         #region Interceptors
         // I Moved The Logic Inside UnitOfWork SaveChanges so I Remove the Interceptors DI 
         //services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>(); 
@@ -28,9 +28,11 @@ public static class PersistenceDependencies
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             ConvertDomainEventsToOutboxMessagesInterceptor? interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
-            //var connectionString = "Server=.;Database=CleanDDD;Integrated Security=true;MultipleActiveResultSets=true;TrustServerCertificate=true;";
             string connectionString = configuration.GetConnectionString("Database");
-            options.UseSqlServer(connectionString).AddInterceptors(interceptor);
+            options.UseSqlServer(connectionString
+                //,a=>a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery) //All the Query will be spliting
+                )
+            .AddInterceptors(interceptor);
         }
         );
         services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -48,15 +50,17 @@ public static class PersistenceDependencies
 
         // Idempotency With MediatR Notification || Scrutor for Decorate
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
-        
+
         // Repositories
         services.AddScoped<ICustomerRespository, CustomerRespository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<ICoaRepository, CoaRepository>();
         services.AddScoped<IJournalRepository, JournalRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-        //Caching
+        // Caching
         services.AddMemoryCache();
+        #region Another Caching  Ways
         //services.AddScoped<CustomerRespository>();
         //services.AddScoped<ICustomerRespository, CachedCustomerRepository>(); // First Way
         //services.AddScoped<ICustomerRespository>(provider => // Second Way
@@ -64,7 +68,9 @@ public static class PersistenceDependencies
         //    CustomerRespository? customerRespository = provider.GetService<CustomerRespository>();
         //    return new CachedCustomerRepository(customerRespository,provider.GetService<IMemoryCache>());
         //});
+        #endregion
         services.Decorate<ICustomerRespository, CachedCustomerRepository>();
+        services.Decorate<IInvoiceRepository,CachedInvoiceRepository>();
 
         return services;
 

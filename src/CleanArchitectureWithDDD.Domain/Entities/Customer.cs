@@ -136,7 +136,7 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         decimal invoiceDiscount = invoiceAmount * discountRate;
         decimal invoiceTotal = invoiceAmount + invoiceTax - invoiceDiscount;
 
-        var invoice = new Invoice(Guid.NewGuid(), invoiceSerial, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal);
+        var invoice = new Invoice(Guid.NewGuid(), invoiceSerial, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal, Id);
         _invoices.Add(invoice);
         RaiseDomainEvent(new CreateInvoiceDomainEvent(Guid.NewGuid(), Id, invoice));
         return invoice;

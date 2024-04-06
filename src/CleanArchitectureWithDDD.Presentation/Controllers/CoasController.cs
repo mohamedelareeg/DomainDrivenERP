@@ -55,7 +55,7 @@ public sealed class CoasController : AppControllerBase
             startDate,
             endDate);
 
-        Result<List<JournalTransactionsDto>> result = await Sender.Send(query, cancellationToken);
+        Result<CustomList<JournalTransactionsDto>> result = await Sender.Send(query, cancellationToken);
         return CustomResult(result);
     }
 

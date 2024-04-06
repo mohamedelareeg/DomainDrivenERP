@@ -1,7 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Entities;
 
-public class RetriveCustomersQuery : IQuery<List<Customer>>
+public class RetriveCustomersQuery : IListQuery<Customer>
 {
     public int? Page { get; }
     public int? PageSize { get; }

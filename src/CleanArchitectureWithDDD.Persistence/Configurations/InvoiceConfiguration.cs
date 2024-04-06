@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using System.Reflection.Emit;
+using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,6 +14,8 @@ internal sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
 
         builder.HasKey(x => x.Id);
 
+        //builder.Property(x => x.CustomerId)
+        //       .IsRequired();
         builder
              .Property(x => x.InvoiceAmount)
              .HasColumnType("decimal(18,2)");
@@ -28,6 +31,12 @@ internal sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
         builder
             .Property(x => x.InvoiceTotal)
             .HasColumnType("decimal(18,2)");
+
+        //builder
+        //   .HasOne(i => i.Customer)
+        //   .WithMany(c => c.Invoices)
+        //   .HasForeignKey(i => i.CustomerId)
+        //   .OnDelete(DeleteBehavior.Cascade);
 
     }
 }

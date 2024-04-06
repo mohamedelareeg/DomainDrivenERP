@@ -18,7 +18,7 @@ internal class UpdateCustomerInvoiceStatusCommandHandler : ICommandHandler<Updat
 
     public async Task<Result<bool>> Handle(UpdateCustomerInvoiceStatusCommand request, CancellationToken cancellationToken)
     {
-        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(request.CustomerId, cancellationToken);
+        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(request.CustomerId.ToString(), cancellationToken);
         if (customer is null)
         {
             return Result.Failure<bool>(new Error("CustomerInvoice.UpdateCustomerInvoiceStatus", $"Customer with ID {request.CustomerId} not found."));

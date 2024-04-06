@@ -16,7 +16,7 @@ internal class SendInvoiceToCustomerViaEmailDomainEventHandler : INotificationHa
     }
     public async Task Handle(CreateInvoiceDomainEvent notification, CancellationToken cancellationToken)
     {
-        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(notification.CustomerId, cancellationToken);
+        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
         if (customer is null)
         {
             return;

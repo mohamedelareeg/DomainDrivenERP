@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CleanArchitectureWithDDD.Domain.Entities;
 
 namespace CleanArchitectureWithDDD.Domain.Shared;
 

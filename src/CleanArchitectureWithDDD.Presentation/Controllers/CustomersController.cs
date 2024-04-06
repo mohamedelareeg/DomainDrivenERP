@@ -1,5 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer;
 using CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer;
+using CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCustomerInvoice;
+using CleanArchitectureWithDDD.Application.Features.Invoices.Queries.RetriveCustomerInvoice;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Presentation.Base;
@@ -32,9 +34,28 @@ public sealed class CustomersController : AppControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCustomers([FromQuery] RetriveCustomersQuery request, CancellationToken cancellationToken)
     {
-        Result<List<Customer>> result = await Sender.Send(request, cancellationToken);
+        Result<CustomList<Customer>> result = await Sender.Send(request, cancellationToken);
         return CustomResult(result);
         //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+    }
+    [HttpGet("invoices")]
+    public async Task<IActionResult> GetCustomerInvoices(
+     string customerId,
+     DateTime? startDate,
+     DateTime? endDate,
+     int pageSize = 10,
+     int pageNumber = 1,
+     CancellationToken cancellationToken = default)
+    {
+        Result<CustomList<Invoice>> result = await Sender.Send(new RetriveCustomerInvoicesQuery(customerId, startDate, endDate, pageSize, pageNumber), cancellationToken);
+        return CustomResult(result);
+    }
+
+    [HttpPost("invoices/create")]
+    public async Task<IActionResult> CreateCustomerInvoice(CreateCustomerInvoiceCommand request , CancellationToken cancellationToken)
+    {
+        Result<Invoice> result = await Sender.Send(request, cancellationToken);
+        return CustomResult(result);
     }
 
 }

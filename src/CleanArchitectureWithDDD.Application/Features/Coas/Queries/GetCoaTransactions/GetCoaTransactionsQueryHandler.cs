@@ -11,7 +11,7 @@ using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
 
 namespace CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaTransactions;
-internal class GetCoaTransactionsQueryHandler : IQueryHandler<GetCoaTransactionsQuery, List<JournalTransactionsDto>>
+internal class GetCoaTransactionsQueryHandler : IListQueryHandler<GetCoaTransactionsQuery, JournalTransactionsDto>
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
@@ -22,9 +22,9 @@ internal class GetCoaTransactionsQueryHandler : IQueryHandler<GetCoaTransactions
         _mapper = mapper;
     }
 
-    public async Task<Result<List<JournalTransactionsDto>>> Handle(GetCoaTransactionsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CustomList<JournalTransactionsDto>>> Handle(GetCoaTransactionsQuery request, CancellationToken cancellationToken)
     {
-        List<JournalTransactionsDto> transactionsList = string.IsNullOrEmpty(request.AccountName)
+        CustomList<JournalTransactionsDto> transactionsList = string.IsNullOrEmpty(request.AccountName)
             ? await _transactionRepository.GetCoaTransactionsByHeadCode(request.AccountHeadCode, request.StartDate, request.EndDate)
             : await _transactionRepository.GetCoaTransactionsByAccountName(request.AccountName, request.StartDate, request.EndDate);
 

@@ -27,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{7CD4E658-E205-4B4A-977F-BA4534478945}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitectureWithDDD.RepositoriesPerformance", "benchmark\CleanArchitectureWithDDD.RepositoriesPerformance\CleanArchitectureWithDDD.RepositoriesPerformance.csproj", "{9EEA21DC-9F86-4632-8C3C-97234E524602}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,10 @@ Global
 		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +80,7 @@ Global
 		{0D6EFD9B-C546-44C3-9B16-3E2FB76EB106} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
 		{89C51F65-D4B7-4A20-A3AF-5A13D5555116} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
 		{E5BC0D28-C61B-468F-A56D-F51CC6C04168} = {F3708195-EA58-4CAB-92F0-1CF606CFD168}
+		{9EEA21DC-9F86-4632-8C3C-97234E524602} = {7CD4E658-E205-4B4A-977F-BA4534478945}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57AF0084-BA39-4242-BDC7-BBAC3C4A73C4}

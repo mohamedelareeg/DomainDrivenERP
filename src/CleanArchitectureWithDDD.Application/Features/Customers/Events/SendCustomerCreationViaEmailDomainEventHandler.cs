@@ -16,7 +16,7 @@ public sealed class SendCustomerCreationViaEmailDomainEventHandler : IDomainEven
     }
     public async Task Handle(CreateCustomerDomainEvent notification, CancellationToken cancellationToken)
     {
-        Task<Domain.Entities.Customer?>? customer = _customerRespository.GetByIdAsync(notification.CustomerId, cancellationToken);
+        Task<Domain.Entities.Customer?>? customer = _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
         if (customer is null)
         {
             return;

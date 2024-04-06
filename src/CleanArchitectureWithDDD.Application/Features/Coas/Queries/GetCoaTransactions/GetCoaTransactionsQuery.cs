@@ -7,7 +7,7 @@ using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Dtos;
 
 namespace CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaTransactions;
-public class GetCoaTransactionsQuery : IQuery<List<JournalTransactionsDto>>
+public class GetCoaTransactionsQuery : IListQuery<JournalTransactionsDto>
 {
     public GetCoaTransactionsQuery(string? accountName, string? accountHeadCode, DateTime? startDate, DateTime? endDate)
     {

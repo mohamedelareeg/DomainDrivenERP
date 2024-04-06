@@ -1,14 +1,15 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
+using CleanArchitectureWithDDD.Domain.Entities;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCustomerInvoice;
 
-public class CreateCustomerInvoiceCommand : ICommand<bool>
+public class CreateCustomerInvoiceCommand : ICommand<Invoice>
 {
-    public Guid CustomerId { get; }
+    public string CustomerId { get; }
     public string InvoiceSerial { get; }
     public DateTime InvoiceDate { get; }
     public decimal InvoiceAmount { get; }
-    public CreateCustomerInvoiceCommand(Guid customerId, string invoiceSerial, DateTime invoiceDate, decimal invoiceAmount)
+    public CreateCustomerInvoiceCommand(string customerId, string invoiceSerial, DateTime invoiceDate, decimal invoiceAmount)
     {
         CustomerId = customerId;
         InvoiceSerial = invoiceSerial;
