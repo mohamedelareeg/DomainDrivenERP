@@ -27,12 +27,8 @@ internal class GetCoaWithChildrensQueryHandler : IQueryHandler<GetCoaWithChildre
 
         if (result is null)
         {
-            return (Result<CoaWithChildrenDto>)Result.Failure(new Error("COA.GetCoaWithChildrensQuery", "COA not found."));
+            return Result.Failure<CoaWithChildrenDto>(new Error("COA.GetCoaWithChildrensQuery", "COA not found."));
         }
-        else
-        {
-            return _mapper.Map<CoaWithChildrenDto>(result);
-        }
-
+        return _mapper.Map<CoaWithChildrenDto>(result);
     }
 }

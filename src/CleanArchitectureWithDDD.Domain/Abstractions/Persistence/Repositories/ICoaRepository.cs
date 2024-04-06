@@ -17,4 +17,6 @@ public interface ICoaRepository
     Task<bool> IsCoaExist(string coaName, string coaParentName);
     Task<COA?> GetCoaWithChildren(string coaId);
     Task<string> GetLastHeadCodeInLevelOne();
+    Task<string?> GetByAccountName(string accountName);
+    Task<string?> GetByAccountHeadCode(string accountHeadCode);
 }

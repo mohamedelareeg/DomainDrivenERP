@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Application.Features.Coas.Commands.CreateCoa;
 using CleanArchitectureWithDDD.Application.Features.Coas.Commands.CreateFirstLevelCoa;
+using CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaTransactions;
 using CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaWithChildrens;
+using CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Shared;
@@ -39,4 +41,23 @@ public sealed class CoasController : AppControllerBase
         Result<CoaWithChildrenDto> result = await Sender.Send(new GetCoaWithChildrensQuery(id), cancellationToken);
         return CustomResult(result);
     }
+    [HttpGet("transactions")]
+    public async Task<IActionResult> GetJournalCoaTransactions(
+     string? accountName,
+     string? accountHeadCode,
+     DateTime? startDate,
+     DateTime? endDate,
+     CancellationToken cancellationToken)
+    {
+        var query = new GetCoaTransactionsQuery(
+            accountName,
+            accountHeadCode,
+            startDate,
+            endDate);
+
+        Result<List<JournalTransactionsDto>> result = await Sender.Send(query, cancellationToken);
+        return CustomResult(result);
+    }
+
+
 }

@@ -21,19 +21,12 @@ public class UnitOfWork : IUnitOfWork
     //UnitOfWork Pattern & Move Outbox Interceptor and Auditable Interceptor inside UnitOfWork
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        try
-        {
-            // Move The Logic From Interceptors To UnitOfWork SaveChangesAsync
-            ConvertDomainEventsToOutboxMessages();
-            UpdateAuditableEntities();
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while saving changes.");
 
-            throw;
-        }
+        // Move The Logic From Interceptors To UnitOfWork SaveChangesAsync
+        ConvertDomainEventsToOutboxMessages();
+        UpdateAuditableEntities();
+        await _context.SaveChangesAsync(cancellationToken);
+
     }
     private void ConvertDomainEventsToOutboxMessages()
     {

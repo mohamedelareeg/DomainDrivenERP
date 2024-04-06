@@ -27,13 +27,13 @@ public class ProcessOutboxMessagesJob : IJob
     {
         try
         {
-            var messages = await _context.Set<OutboxMessage>()
+            List<OutboxMessage> messages = await _context.Set<OutboxMessage>()
                 .Where(a => a.ProcessedOnUtc == null)
                 .Take(20)
                 .ToListAsync(context.CancellationToken);
-            foreach (var message in messages)
+            foreach (OutboxMessage? message in messages)
             {
-                var domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
+                IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
                     message.Content,
                     jsonSerializerSettings);
                 if (domainEvent is null)
@@ -41,12 +41,12 @@ public class ProcessOutboxMessagesJob : IJob
                     //TODO : Logging
                     continue;
                 }
-                var policy = Policy
+                Polly.Retry.AsyncRetryPolicy policy = Policy
                     .Handle<Exception>()
                     .WaitAndRetryAsync(
                         3,
                         attempt => TimeSpan.FromMicroseconds(50 * attempt));
-                var result = await policy.ExecuteAndCaptureAsync(() =>
+                PolicyResult result = await policy.ExecuteAndCaptureAsync(() =>
                     _publisher.Publish(
                         domainEvent,
                         context.CancellationToken));

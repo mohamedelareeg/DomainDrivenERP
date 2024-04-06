@@ -23,15 +23,15 @@ internal class CreateCustomerCommandHandler : ICommandHandler<CreateCustomerComm
         // 2. Purity: Our Domain Model doesn't reach out of processing dependencies (e.g., Repositories) to perform business logic.
         // 3. Performance: Ensuring efficient processing within the Domain Model.
 
-        var firstNameResult = FirstName.Create(request.FirstName);
-        var lastNameResult = LastName.Create(request.LastName);
-        var emailResult = Email.Create(request.Email);
+        Result<FirstName> firstNameResult = FirstName.Create(request.FirstName);
+        Result<LastName> lastNameResult = LastName.Create(request.LastName);
+        Result<Email> emailResult = Email.Create(request.Email);
         if (firstNameResult.IsFailure || lastNameResult.IsFailure)
         {
             return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "First name or Last Name is Not Valid"));
         }
         bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
-        var customer = Customer.Create(//Achieve the 3 Principles
+        Result<Customer> customer = Customer.Create(//Achieve the 3 Principles
             Guid.NewGuid(),
             firstNameResult.Value,
             lastNameResult.Value,

@@ -8,7 +8,11 @@ using CleanArchitectureWithDDD.Domain.Primitives;
 namespace CleanArchitectureWithDDD.Domain.Entities;
 public sealed class Transaction
 {
-    public Transaction(Guid transactionId, Guid journalId, string cOAId, double debit, double credit)
+    internal Transaction()
+    {
+        
+    }
+    internal Transaction(Guid transactionId, Guid journalId, string cOAId, double debit, double credit)
     {
         TransactionId = transactionId;
         JournalId = journalId;

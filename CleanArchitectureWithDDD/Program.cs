@@ -1,4 +1,4 @@
-
+using System.Text.Json.Serialization;
 using CleanArchitectureWithDDD.Application;
 using CleanArchitectureWithDDD.Infrastructure;
 using CleanArchitectureWithDDD.MiddleWares;
@@ -9,7 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleWare>();
 builder
     .Services
-    .AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve)
+    .AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
     .AddApplicationPart(CleanArchitectureWithDDD.Presentation.AssemblyReference.Assembly);
 
 builder.Services.AddSwaggerDocumentation();
@@ -17,8 +17,6 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddApplicationDependencies()
                 .AddInfrustructureDependencies()
                 .AddPersistenceDependencies(builder.Configuration);
-
-
 #endregion
 #region MiddleWare
 WebApplication app = builder.Build();
@@ -36,7 +34,6 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleWare>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
@@ -22,7 +23,7 @@ public sealed class Journal : AggregateRoot
         JournalDate = journalDate;
         Status = status;
     }
-    public static Result<Journal> Create(string? description, bool isOpening, DateTime journalDate, List<Transaction> transactions)
+    public static Result<Journal> Create(string? description, bool isOpening, DateTime journalDate, List<TransactionDto> transactions)
     {
         if (transactions is null)
         {
@@ -45,14 +46,23 @@ public sealed class Journal : AggregateRoot
         return Result.Success();
     }
 
-    public Result AddTransactions(List<Transaction> transactions)
+    public Result AddTransactions(List<TransactionDto> transactions)
     {
         if (transactions is null)
         {
             return Result.Failure<Journal>(new Error("Journal.AddTransactions", "Transactions list cannot be null."));
         }
-
-        _transactions.AddRange(transactions);
+        foreach (TransactionDto dto in transactions)
+        {
+            var transaction = new Transaction(
+                transactionId: Guid.NewGuid(),
+                journalId: Id,
+                cOAId: dto.AccountHeadCode,
+                debit: dto.Debit,
+                credit: dto.Credit
+            );
+            _transactions.Add(transaction);
+        }
         return Result.Success();
     }
 

@@ -96,4 +96,21 @@ internal sealed class CoaRepository : ICoaRepository
     {
         return await _context.Set<COA>().Where(a => a.HeadLevel == 1).MaxAsync(coa => coa.HeadCode);
     }
+
+    public async Task<string?> GetByAccountName(string accountName)
+    {
+        return await _context.Set<COA>()
+                             .Where(coa => coa.HeadName == accountName)
+                             .Select(coa => coa.HeadCode)
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<string?> GetByAccountHeadCode(string accountHeadCode)
+    {
+        return await _context.Set<COA>()
+                             .Where(coa => coa.HeadCode == accountHeadCode)
+                             .Select(coa => coa.HeadCode)
+                             .FirstOrDefaultAsync();
+    }
+
 }
