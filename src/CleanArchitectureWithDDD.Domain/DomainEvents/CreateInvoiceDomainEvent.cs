@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 
 namespace CleanArchitectureWithDDD.Domain.DomainEvents;
 

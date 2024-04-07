@@ -7,7 +7,7 @@ using AutoMapper;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Journals;
 using CleanArchitectureWithDDD.Domain.Shared;
 
 namespace CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;

@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using CleanArchitectureWithDDD.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;

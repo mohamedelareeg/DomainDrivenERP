@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Dtos;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Journals;
 
 namespace CleanArchitectureWithDDD.Application.Features.Journals.Commands.CreateJournal;
 public class CreateJournalCommand : ICommand<Journal>

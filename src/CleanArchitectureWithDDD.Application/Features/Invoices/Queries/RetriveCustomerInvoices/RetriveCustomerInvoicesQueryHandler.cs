@@ -1,6 +1,6 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Shared;
 using MediatR;
 

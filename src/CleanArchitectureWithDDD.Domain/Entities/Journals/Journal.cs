@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Dtos;
+using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
 
-namespace CleanArchitectureWithDDD.Domain.Entities;
+namespace CleanArchitectureWithDDD.Domain.Entities.Journals;
 public sealed class Journal : AggregateRoot
 {
     private readonly List<Transaction> _transactions = new();

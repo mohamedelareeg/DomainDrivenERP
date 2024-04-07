@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using Microsoft.Extensions.Caching.Memory;
@@ -55,6 +56,11 @@ internal class CachedCustomerRepository : ICustomerRespository
             return _decorated.GetByIdAsync_Dapper(customerId);
         });
 
+    }
+
+    public Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default)
+    {
+       return _decorated.GetCustomerInvoicesById(customerId, cancellationToken);
     }
 
     public Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default)

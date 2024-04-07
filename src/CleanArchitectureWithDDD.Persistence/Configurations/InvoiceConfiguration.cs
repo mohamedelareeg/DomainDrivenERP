@@ -1,5 +1,5 @@
 ﻿using System.Reflection.Emit;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

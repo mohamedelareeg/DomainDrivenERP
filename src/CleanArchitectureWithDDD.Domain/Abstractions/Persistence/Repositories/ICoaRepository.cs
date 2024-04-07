@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.COAs;
 
 namespace CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 public interface ICoaRepository

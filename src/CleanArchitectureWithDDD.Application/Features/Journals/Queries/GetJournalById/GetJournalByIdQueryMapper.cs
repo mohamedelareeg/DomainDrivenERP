@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitectureWithDDD.Domain.Dtos;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Journals;
+using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 
 namespace CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;
 internal class GetJournalByIdQueryMapper : Profile

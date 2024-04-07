@@ -1,5 +1,6 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
@@ -7,7 +8,7 @@ using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
-namespace CleanArchitectureWithDDD.Domain.Entities;
+namespace CleanArchitectureWithDDD.Domain.Entities.Customers;
 
 public sealed class Customer : AggregateRoot, IAuditableEntity
 {

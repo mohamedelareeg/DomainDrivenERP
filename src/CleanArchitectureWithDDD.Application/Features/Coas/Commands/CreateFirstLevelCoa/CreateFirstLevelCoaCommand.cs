@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.COAs;
 using CleanArchitectureWithDDD.Domain.Enums;
 
 namespace CleanArchitectureWithDDD.Application.Features.Coas.Commands.CreateFirstLevelCoa;

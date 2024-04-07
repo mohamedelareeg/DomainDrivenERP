@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Shared;
 
-namespace CleanArchitectureWithDDD.Domain.Entities;
+namespace CleanArchitectureWithDDD.Domain.Entities.COAs;
 
 public sealed class COA : AggregateRoot
 {
@@ -15,7 +16,7 @@ public sealed class COA : AggregateRoot
     private readonly List<Transaction> _transactions = new();
     public COA()
     {
-        
+
     }
     public COA(string headCode, string headName, string parentHeadCode, bool isGl, COA_Type type, int headLevel)
     {

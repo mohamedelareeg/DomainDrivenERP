@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer;

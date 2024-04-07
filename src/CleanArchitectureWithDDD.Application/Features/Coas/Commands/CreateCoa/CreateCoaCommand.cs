@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.COAs;
 
 namespace CleanArchitectureWithDDD.Application.Features.Coas.Commands.CreateCoa;
 public class CreateCoaCommand : ICommand<COA>

@@ -2,7 +2,7 @@
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
-namespace CleanArchitectureWithDDD.Domain.Entities;
+namespace CleanArchitectureWithDDD.Domain.Entities.Invoices;
 
 public class Invoice : BaseEntity
 {

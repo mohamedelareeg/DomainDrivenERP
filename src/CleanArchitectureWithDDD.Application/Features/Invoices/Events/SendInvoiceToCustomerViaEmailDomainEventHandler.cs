@@ -1,6 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Infrastructure.Services;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using MediatR;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Events;
@@ -16,7 +17,7 @@ internal class SendInvoiceToCustomerViaEmailDomainEventHandler : INotificationHa
     }
     public async Task Handle(CreateInvoiceDomainEvent notification, CancellationToken cancellationToken)
     {
-        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
+        Customer? customer = await _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
         if (customer is null)
         {
             return;

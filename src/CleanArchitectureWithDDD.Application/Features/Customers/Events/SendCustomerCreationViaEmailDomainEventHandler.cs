@@ -2,6 +2,7 @@
 using CleanArchitectureWithDDD.Domain.Abstractions.Infrastructure.Services;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Events;
 
@@ -16,7 +17,7 @@ public sealed class SendCustomerCreationViaEmailDomainEventHandler : IDomainEven
     }
     public async Task Handle(CreateCustomerDomainEvent notification, CancellationToken cancellationToken)
     {
-        Task<Domain.Entities.Customer?>? customer = _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
+        Task<Customer?>? customer = _customerRespository.GetByIdAsync(notification.CustomerId.ToString(), cancellationToken);
         if (customer is null)
         {
             return;

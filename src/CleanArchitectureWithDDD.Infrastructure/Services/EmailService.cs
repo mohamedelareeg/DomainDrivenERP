@@ -1,5 +1,6 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Infrastructure.Services;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Enums;
 
 namespace CleanArchitectureWithDDD.Infrastructure.Services;

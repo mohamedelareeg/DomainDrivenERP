@@ -1,7 +1,8 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Shared;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCustomerInvoice;
@@ -19,7 +20,7 @@ internal class CreateCustomerInvoiceCommandHandler : ICommandHandler<CreateCusto
     }
     public async Task<Result<Invoice>> Handle(CreateCustomerInvoiceCommand request, CancellationToken cancellationToken)
     {
-        Domain.Entities.Customer? customer = await _customerRespository.GetByIdAsync(request.CustomerId);
+        Customer? customer = await _customerRespository.GetByIdAsync(request.CustomerId);
         if (customer is null)
         {
             return Result.Failure<Invoice>(new Error("CustomerInvoice.CreateCustomerInvoice", $"Customer with ID {request.CustomerId} not found."));
@@ -29,7 +30,7 @@ internal class CreateCustomerInvoiceCommandHandler : ICommandHandler<CreateCusto
         {
             return Result.Failure<Invoice>(new Error("CustomerInvoice.CreateCustomerInvoice", $"Invoice Serial  {request.InvoiceSerial} already exist."));
         }
-        Result<Domain.Entities.Invoice>? invoice = customer.CreateInvoice(request.InvoiceSerial, request.InvoiceDate, request.InvoiceAmount);
+        Result<Invoice>? invoice = customer.CreateInvoice(request.InvoiceSerial, request.InvoiceDate, request.InvoiceAmount);
         if (invoice is null || invoice.IsFailure)
         {
             return Result.Failure<Invoice>(new Error("CustomerInvoice.CreateCustomerInvoice", $"Invoice return null Value when trying to Create it."));

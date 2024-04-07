@@ -1,4 +1,5 @@
-﻿using CleanArchitectureWithDDD.Domain.Entities;
+﻿using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Shared;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
@@ -11,6 +12,7 @@ public interface ICustomerRespository
     Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default);
     Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default);
     Task<dynamic?> GetByIdAsync_Dapper(Guid customerId);
+    Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default);
     Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default);
     Task UpdateAsync(Customer customer);
     Task UpdateInvoiceStatusAsync(Invoice invoiceUpdated);

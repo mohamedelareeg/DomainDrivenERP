@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCustomerInvoice;
 

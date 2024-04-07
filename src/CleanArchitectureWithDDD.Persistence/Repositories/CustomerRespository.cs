@@ -1,7 +1,11 @@
 ﻿using CleanArchitectureWithDDD.Application.Extentions;
+using CleanArchitectureWithDDD.Application.Features.Customers.Queries.GetCustomerInvoicesById;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.Entities;
+using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Customers.Specifications;
+using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Specifications;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using Dapper;
@@ -18,6 +22,13 @@ internal sealed class CustomerRespository : ICustomerRespository
     {
         _context = context;
         _connectionFactory = connectionFactory;
+    }
+    private IQueryable<Customer> ApplySpecification(
+        BaseSpecification<Customer> specification)
+    {
+        return SpecificationEvaluator.GetQuery(
+            _context.Set<Customer>(),
+            specification);
     }
     public async Task AddAsync(Customer customer)
     {
@@ -48,39 +59,15 @@ internal sealed class CustomerRespository : ICustomerRespository
         );
         return result;
     }
-    /*
-     public async Task<Customer?> GetByIdAsync_Dapper(Guid customerId)
+
+    public async Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default)
     {
-        await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
-        var result = await sqlConnection.QueryFirstOrDefaultAsync<dynamic>(
-            @"SELECT Id, FirstName, LastName, Email, Phone FROM Customers WHERE Id = @CustomerId",
-            new { CustomerId = customerId }
-        );
-        if (result != null)
-        {
+        // Ordinary way of retrieving customer and invoices
+        // return await _context.Set<Customer>().Where(a => a.Id.ToString() == customerId).Include(a => a.Invoices).SingleOrDefaultAsync(cancellationToken);
 
-
-            var firstNameResult = FirstName.Create(result.firstName);
-            var lastNameResult = LastName.Create(result.lastName);
-            var emailResult = Email.Create(result.email);
-
-            if (firstNameResult.IsSuccess && lastNameResult.IsSuccess && emailResult.IsSuccess)
-            {
-                return Customer.Create(result.Id, firstNameResult.Value, lastNameResult.Value, emailResult.Value, result.Phone);
-            }
-            else
-            {
-                // Handle failure cases here, such as logging errors or returning null
-                return null;
-            }
-        }
-        else
-        {
-            return null;
-        }
+        // Using the Specification Design Pattern to retrieve customer and invoices
+        return await ApplySpecification(new GetCustomerInvoicesByIdSpecifications(customerId)).FirstOrDefaultAsync(cancellationToken);
     }
-     */
-
     public async Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default)
     {
         return !await _context.Set<Customer>().AnyAsync(x => x.Email == value, cancellationToken);

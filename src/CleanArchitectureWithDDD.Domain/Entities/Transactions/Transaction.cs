@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitectureWithDDD.Domain.Entities.COAs;
+using CleanArchitectureWithDDD.Domain.Entities.Journals;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
-namespace CleanArchitectureWithDDD.Domain.Entities;
+namespace CleanArchitectureWithDDD.Domain.Entities.Transactions;
 public sealed class Transaction
 {
     internal Transaction()
     {
-        
+
     }
     internal Transaction(Guid transactionId, Guid journalId, string cOAId, double debit, double credit)
     {
