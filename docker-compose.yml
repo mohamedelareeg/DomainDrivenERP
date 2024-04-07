@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  cleanarchitecturewithddd:
+    image: ${DOCKER_REGISTRY-}cleanarchitecturewithddd
+    build:
+      context: .
+      dockerfile: CleanArchitectureWithDDD/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
