@@ -29,8 +29,8 @@ public class Invoice : BaseEntity
         CustomerId = customerId;
     }
     public Guid CustomerId { get; private set; }
-    //[JsonIgnore]
-    //public Customer Customer { get; private set; }
+    // [JsonIgnore]
+    // public Customer Customer { get; private set; }
     public string InvoiceSerial { get; private set; }
     public DateTime InvoiceDate { get; private set; }
     public decimal InvoiceAmount { get; private set; }

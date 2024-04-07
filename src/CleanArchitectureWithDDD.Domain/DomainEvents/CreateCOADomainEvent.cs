@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Enums;
 
 namespace CleanArchitectureWithDDD.Domain.DomainEvents;
-public sealed record CreateCOADomainEvent(Guid Id, string HeadName, string ParentHeadCode, COA_Type Type) : DomainEvent(Id);
+public sealed record CreateCOADomainEvent(Guid Id, string HeadName, string ParentHeadCode, COA_Type Type): DomainEvent(Id);

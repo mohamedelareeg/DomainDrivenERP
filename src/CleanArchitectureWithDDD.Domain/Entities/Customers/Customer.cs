@@ -28,7 +28,7 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         Phone = phone;
     }
 
-    public static Customer Create(//Factory Method
+    public static Customer Create(// Factory Method
       Guid id,
       FirstName firstName,
       LastName lastName,
@@ -41,8 +41,8 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         return customer;
     }
 
-    //Completeness & Performance
-    public static async Task<Result<Customer>> Create(//Domain Model Completeness & Domain Model Performance & Losing Domain Model Purity
+    // Completeness & Performance
+    public static async Task<Result<Customer>> Create(// Domain Model Completeness & Domain Model Performance & Losing Domain Model Purity
         Guid id,
         FirstName firstName,
         LastName lastName,
@@ -60,8 +60,8 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         return customer;
     }
 
-    //Completeness & Purity
-    public static async Task<Result<Customer>> Create(//Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
+    // Completeness & Purity
+    public static async Task<Result<Customer>> Create(// Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
        Guid id,
        FirstName firstName,
        LastName lastName,
@@ -79,8 +79,8 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
 
     }
 
-    //Completeness & Purity & Performance Are Achieved
-    public static Result<Customer> Create(//Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
+    // Completeness & Purity & Performance Are Achieved
+    public static Result<Customer> Create(// Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
        Guid id,
        FirstName firstName,
        LastName lastName,

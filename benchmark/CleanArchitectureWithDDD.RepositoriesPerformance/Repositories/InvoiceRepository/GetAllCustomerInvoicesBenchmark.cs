@@ -27,7 +27,7 @@ public class GetAllCustomerInvoicesBenchmark
     [GlobalSetup]
     public async Task GlobalSetup()
     {
-         //There is no argument given that corresponds to the required parameter 'invoiceRepository' of 'GetAllCustomerInvoicesBenchmark.GetAllCustomerInvoicesBenchmark(IInvoiceRepository, ISqlConnectionFactory
+         // There is no argument given that corresponds to the required parameter 'invoiceRepository' of 'GetAllCustomerInvoicesBenchmark.GetAllCustomerInvoicesBenchmark(IInvoiceRepository, ISqlConnectionFactory
         _customerId = "a7ee9212-62d7-4f1d-8de8-0dcc7958c40f"; // In my case i test with this customerId
     }
 

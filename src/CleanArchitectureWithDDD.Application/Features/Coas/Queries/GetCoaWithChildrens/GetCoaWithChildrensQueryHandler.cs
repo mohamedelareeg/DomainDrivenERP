@@ -7,7 +7,7 @@ using AutoMapper;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
-using CleanArchitectureWithDDD.Domain.Entities.COA;
+using CleanArchitectureWithDDD.Domain.Entities.COAs;
 using CleanArchitectureWithDDD.Domain.Shared;
 
 namespace CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaWithChildrens;

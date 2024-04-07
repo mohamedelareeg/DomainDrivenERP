@@ -2,8 +2,8 @@
 
 public static class ResultExtentions
 {
-    //Ensures a specific condition is met, otherwise returns a failure result with the provided error.
-    public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error)//Extension Method
+    // Ensures a specific condition is met, otherwise returns a failure result with the provided error.
+    public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error) // Extension Method
     {
         return result.IsFailure ? result : predicate(result.Value) ? result : Result.Failure<T>(error);
     }

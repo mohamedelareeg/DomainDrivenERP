@@ -95,6 +95,9 @@ internal class InvoiceRepository : IInvoiceRepository
 
     public async Task<bool> IsInvoiceSerialExist(string invoiceSerial)
     {
-        return await _context.Set<Invoice>().AnyAsync(a=>a.InvoiceSerial == invoiceSerial);
+        return await _context.Set<Invoice>()
+            .IgnoreQueryFilters() // Ignore any query filters applied (e.g., cancelled invoices)
+            .Where(a => a.Cancelled) // If i do the opposite in the Query Filtering it will apply the both equal and not equal (if i don't add query filter and apply query filter in the configration)
+            .AnyAsync(a => a.InvoiceSerial == invoiceSerial);
     }
 }

@@ -31,7 +31,7 @@ internal class CreateCustomerCommandHandler : ICommandHandler<CreateCustomerComm
             return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "First name or Last Name is Not Valid"));
         }
         bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
-        Result<Customer> customer = Customer.Create(//Achieve the 3 Principles
+        Result<Customer> customer = Customer.Create(// Achieve the 3 Principles
             Guid.NewGuid(),
             firstNameResult.Value,
             lastNameResult.Value,

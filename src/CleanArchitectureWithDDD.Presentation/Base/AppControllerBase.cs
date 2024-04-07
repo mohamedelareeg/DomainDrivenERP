@@ -53,7 +53,7 @@ public class AppControllerBase : ControllerBase
 
 
     #region HandleFailure
-    //No need for this but i doesn't remove the code of it
+    // No need for this but i doesn't remove the code of it
     protected IActionResult HandleFailure<T>(Result<T> result)
     {
         return result switch

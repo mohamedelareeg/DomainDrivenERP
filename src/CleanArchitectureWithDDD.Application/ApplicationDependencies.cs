@@ -14,7 +14,7 @@ public static class ApplicationDependencies
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPiplineBehavior<,>));
         services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);
 
-        //Mapping Profiles
+        // Mapping Profiles
         services.AddAutoMapper(typeof(RetriveCustomerMapping));
         return services;
     }

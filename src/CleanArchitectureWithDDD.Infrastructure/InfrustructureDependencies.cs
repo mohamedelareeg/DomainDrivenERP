@@ -8,7 +8,7 @@ public static class InfrustructureDependencies
 {
     public static IServiceCollection AddInfrustructureDependencies(this IServiceCollection services)
     {
-        //Services
+        // Services
         services.AddScoped<IEmailService, EmailService>();
         return services;
     }

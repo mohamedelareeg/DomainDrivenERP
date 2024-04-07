@@ -22,22 +22,20 @@ public static class PersistenceDependencies
         // DB
         #region Interceptors
         // I Moved The Logic Inside UnitOfWork SaveChanges so I Remove the Interceptors DI 
-        //services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>(); 
-        //services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+        // services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>(); 
+        // services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         #endregion
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             ConvertDomainEventsToOutboxMessagesInterceptor? interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
             string connectionString = configuration.GetConnectionString("Database");
-            options.UseSqlServer(connectionString
-                //,a=>a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery) //All the Query will be spliting
-                )
+            options.UseSqlServer(connectionString)
+                // ,a=>a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery) //All the Query will be spliting
             .AddInterceptors(interceptor);
-        }
-        );
+        });
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
-        //Quartz
+        // Quartz
         services.AddQuartz(configure =>
         {
             var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
@@ -61,13 +59,13 @@ public static class PersistenceDependencies
         // Caching
         services.AddMemoryCache();
         #region Another Caching  Ways
-        //services.AddScoped<CustomerRespository>();
-        //services.AddScoped<ICustomerRespository, CachedCustomerRepository>(); // First Way
-        //services.AddScoped<ICustomerRespository>(provider => // Second Way
-        //{
+        // services.AddScoped<CustomerRespository>();
+        // services.AddScoped<ICustomerRespository, CachedCustomerRepository>(); // First Way
+        // services.AddScoped<ICustomerRespository>(provider => // Second Way
+        // {
         //    CustomerRespository? customerRespository = provider.GetService<CustomerRespository>();
         //    return new CachedCustomerRepository(customerRespository,provider.GetService<IMemoryCache>());
-        //});
+        // });
         #endregion
         services.Decorate<ICustomerRespository, CachedCustomerRepository>();
         services.Decorate<IInvoiceRepository,CachedInvoiceRepository>();

@@ -60,8 +60,7 @@ public sealed class Journal : AggregateRoot
                 journalId: Id,
                 cOAId: dto.AccountHeadCode,
                 debit: dto.Debit,
-                credit: dto.Credit
-            );
+                credit: dto.Credit);
             _transactions.Add(transaction);
         }
         return Result.Success();

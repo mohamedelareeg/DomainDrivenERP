@@ -17,7 +17,7 @@ public class ValidationPiplineBehavior<TRequest, TResponse> : IPipelineBehavior<
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        //Validation Request
+        // Validation Request
         if (!_validators.Any())
         {
             return await next();
@@ -28,34 +28,33 @@ public class ValidationPiplineBehavior<TRequest, TResponse> : IPipelineBehavior<
             .Where(validationFailure => validationFailure is not null)
             .Select(failure => new Error(
                 failure.PropertyName,
-                failure.ErrorMessage)
-            )
+                failure.ErrorMessage))
             .Distinct()
             .ToArray();
 
         if (errors.Any())
         {
-            //IF any Errors, return validation Result
+            // IF any Errors, return validation Result
             return CreateValidationResult<TResponse>(errors);
 
-            //Also I Could Throw ValidationException Here
-            //throw new ValidationException(errors.ToString());
+            // Also I Could Throw ValidationException Here
+            // throw new ValidationException(errors.ToString());
         }
 
-        //Otherwise Return Next();
+        // Otherwise Return Next();
         return await next();
     }
     private static TResult CreateValidationResult<TResult>(Error[] errors) where TResult : Result
     {
         if (typeof(TResult) == typeof(Result))
         {
-            return (ValidationResult.WriteErrors(errors) as TResult)!;
+            return (ValidationResult.WriteErrors(errors) as TResult) !;
         }
         object validationResult = typeof(ValidationResult<>)
              .GetGenericTypeDefinition()
              .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
-             .GetMethod(nameof(ValidationResult.WriteErrors))!
-             .Invoke(null, new object?[] { errors })!;
+             .GetMethod(nameof(ValidationResult.WriteErrors)) !
+             .Invoke(null, new object?[] { errors }) !;
         return (TResult)validationResult;
     }
 }

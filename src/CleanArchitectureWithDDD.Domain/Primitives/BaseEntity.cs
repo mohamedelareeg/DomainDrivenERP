@@ -3,6 +3,7 @@
 public abstract class BaseEntity : IEquatable<BaseEntity>
 {
     public Guid Id { get; private init; }
+    public bool Cancelled { get; set; } = false;
     protected BaseEntity(Guid id)
     {
         Id = id;

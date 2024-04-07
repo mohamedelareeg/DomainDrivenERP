@@ -14,7 +14,10 @@ internal sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
 
         builder.HasKey(x => x.Id);
 
-        //builder.Property(x => x.CustomerId)
+        // Sets up a query filter to ensure only non-cancelled invoices are retrieved.
+        builder.HasQueryFilter(x => !x.Cancelled);
+
+        // builder.Property(x => x.CustomerId)
         //       .IsRequired();
         builder
              .Property(x => x.InvoiceAmount)
@@ -32,7 +35,7 @@ internal sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
             .Property(x => x.InvoiceTotal)
             .HasColumnType("decimal(18,2)");
 
-        //builder
+        // builder
         //   .HasOne(i => i.Customer)
         //   .WithMany(c => c.Invoices)
         //   .HasForeignKey(i => i.CustomerId)

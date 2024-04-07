@@ -27,7 +27,7 @@ internal class GlobalExceptionHandlerMiddleWare : IMiddleware
             HttpResponse response = context.Response;
             response.ContentType = "application/json";
             var responseModel = Result.InternalServerError(error.Message);
-            //TODO:: cover all validation errors
+            // TODO:: cover all validation errors
             switch (error)
             {
                 case UnauthorizedAccessException e:

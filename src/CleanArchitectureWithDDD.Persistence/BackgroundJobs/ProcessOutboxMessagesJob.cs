@@ -22,7 +22,7 @@ public class ProcessOutboxMessagesJob : IJob
     {
         TypeNameHandling = TypeNameHandling.All,
     };
-    //Idempotency >> Certain Operation Multiple times without change intial result
+    // Idempotency >> Certain Operation Multiple times without change intial result
     public async Task Execute(IJobExecutionContext context)
     {
         try
@@ -38,7 +38,7 @@ public class ProcessOutboxMessagesJob : IJob
                     jsonSerializerSettings);
                 if (domainEvent is null)
                 {
-                    //TODO : Logging
+                    // TODO : Logging
                     continue;
                 }
                 Polly.Retry.AsyncRetryPolicy policy = Policy
@@ -59,8 +59,8 @@ public class ProcessOutboxMessagesJob : IJob
         catch (Exception ex)
         {
             // Its return duplicate 
-            //Violation of PRIMARY KEY constraint 'PK_OutboxMessageConsumers'. Cannot insert duplicate key in object 'dbo.OutboxMessageConsumers'
-            //TODO Logging
+            // Violation of PRIMARY KEY constraint 'PK_OutboxMessageConsumers'. Cannot insert duplicate key in object 'dbo.OutboxMessageConsumers'
+            // TODO Logging
         }
 
     }

@@ -21,7 +21,7 @@ internal class RetriveCustomerQueryHandler : IQueryHandler<RetriveCustomerQuery,
         dynamic? customer = await _customerRespository.GetByIdAsync_Dapper(request.CustomerId);
 
         // Scenario 2: Retrieving customer information using Entity Framework ORM
-        //var customer = await _customerRespository.GetByIdAsync(request.CustomerId, cancellationToken); // Entity FrameWork ORM
+        // var customer = await _customerRespository.GetByIdAsync(request.CustomerId, cancellationToken); // Entity FrameWork ORM
 
         /*
          * In my test:

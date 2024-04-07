@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer;
+using CleanArchitectureWithDDD.Application.Features.Customers.Queries.GetCustomerInvoicesById;
 using CleanArchitectureWithDDD.Application.Features.Customers.Queries.RetriveCustomer;
 using CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCustomerInvoice;
 using CleanArchitectureWithDDD.Application.Features.Invoices.Queries.RetriveCustomerInvoice;
@@ -23,21 +24,27 @@ public sealed class CustomersController : AppControllerBase
     {
         Result<Customer> result = await Sender.Send(request, cancellationToken);
         return CustomResult(result);
-        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        // return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
     }
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCustomerById(Guid id, CancellationToken cancellationToken)
     {
         Result<RetriveCustomerResponse> result = await Sender.Send(new RetriveCustomerQuery(id), cancellationToken);
         return CustomResult(result);
-        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        // return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
     }
     [HttpGet]
     public async Task<IActionResult> GetCustomers([FromQuery] RetriveCustomersQuery request, CancellationToken cancellationToken)
     {
         Result<CustomList<Customer>> result = await Sender.Send(request, cancellationToken);
         return CustomResult(result);
-        //return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+        // return result.IsFailure ? HandleFailure(result) : Ok(result.Value);
+    }
+    [HttpGet("info/invoices{id}")]
+    public async Task<IActionResult> GetCustomerWithInvoices(string id, CancellationToken cancellationToken)
+    {
+        Result<Customer> result = await Sender.Send(new GetCustomerInvoicesByIdQuery(id), cancellationToken);
+        return CustomResult(result);
     }
     [HttpGet("invoices")]
     public async Task<IActionResult> GetCustomerInvoices(

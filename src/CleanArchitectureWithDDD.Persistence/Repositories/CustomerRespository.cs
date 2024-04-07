@@ -42,7 +42,7 @@ internal sealed class CustomerRespository : ICustomerRespository
 
     public async Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
     {
-        return _context.Set<Customer>().ToCustomList();//TODO Fix the Async
+        return _context.Set<Customer>().ToCustomList();// TODO Fix the Async
     }
 
     public async Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default)
@@ -55,8 +55,7 @@ internal sealed class CustomerRespository : ICustomerRespository
         await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
         dynamic? result = await sqlConnection.QueryFirstOrDefaultAsync<dynamic>(
             @"SELECT Id, FirstName, LastName, Email, Phone FROM Customers WHERE Id = @CustomerId",
-            new { CustomerId = customerId }
-        );
+            new { CustomerId = customerId });
         return result;
     }
 

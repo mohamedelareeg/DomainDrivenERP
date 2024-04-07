@@ -12,8 +12,8 @@ namespace CleanArchitectureWithDDD.Application.UnitTests.Features.Customers.Comm
 
 public class CreateCustomerCommandHandlerTests
 {
-    private readonly Mock<ICustomerRespository> _customerRepositoryMock;//Moq
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;//Moq
+    private readonly Mock<ICustomerRespository> _customerRepositoryMock;// Moq
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;// Moq
 
     public CreateCustomerCommandHandlerTests()
     {
@@ -49,7 +49,7 @@ public class CreateCustomerCommandHandlerTests
         var handler = new CreateCustomerCommandHandler(_customerRepositoryMock.Object, _unitOfWorkMock.Object);
         Result<Customer> result = await handler.Handle(command, default);
         // Assert
-        result.IsFailure.Should().BeTrue();//FluentAssertions
+        result.IsFailure.Should().BeTrue();// FluentAssertions
         result.Error.Should().Be(DomainErrors.CustomerErrors.IsCustomerEmailAlreadyExist);
 
     }
