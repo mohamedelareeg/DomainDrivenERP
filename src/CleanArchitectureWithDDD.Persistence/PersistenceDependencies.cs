@@ -28,7 +28,7 @@ public static class PersistenceDependencies
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             ConvertDomainEventsToOutboxMessagesInterceptor? interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
-            string connectionString = configuration.GetConnectionString("Database");
+            string connectionString = configuration.GetConnectionString("SqlServer");
             options.UseSqlServer(connectionString)
                 // ,a=>a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery) //All the Query will be spliting
             .AddInterceptors(interceptor);
@@ -70,6 +70,10 @@ public static class PersistenceDependencies
         services.Decorate<ICustomerRespository, CachedCustomerRepository>();
         services.Decorate<IInvoiceRepository,CachedInvoiceRepository>();
 
+        services.AddStackExchangeRedisCache(redisOptions => {
+            string connectionString = configuration.GetConnectionString("Redis");
+            redisOptions.Configuration = connectionString;
+        });
         return services;
 
     }

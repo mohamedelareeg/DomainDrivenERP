@@ -3,9 +3,42 @@ version: '3.4'
 services:
   cleanarchitecturewithddd:
     image: ${DOCKER_REGISTRY-}cleanarchitecturewithddd
+    container_name: Api
     build:
       context: .
       dockerfile: CleanArchitectureWithDDD/Dockerfile
     ports:
       - "8080:8080"
       - "8081:8081"
+    depends_on:
+      - redis
+      - sqlserver
+    networks:
+      - local-testing
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - local-testing
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "P@ssw0rd123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "14330:1433"
+    networks:
+      - local-testing
+
+networks:
+  local-testing:
+    name: local-testing
+
+x-docker-project-name: CleanDDD

@@ -6,6 +6,7 @@ namespace CleanArchitectureWithDDD.Domain.Entities.Invoices;
 
 public class Invoice : BaseEntity
 {
+    //Constractor is Required for Dapper
     public Invoice()
     {
     }

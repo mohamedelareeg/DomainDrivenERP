@@ -23,7 +23,7 @@ internal class InvoiceRepository : IInvoiceRepository
         _context = context;
         _connectionFactory = connectionFactory;
     }
-    public async Task<CustomList<Invoice>> GetAllCustomerInvoicesWithDapper(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber)
+    public async Task<CustomList<Invoice>> GetAllCustomerInvoicesWithDapper(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
         await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
 
@@ -64,7 +64,7 @@ internal class InvoiceRepository : IInvoiceRepository
     }
 
 
-    public async Task<CustomList<Invoice>> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber)
+    public async Task<CustomList<Invoice>> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
         IQueryable<Invoice> query = _context.Set<Invoice>().Where(i => i.CustomerId.ToString() == customerId);
 
@@ -93,11 +93,11 @@ internal class InvoiceRepository : IInvoiceRepository
     }
 
 
-    public async Task<bool> IsInvoiceSerialExist(string invoiceSerial)
+    public async Task<bool> IsInvoiceSerialExist(string invoiceSerial, CancellationToken cancellationToken = default)
     {
         return await _context.Set<Invoice>()
-            .IgnoreQueryFilters() // Ignore any query filters applied (e.g., cancelled invoices)
-            .Where(a => a.Cancelled) // If i do the opposite in the Query Filtering it will apply the both equal and not equal (if i don't add query filter and apply query filter in the configration)
+            //.IgnoreQueryFilters() // Ignore any query filters applied (e.g., cancelled invoices)
+            //.Where(a => a.Cancelled) // If i do the opposite in the Query Filtering it will apply the both equal and not equal (if i don't add query filter and apply query filter in the configration)
             .AnyAsync(a => a.InvoiceSerial == invoiceSerial);
     }
 }

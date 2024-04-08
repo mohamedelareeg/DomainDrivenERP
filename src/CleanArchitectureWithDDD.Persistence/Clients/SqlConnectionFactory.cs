@@ -14,6 +14,8 @@ internal class SqlConnectionFactory : ISqlConnectionFactory
 
     public SqlConnection SqlConnection()
     {
-        return new SqlConnection(_configuration.GetConnectionString("Database"));
+        string? connectionString = _configuration.GetConnectionString("SqlServer");
+        var connection = new SqlConnection(connectionString);
+        return connection;
     }
 }
