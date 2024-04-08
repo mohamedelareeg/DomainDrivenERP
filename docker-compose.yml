@@ -34,6 +34,8 @@ services:
       MSSQL_PID: "Developer"
     ports:
       - "14330:1433"
+    volumes:
+      - ./containers/sqlserver-data:/var/opt/mssql/data 
     networks:
       - local-testing
 
