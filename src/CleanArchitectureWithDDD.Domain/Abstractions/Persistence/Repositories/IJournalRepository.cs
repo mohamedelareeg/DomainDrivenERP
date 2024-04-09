@@ -9,6 +9,6 @@ using CleanArchitectureWithDDD.Domain.Shared;
 namespace CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 public interface IJournalRepository
 {
-    Task CreateJournal(Journal journal);
-    Task<Journal?> GetJournalById(string journalId);
+    Task CreateJournal(Journal journal, CancellationToken cancellationToken = default);
+    Task<Journal?> GetJournalById(string journalId, CancellationToken cancellationToken = default);
 }

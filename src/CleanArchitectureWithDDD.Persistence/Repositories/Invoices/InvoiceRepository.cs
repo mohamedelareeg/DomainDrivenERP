@@ -12,57 +12,14 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitectureWithDDD.Persistence.Repositories;
+namespace CleanArchitectureWithDDD.Persistence.Repositories.Invoices;
 internal class InvoiceRepository : IInvoiceRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly ISqlConnectionFactory _connectionFactory;
-
-    public InvoiceRepository(ApplicationDbContext context, ISqlConnectionFactory connectionFactory)
+    public InvoiceRepository(ApplicationDbContext context)
     {
         _context = context;
-        _connectionFactory = connectionFactory;
     }
-    public async Task<CustomList<Invoice>> GetAllCustomerInvoicesWithDapper(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
-    {
-        await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
-
-        string countQuery = "SELECT COUNT(*) FROM Invoices WHERE CustomerId = @CustomerId";
-        string query = @"SELECT * FROM Invoices WHERE CustomerId = @CustomerId";
-
-        if (startDate.HasValue && endDate.HasValue)
-        {
-            countQuery += " AND InvoiceDate >= @StartDate AND InvoiceDate <= @EndDate";
-            query += " AND InvoiceDate >= @StartDate AND InvoiceDate <= @EndDate";
-        }
-        else if (startDate.HasValue)
-        {
-            countQuery += " AND InvoiceDate >= @StartDate";
-            query += " AND InvoiceDate >= @StartDate";
-        }
-        else if (endDate.HasValue)
-        {
-            countQuery += " AND InvoiceDate <= @EndDate";
-            query += " AND InvoiceDate <= @EndDate";
-        }
-
-        // Calculate total count
-        int totalCount = await sqlConnection.ExecuteScalarAsync<int>(countQuery, new { CustomerId = customerId });
-
-        // Calculate total pages
-        int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
-        // Add pagination
-        query += " ORDER BY InvoiceDate OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
-        int offset = (pageNumber - 1) * pageSize;
-
-        IEnumerable<Invoice> result = await sqlConnection.QueryAsync<Invoice>(
-            query,
-            new { CustomerId = customerId, StartDate = startDate, EndDate = endDate, PageSize = pageSize, Offset = offset });
-
-        return result.ToCustomList(totalCount, totalPages);
-    }
-
 
     public async Task<CustomList<Invoice>> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {

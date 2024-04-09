@@ -43,4 +43,36 @@ public class Invoice : BaseEntity
     {
         InvoiceStatus = newStatus;
     }
+    public InvoiceSnapshot ToSnapshot()
+    {
+        return new InvoiceSnapshot
+        {
+            Id = Id,
+            CustomerId = CustomerId,
+            InvoiceSerial = InvoiceSerial,
+            InvoiceDate = InvoiceDate,
+            InvoiceAmount = InvoiceAmount,
+            InvoiceDiscount = InvoiceDiscount,
+            InvoiceTax = InvoiceTax,
+            InvoiceTotal = InvoiceTotal,
+            InvoiceStatus = InvoiceStatus
+        };
+    }
+
+    public static Invoice FromSnapshot(InvoiceSnapshot snapshot)
+    {
+        return new Invoice(
+            snapshot.Id,
+            snapshot.InvoiceSerial,
+            snapshot.InvoiceDate,
+            snapshot.InvoiceAmount,
+            snapshot.InvoiceDiscount,
+            snapshot.InvoiceTax,
+            snapshot.InvoiceTotal,
+            snapshot.CustomerId)
+        {
+            InvoiceStatus = snapshot.InvoiceStatus
+        };
+    }
+
 }

@@ -142,6 +142,29 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         RaiseDomainEvent(new CreateInvoiceDomainEvent(Guid.NewGuid(), Id, invoice));
         return invoice;
     }
+    public void AddInvoice(params Invoice[] invoices)
+    {
+        if (invoices == null || invoices.Length == 0)
+        {
+            throw new ArgumentException("At least one invoice must be provided.", nameof(invoices));
+        }
+
+        foreach (Invoice invoice in invoices)
+        {
+            if (invoice.CustomerId != Id)
+            {
+                throw new ArgumentException("The provided invoice does not belong to this customer.");
+            }
+
+            if (_invoices.Any(i => i.Id == invoice.Id))
+            {
+                throw new InvalidOperationException($"Invoice with ID '{invoice.Id}' has already been added to this customer.");
+            }
+
+            _invoices.Add(invoice);
+        }
+    }
+
     public Result<Invoice> UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
     {
         Invoice? invoiceToUpdate = _invoices.FirstOrDefault(i => i.Id == invoice.Id);
@@ -154,4 +177,31 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Guid.NewGuid(), Id, invoice, newStatus));
         return invoiceToUpdate;
     }
+    public CustomerSnapshot ToSnapShot()
+    {
+        return new CustomerSnapshot
+        {
+            Id = Id,
+            Email = Email.Value,
+            FirstName = FirstName.Value,
+            LastName = LastName.Value,
+            Phone = Phone,
+            CreatedOnUtc = CreatedOnUtc,
+            ModifiedOnUtc = ModifiedOnUtc,
+        };
+    }
+    public static Customer FromSnapshot(CustomerSnapshot snapshot)
+    {
+        return new Customer(
+            snapshot.Id,
+            FirstName.Create(snapshot.FirstName).Value,
+            LastName.Create(snapshot.LastName).Value,
+            Email.Create(snapshot.Email).Value,
+            snapshot.Phone)
+        {
+            CreatedOnUtc = snapshot.CreatedOnUtc,
+            ModifiedOnUtc = snapshot.ModifiedOnUtc
+        };
+    }
+
 }

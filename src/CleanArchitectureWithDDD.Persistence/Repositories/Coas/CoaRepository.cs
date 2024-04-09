@@ -11,7 +11,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitectureWithDDD.Persistence.Repositories;
+namespace CleanArchitectureWithDDD.Persistence.Repositories.Coa;
 internal sealed class CoaRepository : ICoaRepository
 {
     private readonly ApplicationDbContext _context;
@@ -27,77 +27,68 @@ internal sealed class CoaRepository : ICoaRepository
         await _context.Set<COA>().AddAsync(cOA);
     }
 
-    public async Task<COA?> GetCoaById(string coaId)
+    public async Task<COA?> GetCoaById(string coaId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().FirstOrDefaultAsync(a => a.HeadCode == coaId);
     }
 
     public async Task<COA?> GetCoaByName(string coaParentName, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<COA>().Include(a=>a.COAs).FirstOrDefaultAsync(a=>a.HeadName == coaParentName);
+        return await _context.Set<COA>().Include(a => a.COAs).FirstOrDefaultAsync(a => a.HeadName == coaParentName);
     }
 
-    public async Task<List<COA>> GetCoaChilds(string parentCoaId)
+    public async Task<List<COA>> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().Where(a => a.ParentHeadCode == parentCoaId).ToListAsync();
     }
 
-    public async Task<COA?> GetCoaWithChildren(string coaId)
+    public async Task<COA?> GetCoaWithChildren(string coaId, CancellationToken cancellationToken = default)
     {
-        await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
-
-        var coaDictionary = new Dictionary<string, COA>();
-        COA? coa = await sqlConnection.QueryFirstOrDefaultAsync<COA>(
-            "SELECT * FROM COAS WHERE HeadCode = @CoaId",
-            new { CoaId = coaId });
+        COA? coa = await _context.Set<COA>()
+            .FirstOrDefaultAsync(c => c.HeadCode == coaId);
 
         if (coa != null)
         {
-            await FetchChildCOAs(sqlConnection, coaDictionary, coa);
+            await LoadChildrenRecursively(coa);
         }
 
         return coa;
     }
 
-    private async Task FetchChildCOAs(IDbConnection connection, Dictionary<string, COA> coaDictionary, COA coa)
+    private async Task LoadChildrenRecursively(COA coa)
     {
-        IEnumerable<COA> childCOAs = await connection.QueryAsync<COA>(
-            "SELECT * FROM COAS WHERE ParentHeadCode = @ParentHeadCode",
-            new { ParentHeadCode = coa.HeadCode });
+        await _context.Entry(coa)
+            .Collection(c => c.COAs)
+            .LoadAsync();
 
-        foreach (COA child in childCOAs)
+        foreach (COA? child in coa.COAs.ToList())
         {
-            if (!coaDictionary.ContainsKey(child.HeadCode))
-            {
-                coaDictionary[child.HeadCode] = child;
-                await FetchChildCOAs(connection, coaDictionary, child);
-            }
+            await LoadChildrenRecursively(child);
         }
-        coa.InsertChildrens(childCOAs.ToList());
     }
-    public async Task<bool> IsCoaExist(string coaId)
+    public async Task<bool> IsCoaExist(string coaId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().AnyAsync(coa => coa.HeadCode == coaId);
     }
 
-    public async Task<bool> IsCoaExist(string coaName, string coaParentName)
+    public async Task<bool> IsCoaExist(string coaName, string coaParentName, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().Include(a => a.ParentCOA)
             .AnyAsync(coa => coa.HeadName == coaName && coa.ParentCOA.HeadName == coaParentName);
     }
 
-    public async Task<bool> IsCoaExist(string coaName, int level = 1)
+    public async Task<bool> IsCoaExist(string coaName, int level = 1, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>()
              .AnyAsync(coa => coa.HeadName == coaName && coa.HeadLevel == level);
     }
 
-    public async Task<string> GetLastHeadCodeInLevelOne()
+    public async Task<string> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().Where(a => a.HeadLevel == 1).MaxAsync(coa => coa.HeadCode);
     }
 
-    public async Task<string?> GetByAccountName(string accountName)
+    public async Task<string?> GetByAccountName(string accountName, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>()
                              .Where(coa => coa.HeadName == accountName)
@@ -105,7 +96,7 @@ internal sealed class CoaRepository : ICoaRepository
                              .FirstOrDefaultAsync();
     }
 
-    public async Task<string?> GetByAccountHeadCode(string accountHeadCode)
+    public async Task<string?> GetByAccountHeadCode(string accountHeadCode, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>()
                              .Where(coa => coa.HeadCode == accountHeadCode)

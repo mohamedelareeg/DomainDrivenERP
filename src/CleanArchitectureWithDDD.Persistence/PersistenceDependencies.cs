@@ -4,8 +4,12 @@ using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
-using CleanArchitectureWithDDD.Persistence.Repositories;
-using CleanArchitectureWithDDD.Persistence.Repositories.Cached;
+using CleanArchitectureWithDDD.Persistence.Repositories.Coa;
+using CleanArchitectureWithDDD.Persistence.Repositories.Coas;
+using CleanArchitectureWithDDD.Persistence.Repositories.Customers;
+using CleanArchitectureWithDDD.Persistence.Repositories.Invoices;
+using CleanArchitectureWithDDD.Persistence.Repositories.Journals;
+using CleanArchitectureWithDDD.Persistence.Repositories.Transactions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -49,12 +53,19 @@ public static class PersistenceDependencies
         // Idempotency With MediatR Notification || Scrutor for Decorate
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
 
-        // Repositories
+        // Repositories With EF
         services.AddScoped<ICustomerRespository, CustomerRespository>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<ICoaRepository, CoaRepository>();
         services.AddScoped<IJournalRepository, JournalRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+        // Repositories with Dapper ( Same Logic Like The EF )
+        services.AddScoped<ICustomerRespository, CustomerSqlRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceSqlRepository>();
+        services.AddScoped<ICoaRepository, CoaSqlRepository>();
+        services.AddScoped<IJournalRepository, JournalSqlRepository>();
+        services.AddScoped<ITransactionRepository, TransactionSqlRepository>();
 
         // Caching
         services.AddMemoryCache();
@@ -68,12 +79,16 @@ public static class PersistenceDependencies
         // });
         #endregion
         services.Decorate<ICustomerRespository, CachedCustomerRepository>();
-        services.Decorate<IInvoiceRepository,CachedInvoiceRepository>();
+        services.Decorate<IInvoiceRepository, CachedInvoiceRepository>();
+        services.Decorate<ICoaRepository, CachedCoaRepository>();
+        services.Decorate<IJournalRepository, CachedJournalRepository>();
+        services.Decorate<ITransactionRepository, CachedTransactionRepository>();
 
         services.AddStackExchangeRedisCache(redisOptions => {
             string connectionString = configuration.GetConnectionString("Redis");
             redisOptions.Configuration = connectionString;
         });
+
         return services;
 
     }

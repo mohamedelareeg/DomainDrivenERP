@@ -16,6 +16,10 @@ namespace CleanArchitectureWithDDD.Domain.ValueObjects;
 /// </remarks>
 public sealed class LastName : ValueObject
 {
+    private LastName()//Require Default Constractor for the Caching
+    {
+
+    }
     public const int MaxLength = 50;
     private LastName(string value)
     {

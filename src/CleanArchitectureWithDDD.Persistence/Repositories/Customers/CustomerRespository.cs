@@ -12,16 +12,14 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitectureWithDDD.Persistence.Repositories;
+namespace CleanArchitectureWithDDD.Persistence.Repositories.Customers;
 
 internal sealed class CustomerRespository : ICustomerRespository
 {
     private readonly ApplicationDbContext _context;
-    private readonly ISqlConnectionFactory _connectionFactory;
-    public CustomerRespository(ApplicationDbContext context, ISqlConnectionFactory connectionFactory)
+    public CustomerRespository(ApplicationDbContext context)
     {
         _context = context;
-        _connectionFactory = connectionFactory;
     }
     private IQueryable<Customer> ApplySpecification(
         BaseSpecification<Customer> specification)
@@ -48,15 +46,6 @@ internal sealed class CustomerRespository : ICustomerRespository
     public async Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<Customer>().FirstOrDefaultAsync(x => x.Id.ToString() == CustomerId, cancellationToken);
-    }
-
-    public async Task<dynamic?> GetByIdAsync_Dapper(Guid customerId)
-    {
-        await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
-        dynamic? result = await sqlConnection.QueryFirstOrDefaultAsync<dynamic>(
-            @"SELECT Id, FirstName, LastName, Email, Phone FROM Customers WHERE Id = @CustomerId",
-            new { CustomerId = customerId });
-        return result;
     }
 
     public async Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default)

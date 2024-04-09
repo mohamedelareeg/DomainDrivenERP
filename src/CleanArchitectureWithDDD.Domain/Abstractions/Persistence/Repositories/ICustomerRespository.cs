@@ -11,7 +11,6 @@ public interface ICustomerRespository
     Task AddCustomerInvoiceAsync(Invoice invoice);
     Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default);
     Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default);
-    Task<dynamic?> GetByIdAsync_Dapper(Guid customerId);
     Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default);
     Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default);
     Task UpdateAsync(Customer customer);

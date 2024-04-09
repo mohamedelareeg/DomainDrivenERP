@@ -16,7 +16,7 @@ internal class RetriveCustomerInvoicesQueryHandler : IListQueryHandler<RetriveCu
 
     public async Task<Result<CustomList<Invoice>>> Handle(RetriveCustomerInvoicesQuery request, CancellationToken cancellationToken)
     {
-        CustomList<Invoice> invoices = await _invoiceRepository.GetAllCustomerInvoicesWithDapper(request.CustomerId, request.StartDate, request.EndDate, request.PageSize, request.PageNumber);
+        CustomList<Invoice> invoices = await _invoiceRepository.GetAllCustomerInvoices(request.CustomerId, request.StartDate, request.EndDate, request.PageSize, request.PageNumber);
         return invoices;
     }
 

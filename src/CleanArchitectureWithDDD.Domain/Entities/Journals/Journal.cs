@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,22 @@ public sealed class Journal : AggregateRoot
         Status = newStatus;
         return Result.Success();
     }
+    public void AddTransactions(params Transaction[] transactions)
+    {
+        if (transactions == null || transactions.Length == 0)
+        {
+            throw new ArgumentException("At least one transaction must be provided.", nameof(transactions));
+        }
 
+        foreach (Transactions.Transaction transaction in transactions)
+        {
+            if (transaction.JournalId != Id)
+            {
+                throw new ArgumentException("The provided transaction does not belong to this journal.");
+            }
+            _transactions.Add(transaction);
+        }
+    }
     public Result AddTransactions(List<TransactionDto> transactions)
     {
         if (transactions is null)
@@ -94,6 +110,40 @@ public sealed class Journal : AggregateRoot
     public bool IsOpening { get; private set; }
     public DateTime JournalDate { get; private set; }
     public JournalStatus Status { get; private set; }
-    public IReadOnlyCollection<Transaction> Transactions => _transactions;
+    public IReadOnlyCollection<Transactions.Transaction> Transactions => _transactions;
+
+    public JournalSnapshot ToSnapshot()
+    {
+        var snapshot = new JournalSnapshot
+        {
+            Id = Id,
+            Description = Description,
+            IsOpening = IsOpening,
+            JournalDate = JournalDate,
+            Status = Status
+        };
+        foreach (Transaction transaction in _transactions)
+        {
+            snapshot.Transactions.Add(transaction.ToSnapshot());
+        }
+        return snapshot;
+    }
+    public static Journal FromSnapshot(JournalSnapshot snapshot)
+    {
+        var journal = new Journal(
+            snapshot.Id,
+            snapshot.Description,
+            snapshot.IsOpening,
+            snapshot.JournalDate,
+            snapshot.Status);
+
+        foreach (TransactionSnapshot transactionSnapshot in snapshot.Transactions)
+        {
+            var transaction = Transaction.FromSnapshot(transactionSnapshot);
+            journal.AddTransactions(transaction);
+        }
+
+        return journal;
+    }
 
 }

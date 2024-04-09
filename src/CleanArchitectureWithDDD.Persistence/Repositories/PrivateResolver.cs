@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace CleanArchitectureWithDDD.Persistence.Repositories.Cached;
+namespace CleanArchitectureWithDDD.Persistence.Repositories;
 public class PrivateResolver : DefaultContractResolver
 {
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)

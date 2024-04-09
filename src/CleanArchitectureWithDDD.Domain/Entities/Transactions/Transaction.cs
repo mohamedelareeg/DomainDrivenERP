@@ -31,4 +31,26 @@ public sealed class Transaction
     public double Debit { get; private set; }
     public double Credit { get; private set; }
 
+    public TransactionSnapshot ToSnapshot()
+    {
+        return new TransactionSnapshot
+        {
+            TransactionId = TransactionId,
+            JournalId = JournalId,
+            COAId = COAId,
+            Debit = Debit,
+            Credit = Credit
+        };
+    }
+    public static Transaction FromSnapshot(TransactionSnapshot snapshot)
+    {
+        return new Transaction(
+            snapshot.TransactionId,
+            snapshot.JournalId,
+            snapshot.COAId,
+            snapshot.Debit,
+            snapshot.Credit
+        );
+    }
+
 }

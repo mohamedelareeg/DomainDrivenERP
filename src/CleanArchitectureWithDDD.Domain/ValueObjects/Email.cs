@@ -9,7 +9,10 @@ public sealed class Email : ValueObject
 {
     public const int MaxLength = 50;
     public string Value { get; }
+    private Email()//Require Default Constractor for the Caching
+    {
 
+    }
     private Email(string value) { Value = value; }
 
     public static Result<Email> Create(string email)
