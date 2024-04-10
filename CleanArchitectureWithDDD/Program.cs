@@ -5,6 +5,7 @@ using CleanArchitectureWithDDD.Infrastructure;
 using CleanArchitectureWithDDD.MiddleWares;
 using CleanArchitectureWithDDD.Persistence;
 using CleanArchitectureWithDDD.Presentation.Configuration.Extensions.Swagger;
+using Serilog;
 #region DI
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleWare>();
@@ -26,6 +27,10 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddApplicationDependencies()
                 .AddInfrustructureDependencies()
                 .AddPersistenceDependencies(builder.Configuration);
+
+builder.Host.UseSerilog((context, loggerConfig) =>
+loggerConfig.ReadFrom.Configuration(context.Configuration));
+
 #endregion
 #region MiddleWare
 WebApplication app = builder.Build();
@@ -39,9 +44,12 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-app.UseMiddleware<GlobalExceptionHandlerMiddleWare>();
+
 app.UseHttpsRedirection();
 
+app.UseSerilogRequestLogging();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleWare>();
 app.UseAuthorization();
 
 app.MapControllers();

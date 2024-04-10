@@ -13,6 +13,7 @@ services:
     depends_on:
       - redis
       - sqlserver
+      - seq
     networks:
       - local-testing
 
@@ -24,6 +25,8 @@ services:
     restart: always
     networks:
       - local-testing
+    volumes:
+      - ./logs:/app/logs
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server
@@ -36,6 +39,18 @@ services:
       - "14330:1433"
     volumes:
       - ./containers/sqlserver-data:/var/opt/mssql/data 
+    networks:
+      - local-testing
+  
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    ports:
+      - "5341:80"
+      - "5342:80"
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
     networks:
       - local-testing
 
