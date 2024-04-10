@@ -8,7 +8,7 @@ using CleanArchitectureWithDDD.Domain.Entities.Journals;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Transactions;
-public sealed class Transaction
+public sealed class Transaction : BaseEntity
 {
     internal Transaction()
     {

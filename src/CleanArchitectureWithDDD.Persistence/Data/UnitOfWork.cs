@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
+﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -6,18 +6,36 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace CleanArchitectureWithDDD.Persistence;
+namespace CleanArchitectureWithDDD.Persistence.Data;
 
 // Acting like a Transaction Boundary
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ILogger<UnitOfWork> _logger;
+    private readonly IDictionary<Type, dynamic> _repositories;
     private readonly ApplicationDbContext _context;
     public UnitOfWork(ApplicationDbContext context, ILogger<UnitOfWork> logger)
     {
         _context = context;
         _logger = logger;
+        _repositories = new Dictionary<Type, dynamic>();
     }
+    public IBaseRepositoryAsync<T> Repository<T>()
+        where T : BaseEntity
+    {
+        Type entityType = typeof(T);
+        if (_repositories.ContainsKey(entityType))
+        {
+            return _repositories[entityType];
+        }
+
+        Type repositoryType = typeof(BaseRepositoryAsync<>);
+        object repository = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context) ?? throw new NullReferenceException("Repository object is null");
+
+        _repositories.Add(entityType, repository);
+        return (IBaseRepositoryAsync<T>)repository;
+    }
+
     // UnitOfWork Pattern & Move Outbox Interceptor and Auditable Interceptor inside UnitOfWork
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -28,6 +46,7 @@ public class UnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync(cancellationToken);
 
     }
+
     private void ConvertDomainEventsToOutboxMessages()
     {
         var outboxMessages = _context.ChangeTracker

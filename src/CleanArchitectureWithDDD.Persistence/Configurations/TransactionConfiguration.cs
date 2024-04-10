@@ -15,6 +15,8 @@ internal sealed class TransactionConfiguration : IEntityTypeConfiguration<Transa
     {
         builder.ToTable(TableNames.Transactions);
 
+        builder.Ignore(c => c.Id);
+
         builder.HasKey(t => t.TransactionId);
     }
 }

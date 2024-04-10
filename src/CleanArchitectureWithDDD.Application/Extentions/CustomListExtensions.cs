@@ -12,9 +12,8 @@ public static class CustomListExtensions
     {
         return new CustomList<T>(items.ToList(), totalCount, totalPages);
     }
-    public static async Task<CustomList<T>> ToCustomListAsync<T>(this Task<IEnumerable<T>> task, int? totalCount = null, int? totalPages = null)
+    public static async Task<CustomList<T>> ToCustomListAsync<T>(this IEnumerable<T> items, int? totalCount = null, int? totalPages = null)
     {
-        IEnumerable<T> items = await task;
-        return items.ToCustomList(totalCount, totalPages);
+        return await Task.FromResult(new CustomList<T>(items.ToList(), totalCount, totalPages));
     }
 }

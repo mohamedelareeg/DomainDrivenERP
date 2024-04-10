@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CleanArchitectureWithDDD.Domain.Specifications;
+﻿using CleanArchitectureWithDDD.Domain.Specifications;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Customers.Specifications;
-public class GetCustomerInvoicesByIdSpecifications : BaseSpecification<Customer>
-{
-    public GetCustomerInvoicesByIdSpecifications(string customerId)
-       : base(a => a.Id.ToString() == customerId)
-    {
-        AddInclude(a => a.Invoices);
-    }
 
+public static class GetCustomerInvoicesByIdSpecification
+{
+    public static BaseSpecification<Customer> GetCustomerInvoicesByIdSpec(string customerId)
+    {
+        var spec = new BaseSpecification<Customer>(
+            c => c.Id.ToString() == customerId
+        );
+        spec.AddInclude(customer => customer.Invoices);
+        return spec;
+    }
 }

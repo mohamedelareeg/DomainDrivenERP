@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.COAs;
 using CleanArchitectureWithDDD.Persistence.Clients;
+using CleanArchitectureWithDDD.Persistence.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

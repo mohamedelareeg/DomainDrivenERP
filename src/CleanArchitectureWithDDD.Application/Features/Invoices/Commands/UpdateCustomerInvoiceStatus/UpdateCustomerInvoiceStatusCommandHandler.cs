@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
@@ -36,7 +36,7 @@ internal class UpdateCustomerInvoiceStatusCommandHandler : ICommandHandler<Updat
 
         if (invoiceUpdated.IsSuccess)
         {
-            await _customerRespository.UpdateInvoiceStatusAsync(invoiceUpdated.Value);
+            await _customerRespository.UpdateInvoiceStatus(invoiceUpdated.Value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return true;

@@ -129,7 +129,7 @@ internal class CustomerSqlRepository : ICustomerRespository
     }
 
 
-    public async Task UpdateAsync(Customer customer)
+    public async Task Update(Customer customer)
     {
         CustomerSnapshot snapshot = customer.ToSnapShot();
 
@@ -143,7 +143,7 @@ internal class CustomerSqlRepository : ICustomerRespository
 
         await _sqlConnection.ExecuteAsync(sql, snapshot);
     }
-    public async Task UpdateInvoiceStatusAsync(Invoice invoiceUpdated)
+    public async Task UpdateInvoiceStatus(Invoice invoiceUpdated)
     {
         InvoiceSnapshot snapshot = invoiceUpdated.ToSnapshot();
 

@@ -13,6 +13,6 @@ public interface ICustomerRespository
     Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default);
     Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default);
     Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default);
-    Task UpdateAsync(Customer customer);
-    Task UpdateInvoiceStatusAsync(Invoice invoiceUpdated);
+    Task Update(Customer customer);
+    Task UpdateInvoiceStatus(Invoice invoiceUpdated);
 }

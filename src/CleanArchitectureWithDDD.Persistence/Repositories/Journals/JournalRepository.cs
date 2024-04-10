@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;
+using CleanArchitectureWithDDD.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories.Journals;

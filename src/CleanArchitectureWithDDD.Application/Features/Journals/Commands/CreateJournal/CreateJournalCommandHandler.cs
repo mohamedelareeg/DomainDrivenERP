@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;

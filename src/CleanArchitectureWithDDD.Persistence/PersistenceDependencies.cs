@@ -1,9 +1,10 @@
-﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
-using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
+﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
 using CleanArchitectureWithDDD.Persistence.Caching;
 using CleanArchitectureWithDDD.Persistence.Clients;
+using CleanArchitectureWithDDD.Persistence.Data;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
 using CleanArchitectureWithDDD.Persistence.Repositories.Coa;
@@ -55,6 +56,7 @@ public static class PersistenceDependencies
         // Idempotency With MediatR Notification || Scrutor for Decorate
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
 
+        // I Create the Repositories with many ways [ Choose the way you want and comment the others ]
         // Repositories With EF
         services.AddScoped<ICustomerRespository, CustomerRespository>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
@@ -68,6 +70,14 @@ public static class PersistenceDependencies
         services.AddScoped<ICoaRepository, CoaSqlRepository>();
         services.AddScoped<IJournalRepository, JournalSqlRepository>();
         services.AddScoped<ITransactionRepository, TransactionSqlRepository>();
+
+        // Repositories with GenericRepository and Specification Pattern
+        services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
+        services.AddScoped<ICustomerRespository, CustomerSpecificationRepository>();
+        services.AddScoped<IInvoiceRepository, InvoicesSpecificationRepository>();
+        services.AddScoped<ICoaRepository, CoaSpecificationRepository>();
+        services.AddScoped<IJournalRepository, JournalSpecificationRepository>();
+        services.AddScoped<ITransactionRepository, TransactionSpecificationRepository>();
 
         // Caching
         services.AddMemoryCache();
@@ -91,6 +101,7 @@ public static class PersistenceDependencies
             redisOptions.Configuration = connectionString;
         });
         services.AddSingleton<ICacheService, CacheService>();
+
 
         return services;
 

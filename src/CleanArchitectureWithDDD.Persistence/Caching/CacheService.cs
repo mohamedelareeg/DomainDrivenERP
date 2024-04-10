@@ -48,6 +48,7 @@ internal class CacheService : ICacheService
             return JsonConvert.DeserializeObject<T>(cachedValue, new JsonSerializerSettings
             {
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                ContractResolver = new PrivateResolver(),
                 Converters = { new ValueObjectJsonConverter() }
             });
         }

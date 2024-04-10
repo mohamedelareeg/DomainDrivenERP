@@ -7,38 +7,66 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
 namespace CleanArchitectureWithDDD.Domain.Specifications;
-public abstract class BaseSpecification<TEntity>
-    where TEntity : BaseEntity
+public class BaseSpecification<T> : ISpecification<T>
 {
-    protected BaseSpecification(Expression<Func<TEntity, bool>>? criteria)
+    public BaseSpecification() { }
+    public BaseSpecification(Expression<Func<T, bool>> criteria)
     {
-        Criteria = criteria;
+        WhereExpressions.Add(new WhereExpression<T> { Criteria = criteria });
     }
-    public Expression<Func<TEntity, bool>>? Criteria { get; }
-    public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = new();
-    public Expression<Func<TEntity, object>>? OrderByExpression { get; private set; }
-    public Expression<Func<TEntity, object>>? OrderByDescendingExpression { get; private set; }
+
+    public List<WhereExpression<T>> WhereExpressions { get; private set; } = new List<WhereExpression<T>>();
+    public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+    public List<Expression<Func<T, object>>> ThenIncludes { get; } = new List<Expression<Func<T, object>>>();
+    public List<string> IncludeStrings { get; } = new List<string>();
+    public List<OrderExpression<T>> OrderByExpressions { get; } = new List<OrderExpression<T>>();
     public int Take { get; private set; }
     public int Skip { get; private set; }
-    public bool IsPagingEnabled { get; private set; } = false;
+    public bool isPagingEnabled { get; private set; } = false;
 
-    protected void AddInclude(Expression<Func<TEntity, object>> includeExpression)
+    public virtual void ApplyWhere(Expression<Func<T, bool>> whereExpression)
     {
-        IncludeExpressions.Add(includeExpression);
+        WhereExpressions.Add(new WhereExpression<T> { Criteria = whereExpression });
     }
-    protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
+
+    public virtual void AddInclude(Expression<Func<T, object>> includeExpression)
     {
-        OrderByExpression = orderByExpression;
+        Includes.Add(includeExpression);
     }
-    protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescendingExpression)
+    public virtual void AddThenInclude(Expression<Func<T, object>> thenIncludeExpression)
     {
-        OrderByDescendingExpression = orderByDescendingExpression;
+        ThenIncludes.Add(thenIncludeExpression);
     }
-    protected void ApplyPaging(int skip, int take)
+    public virtual void AddInclude(string includeString)
+    {
+        IncludeStrings.Add(includeString);
+    }
+
+    public virtual void ApplyPaging(int skip, int take)
     {
         Skip = skip;
         Take = take;
-        IsPagingEnabled = true;
+        isPagingEnabled = true;
+    }
+
+    public virtual void ApplyOrderBy(Expression<Func<T, object>> orderByExpression)
+    {
+        OrderByExpressions.Add(new OrderExpression<T> { KeySelector = orderByExpression, OrderType = OrderTypeEnum.OrderBy });
+    }
+
+    public virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
+    {
+        OrderByExpressions.Add(new OrderExpression<T> { KeySelector = orderByDescendingExpression, OrderType = OrderTypeEnum.OrderByDescending });
+    }
+
+    public virtual void ThenBy(Expression<Func<T, object>> thenByExpression)
+    {
+        OrderByExpressions.Add(new OrderExpression<T> { KeySelector = thenByExpression, OrderType = OrderTypeEnum.ThenBy });
+    }
+
+    public virtual void ThenByDescending(Expression<Func<T, object>> thenByDescendingExpression)
+    {
+        OrderByExpressions.Add(new OrderExpression<T> { KeySelector = thenByDescendingExpression, OrderType = OrderTypeEnum.ThenByDescending });
     }
 
 }

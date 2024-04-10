@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitectureWithDDD.Persistence;
+namespace CleanArchitectureWithDDD.Persistence.Data;
 
 public class ApplicationDbContext : DbContext
 {

@@ -69,13 +69,13 @@ internal class CachedCustomerRepository : ICustomerRespository
     }
 
 
-    public Task UpdateAsync(Customer customer)
+    public Task Update(Customer customer)
     {
-        return _decorated.UpdateAsync(customer);
+        return _decorated.Update(customer);
     }
 
-    public Task UpdateInvoiceStatusAsync(Invoice invoiceUpdated)
+    public Task UpdateInvoiceStatus(Invoice invoiceUpdated)
     {
-        return _decorated.UpdateInvoiceStatusAsync(invoiceUpdated);
+        return _decorated.UpdateInvoiceStatus(invoiceUpdated);
     }
 }

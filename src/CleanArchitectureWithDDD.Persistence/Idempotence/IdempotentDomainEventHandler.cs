@@ -1,5 +1,6 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Primitives;
+using CleanArchitectureWithDDD.Persistence.Data;
 using CleanArchitectureWithDDD.Persistence.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
