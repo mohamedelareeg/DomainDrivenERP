@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using CleanArchitectureWithDDD.Domain.Primitives;
 using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Exceptions;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories;
 
@@ -17,27 +18,41 @@ public static class SpecificationEvaluator
     {
         IQueryable<TEntity> queryable = inputQueryable;
 
-        if (baseSpecification is not null)
+        try
         {
-            if (baseSpecification.Criteria is not null)
+            if (baseSpecification == null)
+            {
+                throw new ArgumentNullException(nameof(baseSpecification), "Base specification cannot be null.");
+            }
+
+            if (baseSpecification.Criteria != null)
             {
                 queryable = queryable.Where(baseSpecification.Criteria);
             }
+
             foreach (Expression<Func<TEntity, object>> includeExpression in baseSpecification.IncludeExpressions)
             {
                 queryable = queryable.Include(includeExpression);
             }
 
-            if (baseSpecification.OrderByExpression is not null)
+            if (baseSpecification.OrderByExpression != null)
             {
                 queryable = queryable.OrderBy(baseSpecification.OrderByExpression);
             }
-            else if (baseSpecification.OrderByDescendingExpression is not null)
+            else if (baseSpecification.OrderByDescendingExpression != null)
             {
                 queryable = queryable.OrderByDescending(baseSpecification.OrderByDescendingExpression);
             }
-        }
 
-        return queryable;
+            return queryable;
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new SpecificationEvaluationException("Base specification cannot be null.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new SpecificationEvaluationException("Error occurred while evaluating specification.", ex);
+        }
     }
 }
