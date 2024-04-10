@@ -21,7 +21,7 @@ internal class InvoiceRepository : IInvoiceRepository
         _context = context;
     }
 
-    public async Task<CustomList<Invoice>> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    public async Task<CustomList<Invoice>?> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
         IQueryable<Invoice> query = _context.Set<Invoice>().Where(i => i.CustomerId.ToString() == customerId);
 

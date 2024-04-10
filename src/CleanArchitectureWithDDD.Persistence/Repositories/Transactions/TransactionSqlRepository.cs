@@ -22,7 +22,7 @@ internal class TransactionSqlRepository : ITransactionRepository
         _connectionFactory = connectionFactory;
         _sqlConnection = _connectionFactory.SqlConnection();
     }
-    public async Task<CustomList<JournalTransactionsDto>> GetCoaTransactionsByAccountName(string? accountName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+    public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByAccountName(string? accountName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
         await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
         const string sql = @"
@@ -42,7 +42,7 @@ internal class TransactionSqlRepository : ITransactionRepository
     }
 
 
-    public async Task<CustomList<JournalTransactionsDto>> GetCoaTransactionsByHeadCode(string? accountHeadCode, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+    public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByHeadCode(string? accountHeadCode, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
         await using SqlConnection sqlConnection = _connectionFactory.SqlConnection();
         const string sql = @"

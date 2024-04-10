@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.COAs;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
@@ -16,19 +17,12 @@ namespace CleanArchitectureWithDDD.Persistence.Repositories.Coas;
 internal class CachedCoaRepository : ICoaRepository
 {
     private readonly ICoaRepository _decorated;
-    private readonly IDistributedCache _distributedCache;
-    private readonly DistributedCacheEntryOptions _cacheOptions;
+    private readonly ICacheService _cacheService;
 
-    public CachedCoaRepository(ICoaRepository decorated, IDistributedCache distributedCache)
+    public CachedCoaRepository(ICoaRepository decorated, ICacheService cacheService)
     {
         _decorated = decorated;
-        _distributedCache = distributedCache;
-
-        // Set global cache options
-        _cacheOptions = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
-        };
+        _cacheService = cacheService;
     }
 
     public async Task CreateCoa(COA cOA, CancellationToken cancellationToken = default)
@@ -39,211 +33,82 @@ internal class CachedCoaRepository : ICoaRepository
     public async Task<string?> GetByAccountHeadCode(string accountHeadCode, CancellationToken cancellationToken = default)
     {
         string key = $"coaByHeadCode-{accountHeadCode}";
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
 
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            string? result = await _decorated.GetByAccountHeadCode(accountHeadCode, cancellationToken);
-
-            if (result != null)
-            {
-                await _distributedCache.SetStringAsync(key, result, _cacheOptions, cancellationToken);
-            }
-
-            return result;
-        }
-        else
-        {
-            return cachedValue;
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetByAccountHeadCode(accountHeadCode, cancellationToken),
+            cancellationToken);
     }
 
     public async Task<string?> GetByAccountName(string accountName, CancellationToken cancellationToken = default)
     {
         string key = $"accountName-{accountName}";
-        string? cachedAccountHeadCode = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (!string.IsNullOrEmpty(cachedAccountHeadCode))
-        {
-            return cachedAccountHeadCode;
-        }
-        string? accountHeadCode = await _decorated.GetByAccountName(accountName, cancellationToken);
-
-        if (accountHeadCode != null)
-        {
-            await _distributedCache.SetStringAsync(key, accountHeadCode, _cacheOptions, cancellationToken);
-        }
-
-        return accountHeadCode;
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetByAccountName(accountName, cancellationToken),
+            cancellationToken);
     }
     public async Task<COA?> GetCoaById(string coaId, CancellationToken cancellationToken = default)
     {
         string key = $"coa-{coaId}";
-
-        string? cachedCoa = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        COA? coa;
-        if (string.IsNullOrEmpty(cachedCoa))
-        {
-            coa = await _decorated.GetCoaById(coaId, cancellationToken);
-            if (coa == null)
-            {
-                return coa;
-            }
-            await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(coa), _cacheOptions, cancellationToken);
-
-            return coa;
-        }
-        coa = JsonConvert.DeserializeObject<COA>(cachedCoa);
-        return coa;
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetCoaById(coaId, cancellationToken),
+            cancellationToken);
     }
 
 
     public async Task<COA?> GetCoaByName(string coaParentName, CancellationToken cancellationToken = default)
     {
         string key = $"coaByName-{coaParentName}";
-
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            COA? result = await _decorated.GetCoaByName(coaParentName, cancellationToken);
-
-            if (result != null)
-            {
-                await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(result), _cacheOptions, cancellationToken);
-            }
-
-            return result;
-        }
-        else
-        {
-            return JsonConvert.DeserializeObject<COA>(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetCoaByName(coaParentName, cancellationToken),
+            cancellationToken);
     }
 
-    public async Task<List<COA>> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
+    public async Task<List<COA>?> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
     {
         string key = $"coaChilds-{parentCoaId}";
-
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            List<COA> result = await _decorated.GetCoaChilds(parentCoaId, cancellationToken);
-
-            if (result != null)
-            {
-                await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(result), _cacheOptions, cancellationToken);
-            }
-
-            return result;
-        }
-        else
-        {
-            return JsonConvert.DeserializeObject<List<COA>>(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetCoaChilds(parentCoaId, cancellationToken),
+            cancellationToken);
     }
 
     public async Task<COA?> GetCoaWithChildren(string coaId, CancellationToken cancellationToken = default)
     {
         string key = $"coaWithChildren-{coaId}";
-
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            COA? result = await _decorated.GetCoaWithChildren(coaId, cancellationToken);
-
-            if (result != null)
-            {
-                await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(result), _cacheOptions, cancellationToken);
-            }
-
-            return result;
-        }
-        else
-        {
-            return JsonConvert.DeserializeObject<COA>(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetCoaWithChildren(coaId, cancellationToken),
+            cancellationToken);
     }
 
-    public async Task<string> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
+    public async Task<string?> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
     {
         string key = "lastHeadCodeLevelOne";
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            string result = await _decorated.GetLastHeadCodeInLevelOne(cancellationToken);
-            await _distributedCache.SetStringAsync(key, result, _cacheOptions, cancellationToken);
-
-            return result;
-        }
-        else
-        {
-            return cachedValue;
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetLastHeadCodeInLevelOne(cancellationToken),
+            cancellationToken);
     }
 
     public async Task<bool> IsCoaExist(string coaId, CancellationToken cancellationToken = default)
     {
         string key = $"coaExist-{coaId}";
-
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            bool result = await _decorated.IsCoaExist(coaId, cancellationToken);
-            await _distributedCache.SetStringAsync(key, result.ToString(), _cacheOptions, cancellationToken);
-
-            return result;
-        }
-        else
-        {
-            return bool.Parse(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.IsCoaExist(coaId, cancellationToken),
+            cancellationToken);
     }
-
 
     public async Task<bool> IsCoaExist(string coaName, int level = 1, CancellationToken cancellationToken = default)
     {
         string key = $"coaExist-{coaName}-Level{level}";
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            bool result = await _decorated.IsCoaExist(coaName, level, cancellationToken);
-
-            await _distributedCache.SetStringAsync(key, result.ToString(), _cacheOptions, cancellationToken);
-
-
-            return result;
-        }
-        else
-        {
-            return bool.Parse(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.IsCoaExist(coaName, level, cancellationToken),
+            cancellationToken);
     }
-
 
     public async Task<bool> IsCoaExist(string coaName, string coaParentName, CancellationToken cancellationToken = default)
     {
         string key = $"coaExist-{coaName}-Parent{coaParentName}";
-
-        string? cachedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedValue))
-        {
-            bool result = await _decorated.IsCoaExist(coaName, coaParentName, cancellationToken);
-            await _distributedCache.SetStringAsync(key, result.ToString(), _cacheOptions, cancellationToken);
-
-            return result;
-        }
-        else
-        {
-            return bool.Parse(cachedValue);
-        }
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.IsCoaExist(coaName, coaParentName, cancellationToken),
+            cancellationToken);
     }
 
 }

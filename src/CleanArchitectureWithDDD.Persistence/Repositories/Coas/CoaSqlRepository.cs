@@ -42,7 +42,7 @@ internal class CoaSqlRepository : ICoaRepository
             new { CoaParentName = coaParentName });
     }
 
-    public async Task<List<COA>> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
+    public async Task<List<COA>?> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
     {
         return (await _sqlConnection.QueryAsync<COA>(
             "SELECT * FROM COAS WHERE ParentHeadCode = @ParentCoaId",
@@ -64,22 +64,6 @@ internal class CoaSqlRepository : ICoaRepository
         return coa;
     }
 
-    private async Task FetchChildCOAs(IDbConnection connection, Dictionary<string, COA> coaDictionary, COA coa)
-    {
-        IEnumerable<COA> childCOAs = await connection.QueryAsync<COA>(
-            "SELECT * FROM COAS WHERE ParentHeadCode = @ParentHeadCode",
-            new { ParentHeadCode = coa.HeadCode });
-
-        foreach (COA child in childCOAs)
-        {
-            if (!coaDictionary.ContainsKey(child.HeadCode))
-            {
-                coaDictionary[child.HeadCode] = child;
-                await FetchChildCOAs(connection, coaDictionary, child);
-            }
-        }
-        coa.InsertChildrens(childCOAs.ToList());
-    }
 
     public async Task<bool> IsCoaExist(string coaId, CancellationToken cancellationToken = default)
     {
@@ -102,7 +86,7 @@ internal class CoaSqlRepository : ICoaRepository
             new { CoaName = coaName, Level = level });
     }
 
-    public async Task<string> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
+    public async Task<string?> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
     {
         return await _sqlConnection.ExecuteScalarAsync<string>(
             "SELECT MAX(HeadCode) FROM COAS WHERE HeadLevel = 1");
@@ -120,5 +104,22 @@ internal class CoaSqlRepository : ICoaRepository
         return await _sqlConnection.QueryFirstOrDefaultAsync<string>(
             "SELECT HeadCode FROM COAS WHERE HeadCode = @AccountHeadCode",
             new { AccountHeadCode = accountHeadCode });
+    }
+
+    private async Task FetchChildCOAs(IDbConnection connection, Dictionary<string, COA> coaDictionary, COA coa)
+    {
+        IEnumerable<COA> childCOAs = await connection.QueryAsync<COA>(
+            "SELECT * FROM COAS WHERE ParentHeadCode = @ParentHeadCode",
+            new { ParentHeadCode = coa.HeadCode });
+
+        foreach (COA child in childCOAs)
+        {
+            if (!coaDictionary.ContainsKey(child.HeadCode))
+            {
+                coaDictionary[child.HeadCode] = child;
+                await FetchChildCOAs(connection, coaDictionary, child);
+            }
+        }
+        coa.InsertChildrens(childCOAs.ToList());
     }
 }

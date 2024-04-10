@@ -26,7 +26,7 @@ internal class InvoiceSqlRepository : IInvoiceRepository
         _sqlConnection = _connectionFactory.SqlConnection();
     }
 
-    public async Task<CustomList<Invoice>> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    public async Task<CustomList<Invoice>?> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
 
         string countQuery = "SELECT COUNT(*) FROM Invoices WHERE CustomerId = @CustomerId";

@@ -9,7 +9,7 @@ public interface ICustomerRespository
 {
     Task AddAsync(Customer customer);
     Task AddCustomerInvoiceAsync(Invoice invoice);
-    Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default);
+    Task<CustomList<Customer>?> GetAllCustomers(CancellationToken cancellationToken = default);
     Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default);
     Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default);
     Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default);

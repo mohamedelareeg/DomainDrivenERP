@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
@@ -16,20 +17,14 @@ namespace CleanArchitectureWithDDD.Persistence.Repositories.Customers;
 internal class CachedCustomerRepository : ICustomerRespository
 {
     private readonly ICustomerRespository _decorated;
-    private readonly IDistributedCache _distributedCache;
-    private readonly DistributedCacheEntryOptions _cacheOptions;
+    private readonly ICacheService _cacheService;
 
-    public CachedCustomerRepository(ICustomerRespository decorated, IDistributedCache distributedCache)
+    public CachedCustomerRepository(ICustomerRespository decorated, ICacheService cacheService)
     {
         _decorated = decorated;
-        _distributedCache = distributedCache;
-
-        // Set global cache options
-        _cacheOptions = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
-        };
+        _cacheService = cacheService;
     }
+
     public Task AddAsync(Customer customer)
     {
         return _decorated.AddAsync(customer);
@@ -40,93 +35,37 @@ internal class CachedCustomerRepository : ICustomerRespository
         return _decorated.AddCustomerInvoiceAsync(invoice);
     }
 
-    public async Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
+    public async Task<CustomList<Customer>?> GetAllCustomers(CancellationToken cancellationToken = default)
     {
         string key = "all-customers";
-
-        string? cachedCustomers = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        CustomList<Customer> customers;
-        if (string.IsNullOrEmpty(cachedCustomers))
-        {
-            customers = await _decorated.GetAllCustomers(cancellationToken);
-            await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(customers), _cacheOptions, cancellationToken);
-
-            return customers;
-        }
-
-        return JsonConvert.DeserializeObject<CustomList<Customer>>(cachedCustomers, new JsonSerializerSettings
-        {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver = new PrivateResolver(),
-            Converters = { new ValueObjectJsonConverter() }
-        });
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetAllCustomers(cancellationToken),
+            cancellationToken);
     }
 
     public async Task<Customer?> GetByIdAsync(string CustomerId, CancellationToken cancellationToken = default)
     {
         string key = $"customer-{CustomerId}";
-
-        string? cachedCustomer = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        Customer? customer;
-        if (string.IsNullOrEmpty(cachedCustomer))
-        {
-            customer = await _decorated.GetByIdAsync(CustomerId, cancellationToken);
-            if (customer == null)
-                return null;
-
-            await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(customer), _cacheOptions, cancellationToken);
-            return customer;
-        }
-
-        return JsonConvert.DeserializeObject<Customer>(cachedCustomer, new JsonSerializerSettings
-        {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver = new PrivateResolver(),
-            Converters = { new ValueObjectJsonConverter() }
-        });
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetByIdAsync(CustomerId, cancellationToken),
+            cancellationToken);
     }
 
     public async Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default)
     {
         string key = $"customer-invoices-{customerId}";
-
-        string? cachedCustomerInvoices = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedCustomerInvoices))
-        {
-            Customer? customer = await _decorated.GetCustomerInvoicesById(customerId, cancellationToken);
-            if (customer == null)
-                return null;
-
-            await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(customer), _cacheOptions, cancellationToken);
-            return customer;
-        }
-
-        return JsonConvert.DeserializeObject<Customer>(cachedCustomerInvoices, new JsonSerializerSettings
-        {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver = new PrivateResolver(),
-            Converters = { new ValueObjectJsonConverter() }
-        });
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetCustomerInvoicesById(customerId, cancellationToken),
+            cancellationToken);
     }
 
 
     public async Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default)
     {
         string key = $"email-unique-{value}";
-
-        string? cachedResult = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (string.IsNullOrEmpty(cachedResult))
-        {
-            bool isUnique = await _decorated.IsEmailUniqueAsync(value, cancellationToken);
-            await _distributedCache.SetStringAsync(key, isUnique.ToString(), _cacheOptions, cancellationToken);
-            return isUnique;
-        }
-
-        return bool.Parse(cachedResult);
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.IsEmailUniqueAsync(value, cancellationToken),
+            cancellationToken);
     }
 
 

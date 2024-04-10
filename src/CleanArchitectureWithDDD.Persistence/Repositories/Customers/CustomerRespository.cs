@@ -38,7 +38,7 @@ internal sealed class CustomerRespository : ICustomerRespository
         await _context.Set<Invoice>().AddAsync(invoice);
     }
 
-    public async Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
+    public async Task<CustomList<Customer>?> GetAllCustomers(CancellationToken cancellationToken = default)
     {
         return _context.Set<Customer>().ToCustomList();// TODO Fix the Async
     }

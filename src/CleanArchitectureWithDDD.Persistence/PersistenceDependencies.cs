@@ -1,6 +1,8 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Persistence.BackgroundJobs;
+using CleanArchitectureWithDDD.Persistence.Caching;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
@@ -88,6 +90,7 @@ public static class PersistenceDependencies
             string connectionString = configuration.GetConnectionString("Redis");
             redisOptions.Configuration = connectionString;
         });
+        services.AddSingleton<ICacheService, CacheService>();
 
         return services;
 

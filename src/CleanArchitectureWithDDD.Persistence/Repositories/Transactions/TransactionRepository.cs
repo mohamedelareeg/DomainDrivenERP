@@ -24,7 +24,7 @@ internal class TransactionRepository : ITransactionRepository
         _context = context;
     }
 
-    public async Task<CustomList<JournalTransactionsDto>> GetCoaTransactionsByAccountName(string? accountName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+    public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByAccountName(string? accountName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
         IQueryable<JournalTransactionsDto> query = _context.Set<Transaction>()
             .Where(t => t.COA.HeadName == accountName &&
@@ -44,7 +44,7 @@ internal class TransactionRepository : ITransactionRepository
         return result.ToCustomList();
     }
 
-    public async Task<CustomList<JournalTransactionsDto>> GetCoaTransactionsByHeadCode(string? accountHeadCode, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+    public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByHeadCode(string? accountHeadCode, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
         IQueryable<JournalTransactionsDto> query = _context.Set<Transaction>()
             .Where(t => t.COA.HeadCode == accountHeadCode &&

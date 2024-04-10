@@ -51,7 +51,7 @@ internal class CustomerSqlRepository : ICustomerRespository
     }
 
 
-    public async Task<CustomList<Customer>> GetAllCustomers(CancellationToken cancellationToken = default)
+    public async Task<CustomList<Customer>?> GetAllCustomers(CancellationToken cancellationToken = default)
     {
         string sql = @"
         SELECT Id, FirstName, LastName, Email, Phone, CreatedOnUtc, ModifiedOnUtc

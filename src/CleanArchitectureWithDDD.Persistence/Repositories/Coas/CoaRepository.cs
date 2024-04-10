@@ -37,7 +37,7 @@ internal sealed class CoaRepository : ICoaRepository
         return await _context.Set<COA>().Include(a => a.COAs).FirstOrDefaultAsync(a => a.HeadName == coaParentName);
     }
 
-    public async Task<List<COA>> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
+    public async Task<List<COA>?> GetCoaChilds(string parentCoaId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().Where(a => a.ParentHeadCode == parentCoaId).ToListAsync();
     }
@@ -54,21 +54,9 @@ internal sealed class CoaRepository : ICoaRepository
 
         return coa;
     }
-
-    private async Task LoadChildrenRecursively(COA coa)
-    {
-        await _context.Entry(coa)
-            .Collection(c => c.COAs)
-            .LoadAsync();
-
-        foreach (COA? child in coa.COAs.ToList())
-        {
-            await LoadChildrenRecursively(child);
-        }
-    }
     public async Task<bool> IsCoaExist(string coaId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<COA>().AnyAsync(coa => coa.HeadCode == coaId);
+        return await _context.Set<COA>().AnyAsync(coa => coa.HeadCode == coaId, cancellationToken);
     }
 
     public async Task<bool> IsCoaExist(string coaName, string coaParentName, CancellationToken cancellationToken = default)
@@ -83,7 +71,7 @@ internal sealed class CoaRepository : ICoaRepository
              .AnyAsync(coa => coa.HeadName == coaName && coa.HeadLevel == level);
     }
 
-    public async Task<string> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
+    public async Task<string?> GetLastHeadCodeInLevelOne(CancellationToken cancellationToken = default)
     {
         return await _context.Set<COA>().Where(a => a.HeadLevel == 1).MaxAsync(coa => coa.HeadCode);
     }
@@ -104,4 +92,16 @@ internal sealed class CoaRepository : ICoaRepository
                              .FirstOrDefaultAsync();
     }
 
+
+    private async Task LoadChildrenRecursively(COA coa)
+    {
+        await _context.Entry(coa)
+            .Collection(c => c.COAs)
+            .LoadAsync();
+
+        foreach (COA? child in coa.COAs.ToList())
+        {
+            await LoadChildrenRecursively(child);
+        }
+    }
 }

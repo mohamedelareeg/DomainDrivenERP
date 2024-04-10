@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
@@ -16,19 +17,12 @@ namespace CleanArchitectureWithDDD.Persistence.Repositories.Journals;
 internal class CachedJournalRepository : IJournalRepository
 {
     private readonly IJournalRepository _decorated;
-    private readonly IDistributedCache _distributedCache;
-    private readonly DistributedCacheEntryOptions _cacheOptions;
+    private readonly ICacheService _cacheService;
 
-    public CachedJournalRepository(IJournalRepository decorated, IDistributedCache distributedCache)
+    public CachedJournalRepository(IJournalRepository decorated, ICacheService cacheService)
     {
         _decorated = decorated;
-        _distributedCache = distributedCache;
-
-        // Set global cache options
-        _cacheOptions = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
-        };
+        _cacheService = cacheService;
     }
     public async Task CreateJournal(Journal journal, CancellationToken cancellationToken = default)
     {
@@ -38,21 +32,8 @@ internal class CachedJournalRepository : IJournalRepository
     public async Task<Journal?> GetJournalById(string journalId, CancellationToken cancellationToken = default)
     {
         string key = $"journal-{journalId}";
-
-        string? cachedJournal = await _distributedCache.GetStringAsync(key, cancellationToken);
-
-        if (cachedJournal == null)
-        {
-            Journal? journal = await _decorated.GetJournalById(journalId, cancellationToken);
-
-            if (journal != null)
-            {
-                await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(journal), _cacheOptions, cancellationToken);
-            }
-
-            return journal;
-        }
-
-        return JsonConvert.DeserializeObject<Journal>(cachedJournal);
+        return await _cacheService.GetOrSetAsync(key,
+            async () => await _decorated.GetJournalById(journalId, cancellationToken),
+            cancellationToken);
     }
 }
