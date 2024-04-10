@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Domain.Entities.Transactions;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 using System;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Transactions.Specifications;

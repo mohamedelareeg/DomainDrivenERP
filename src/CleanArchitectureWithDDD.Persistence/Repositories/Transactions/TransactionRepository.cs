@@ -7,7 +7,7 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Data;
 using Dapper;

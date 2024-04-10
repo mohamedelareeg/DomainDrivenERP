@@ -5,21 +5,21 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Domain.Shared;
+namespace CleanArchitectureWithDDD.Domain.Shared.Results;
 public class BaseResponse<T>
 {
     public BaseResponse()
     {
 
     }
-    public BaseResponse(T data ,HttpStatusCode statusCode, string message = null)
+    public BaseResponse(T data, HttpStatusCode statusCode, string message = null)
     {
         Succeeded = true;
         Message = message ?? (Succeeded ? "Success" : "Failure");
         Data = data;
         StatusCode = statusCode;
     }
-    public BaseResponse(HttpStatusCode statusCode,string message)
+    public BaseResponse(HttpStatusCode statusCode, string message)
     {
         Succeeded = false;
         Message = message ?? (Succeeded ? "Success" : "Failure");

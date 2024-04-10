@@ -7,7 +7,7 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;
 using CleanArchitectureWithDDD.Domain.Entities.Journals.Specifications;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories.Journals;
 internal class JournalSpecificationRepository : IJournalRepository

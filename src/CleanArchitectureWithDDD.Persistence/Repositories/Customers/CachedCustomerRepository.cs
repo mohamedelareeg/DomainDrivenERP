@@ -6,7 +6,7 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Caching;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;

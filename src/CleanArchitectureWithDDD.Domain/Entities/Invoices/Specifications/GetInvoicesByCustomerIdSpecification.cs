@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Invoices.Specifications;
 public static class GetInvoicesByCustomerIdSpecification

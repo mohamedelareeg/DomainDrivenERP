@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace CleanArchitectureWithDDD.Domain.Specifications;
+namespace CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 internal class ParameterReplacer : ExpressionVisitor
 {

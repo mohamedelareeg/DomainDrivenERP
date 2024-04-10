@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Customers.Specifications;

@@ -5,7 +5,8 @@ using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
 using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Guards;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Customers;
@@ -35,6 +36,10 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
       Email email,
       string phone)
     {
+        Guard.Against.NullOrEmpty(firstName.Value, nameof(firstName));
+        Guard.Against.NullOrEmpty(lastName.Value, nameof(lastName));
+        Guard.Against.NullOrEmpty(email.Value, nameof(email));
+        Guard.Against.NullOrEmpty(phone, nameof(phone));
 
         var customer = new Customer(id, firstName, lastName, email, phone);
         customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
@@ -50,6 +55,12 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         string phone,
         ICustomerRespository customerRespository)
     {
+        Guard.Against.NullOrEmpty(firstName.Value, nameof(firstName));
+        Guard.Against.NullOrEmpty(lastName.Value, nameof(lastName));
+        Guard.Against.NullOrEmpty(email.Value, nameof(email));
+        Guard.Against.NullOrEmpty(phone, nameof(phone));
+        Guard.Against.Null(customerRespository, nameof(customerRespository));
+
         if (!await customerRespository.IsEmailUniqueAsync(email))
         {
             return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
@@ -69,6 +80,12 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
        string phone,
        Customer[] customers)
     {
+        Guard.Against.NullOrEmpty(firstName.Value, nameof(firstName));
+        Guard.Against.NullOrEmpty(lastName.Value, nameof(lastName));
+        Guard.Against.NullOrEmpty(email.Value, nameof(email));
+        Guard.Against.NullOrEmpty(phone, nameof(phone));
+        Guard.Against.Null(customers, nameof(customers));
+
         if (customers.Any(m => m.Email == email))
         {
             return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
@@ -88,6 +105,11 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
        string phone,
        bool isEmailUnique)
     {
+        Guard.Against.NullOrEmpty(firstName.Value, nameof(firstName));
+        Guard.Against.NullOrEmpty(lastName.Value, nameof(lastName));
+        Guard.Against.NullOrEmpty(email.Value, nameof(email));
+        Guard.Against.NullOrEmpty(phone, nameof(phone));
+
         if (!isEmailUnique)
         {
             return Result.Failure<Customer>(DomainErrors.CustomerErrors.IsCustomerEmailAlreadyExist);
@@ -113,6 +135,10 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         decimal taxRate = 0.14m,
         decimal discountRate = 0.10m)
     {
+        Guard.Against.NullOrEmpty(invoiceSerial, nameof(invoiceSerial));
+        Guard.Against.NullOrEmpty(invoiceDate.ToString(), nameof(invoiceDate));
+        Guard.Against.NumberZero(invoiceAmount, nameof(invoiceAmount));
+
         if (this == null)
         {
             // Way 1 :
@@ -144,6 +170,8 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
     }
     public void AddInvoice(params Invoice[] invoices)
     {
+        Guard.Against.Null(invoices, nameof(invoices));
+
         if (invoices == null || invoices.Length == 0)
         {
             throw new ArgumentException("At least one invoice must be provided.", nameof(invoices));
@@ -167,6 +195,9 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
 
     public Result<Invoice> UpdateCustomerInvoiceStatus(Invoice invoice, InvoiceStatus newStatus)
     {
+        Guard.Against.Null(invoice, nameof(invoice));
+        Guard.Against.Null(newStatus, nameof(newStatus));
+
         Invoice? invoiceToUpdate = _invoices.FirstOrDefault(i => i.Id == invoice.Id);
         if (invoiceToUpdate == null)
         {

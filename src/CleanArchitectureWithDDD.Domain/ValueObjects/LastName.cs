@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Domain.ValueObjects;
 

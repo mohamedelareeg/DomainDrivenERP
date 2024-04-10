@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.DeleteCustomer;
 

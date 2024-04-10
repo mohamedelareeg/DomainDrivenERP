@@ -2,7 +2,7 @@
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Commands.CreateCustomer;

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Domain.Specifications;
+namespace CleanArchitectureWithDDD.Domain.Shared.Specifications;
 public interface ISpecification<T>
 {
     List<WhereExpression<T>> WhereExpressions { get; }

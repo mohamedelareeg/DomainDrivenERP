@@ -10,7 +10,7 @@ using CleanArchitectureWithDDD.Application.Features.Coas.Queries.GetCoaWithChild
 using CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.COAs;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Presentation.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

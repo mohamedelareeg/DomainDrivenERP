@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using CleanArchitectureWithDDD.Domain.Entities;
 
-namespace CleanArchitectureWithDDD.Domain.Shared;
+namespace CleanArchitectureWithDDD.Domain.Shared.Results;
 
 public class Result<TValue> : Result
 {

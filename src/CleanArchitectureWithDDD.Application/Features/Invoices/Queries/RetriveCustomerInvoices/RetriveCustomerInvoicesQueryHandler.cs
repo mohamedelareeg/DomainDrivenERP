@@ -1,7 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using MediatR;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Queries.RetriveCustomerInvoice;

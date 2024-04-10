@@ -5,7 +5,7 @@ using CleanArchitectureWithDDD.Application.Features.Invoices.Commands.CreateCust
 using CleanArchitectureWithDDD.Application.Features.Invoices.Queries.RetriveCustomerInvoice;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Presentation.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

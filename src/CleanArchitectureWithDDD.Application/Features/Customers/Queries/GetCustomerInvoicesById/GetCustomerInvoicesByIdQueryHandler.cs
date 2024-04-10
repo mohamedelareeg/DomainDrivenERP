@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Application.Features.Customers.Queries.GetCustomerInvoicesById;
 internal class GetCustomerInvoicesByIdQueryHandler : IQueryHandler<GetCustomerInvoicesByIdQuery, Customer>

@@ -1,4 +1,4 @@
-namespace CleanArchitectureWithDDD.Domain.Specifications;
+namespace CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 public enum OrderTypeEnum
 {

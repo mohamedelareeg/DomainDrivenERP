@@ -8,7 +8,7 @@ using CleanArchitectureWithDDD.Application.Abstractions.Messaging;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;
 internal class GetJournalByIdQueryHandler : IQueryHandler<GetJournalByIdQuery, JournalDto>

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
+using CleanArchitectureWithDDD.Domain.Shared.Guards;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Invoices;
 
@@ -20,6 +21,14 @@ public class Invoice : BaseEntity
         decimal invoiceTotal,
         Guid customerId) : base(id)
     {
+        Guard.Against.NullOrEmpty(id.ToString(), nameof(id));
+        Guard.Against.NullOrWhiteSpace(invoiceSerial, nameof(invoiceSerial));
+        Guard.Against.NullOrEmpty(invoiceDate.ToString(), nameof(invoiceDate));
+        Guard.Against.NumberNegativeOrZero(invoiceAmount, nameof(invoiceAmount));
+        Guard.Against.NumberNegativeOrZero(invoiceDiscount, nameof(invoiceDiscount));
+        Guard.Against.NumberNegativeOrZero(invoiceTax, nameof(invoiceTax));
+        Guard.Against.NumberNegativeOrZero(invoiceTotal, nameof(invoiceTotal));
+
         InvoiceSerial = invoiceSerial;
         InvoiceDate = invoiceDate;
         InvoiceAmount = invoiceAmount;
@@ -41,6 +50,8 @@ public class Invoice : BaseEntity
     public InvoiceStatus InvoiceStatus { get; private set; }
     public void UpdateInvoiceStatus(InvoiceStatus newStatus)
     {
+        Guard.Against.Null(newStatus, nameof(newStatus));
+
         InvoiceStatus = newStatus;
     }
     public InvoiceSnapshot ToSnapshot()

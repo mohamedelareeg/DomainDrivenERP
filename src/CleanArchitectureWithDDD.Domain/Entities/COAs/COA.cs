@@ -6,7 +6,8 @@ using CleanArchitectureWithDDD.Domain.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Guards;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.COAs;
 
@@ -20,6 +21,10 @@ public sealed class COA : AggregateRoot
     }
     public COA(string headCode, string headName, string parentHeadCode, bool isGl, COA_Type type, int headLevel)
     {
+        Guard.Against.NullOrEmpty(headCode, nameof(headCode));
+        Guard.Against.NullOrEmpty(headName, nameof(headName));
+        Guard.Against.NullOrEmpty(parentHeadCode, nameof(parentHeadCode));
+
         HeadCode = headCode;
         HeadName = headName;
         ParentHeadCode = parentHeadCode;
@@ -29,6 +34,8 @@ public sealed class COA : AggregateRoot
     }
     public COA(string headCode, string headName, bool isGl, COA_Type type)
     {
+        Guard.Against.NullOrEmpty(headCode, nameof(headCode));
+        Guard.Against.NullOrEmpty(headName, nameof(headName));
         HeadCode = headCode;
         HeadName = headName;
         IsGl = isGl;
@@ -48,6 +55,9 @@ public sealed class COA : AggregateRoot
 
     public static Result<COA> Create(string headName, COA? parentCoa, bool isGl = false)
     {
+        Guard.Against.NullOrEmpty(headName, nameof(headName));
+        Guard.Against.Null(parentCoa, nameof(parentCoa));
+
         if (parentCoa == null)
         {
             return Result.Failure<COA>(new Error("COA.Create", "Parent COA cannot be null."));
@@ -71,6 +81,9 @@ public sealed class COA : AggregateRoot
     }
     public static Result<COA> Create(string headName, string headCode, COA_Type type, bool isGl = false)
     {
+        Guard.Against.NullOrEmpty(headName, nameof(headName));
+        Guard.Against.NullOrEmpty(headCode, nameof(headCode));
+
         if (string.IsNullOrEmpty(headCode))
         {
             return Result.Failure<COA>(new Error("COA.Create", "Head code cannot be null or empty."));
@@ -90,6 +103,8 @@ public sealed class COA : AggregateRoot
 
     private static string GenerateNextHeadCode(COA parentCoa)
     {
+        Guard.Against.Null(parentCoa, nameof(parentCoa));
+
         var parentChildCodes = parentCoa._coas
             .Where(coa => coa.HeadCode.Length == parentCoa.HeadCode.Length + 2)
             .Select(coa => int.Parse(coa.HeadCode.Substring(parentCoa.HeadCode.Length)))
@@ -101,6 +116,7 @@ public sealed class COA : AggregateRoot
 
     public void InsertChildrens(List<COA> childCOAs)
     {
+        Guard.Against.Null(childCOAs, nameof(childCOAs));
         _coas.AddRange(childCOAs);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace CleanArchitectureWithDDD.Domain.Shared;
+namespace CleanArchitectureWithDDD.Domain.Shared.Results;
 
 public class Result
 {
@@ -92,7 +92,7 @@ public class Result
 
     public static Result<TResult> Map<TValue, TResult>(Result<TValue> result, Func<TValue, TResult> mapper)
     {
-        return result.IsSuccess ? Result.Success(mapper(result.Value)) : Result.Failure<TResult>(result.Error);
+        return result.IsSuccess ? Success(mapper(result.Value)) : Failure<TResult>(result.Error);
     }
 
     public static async Task<Result> TryAsync(Func<Task> action)
@@ -100,12 +100,12 @@ public class Result
         try
         {
             await action();
-            return Result.Success();
+            return Success();
         }
         catch (Exception ex)
         {
             // Log the exception
-            return Result.Failure(new Error("UnexpectedError", ex.Message));
+            return Failure(new Error("UnexpectedError", ex.Message));
         }
     }
 
@@ -114,12 +114,12 @@ public class Result
         try
         {
             TValue? value = await action();
-            return Result.Success(value);
+            return Success(value);
         }
         catch (Exception ex)
         {
             // Log the exception
-            return Result.Failure<TValue>(new Error("UnexpectedError", ex.Message));
+            return Failure<TValue>(new Error("UnexpectedError", ex.Message));
         }
     }
 
@@ -178,16 +178,16 @@ public class Result
     public static Result<TValue> MethodNotAllowed<TValue>(string message = "The HTTP method used is not supported for this resource.") =>
         new Result<TValue>(default, false, new Error("MethodNotAllowed", message), HttpStatusCode.MethodNotAllowed);
 
-    public static Result<TValue> FromResult<TValue>(System.Threading.Tasks.Task<TValue> task)
+    public static Result<TValue> FromResult<TValue>(Task<TValue> task)
     {
         if (task.IsFaulted)
         {
             // Handle errors from the task
-            return Result.Failure<TValue>(new Error("TaskError", task.Exception?.Message ?? "An error occurred."));
+            return Failure<TValue>(new Error("TaskError", task.Exception?.Message ?? "An error occurred."));
         }
         else
         {
-            return task.IsCanceled ? Result.Failure<TValue>(new Error("TaskCanceled", "The task was canceled.")) : Result.Success(task.Result);
+            return task.IsCanceled ? Failure<TValue>(new Error("TaskCanceled", "The task was canceled.")) : Success(task.Result);
         }
     }
 
@@ -198,7 +198,7 @@ public class Result
         new Result<TValue>(default, false, new Error("NoContent", message), HttpStatusCode.NoContent);
 
     public static Result<TValue> FromOptional<TValue>(TValue value, string errorMessage = "Value is null.") where TValue : class =>
-        value != null ? Result.Success(value) : Result.Failure<TValue>(new Error("ValueIsNull", errorMessage));
+        value != null ? Success(value) : Failure<TValue>(new Error("ValueIsNull", errorMessage));
 
     public static async Task<Result<TValue>> FromOptionalAsync<TValue>(Task<TValue> task, string errorMessage = "Value is null.") where TValue : class
     {
@@ -215,11 +215,11 @@ public class Result
         {
             if (result.IsFailure)
             {
-                return Result.Failure<TValue>(result.Error);
+                return Failure<TValue>(result.Error);
             }
         }
 
-        return Result.Success(value);
+        return Success(value);
     }
 
     public static async Task<Result<TValue>> CombineAsync<TValue>(IEnumerable<Task<Result>> tasks, TValue value)
@@ -239,7 +239,7 @@ public class Result
             }
         }
 
-        return Result.Failure<TValue>(new Error("RetryFailed", "Maximum number of retry attempts reached."));
+        return Failure<TValue>(new Error("RetryFailed", "Maximum number of retry attempts reached."));
     }
 
     public static async Task<Result<TValue>> RetryAsync<TValue>(Func<Task<Result<TValue>>> action, int maxAttempts = 3)
@@ -253,7 +253,7 @@ public class Result
             }
         }
 
-        return Result.Failure<TValue>(new Error("RetryFailed", "Maximum number of retry attempts reached."));
+        return Failure<TValue>(new Error("RetryFailed", "Maximum number of retry attempts reached."));
     }
 
     public static Result<TValue> Combine<TValue>(params Result<TValue>[] results)
@@ -262,11 +262,11 @@ public class Result
         {
             if (result.IsFailure)
             {
-                return Result.Failure<TValue>(result.Error);
+                return Failure<TValue>(result.Error);
             }
         }
 
-        return Result.Success(results.Last().Value);
+        return Success(results.Last().Value);
     }
 
     public static async Task<Result<TValue>> CombineAsync<TValue>(params Task<Result<TValue>>[] tasks)

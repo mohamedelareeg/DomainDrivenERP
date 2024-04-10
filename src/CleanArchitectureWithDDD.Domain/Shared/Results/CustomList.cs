@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureWithDDD.Domain.Shared;
+namespace CleanArchitectureWithDDD.Domain.Shared.Results;
 public class CustomList<T>
 {
     public int Count => Items.Count;

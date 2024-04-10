@@ -1,4 +1,4 @@
-﻿namespace CleanArchitectureWithDDD.Domain.Shared;
+﻿namespace CleanArchitectureWithDDD.Domain.Shared.Results;
 
 public class Error : IEquatable<Error>
 {

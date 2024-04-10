@@ -9,7 +9,8 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions.Specifications;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories.Transactions;
 internal class TransactionSpecificationRepository : ITransactionRepository
@@ -22,7 +23,7 @@ internal class TransactionSpecificationRepository : ITransactionRepository
     }
     public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByAccountName(string? accountName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Transaction> spec = GetTransactionsByAccountNameSpecification.GetTransactionsByAccountNameSpec(accountName, startDate, endDate);
+        BaseSpecification<Transaction> spec = GetTransactionsByAccountNameSpecification.GetTransactionsByAccountNameSpec(accountName, startDate, endDate);
         IList<Transaction> result = await _unitOfWork.Repository<Transaction>().ListAsync(spec, false, cancellationToken);
         return result.Select(t => new JournalTransactionsDto
         {
@@ -37,7 +38,7 @@ internal class TransactionSpecificationRepository : ITransactionRepository
 
     public async Task<CustomList<JournalTransactionsDto>?> GetCoaTransactionsByHeadCode(string? accountHeadCode, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Transaction> spec = GetTransactionsByHeadCodeSpecification.GetTransactionsByHeadCodeSpec(accountHeadCode, startDate, endDate);
+        BaseSpecification<Transaction> spec = GetTransactionsByHeadCodeSpecification.GetTransactionsByHeadCodeSpec(accountHeadCode, startDate, endDate);
         IList<Transaction> result = await _unitOfWork.Repository<Transaction>().ListAsync(spec, false, cancellationToken);
         return result.Select(t => new JournalTransactionsDto
         {

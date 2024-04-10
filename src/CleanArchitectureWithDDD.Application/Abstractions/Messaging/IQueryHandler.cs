@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Domain.Shared;
+﻿using CleanArchitectureWithDDD.Domain.Shared.Results;
 using MediatR;
 
 namespace CleanArchitectureWithDDD.Application.Abstractions.Messaging;

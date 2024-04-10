@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Application.Extentions;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Persistence.Clients;
 using Dapper;
 using Microsoft.Data.SqlClient;

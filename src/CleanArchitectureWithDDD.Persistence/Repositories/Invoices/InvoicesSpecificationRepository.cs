@@ -9,8 +9,8 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices.Specifications;
-using CleanArchitectureWithDDD.Domain.Shared;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories.Invoices;
 internal class InvoicesSpecificationRepository : IInvoiceRepository
@@ -24,7 +24,7 @@ internal class InvoicesSpecificationRepository : IInvoiceRepository
 
     public async Task<CustomList<Invoice>?> GetAllCustomerInvoices(string customerId, DateTime? startDate, DateTime? endDate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Invoice> spec = GetInvoicesByCustomerIdSpecification.GetInvoicesByCustomerIdSpec(customerId, startDate, endDate);
+        BaseSpecification<Invoice> spec = GetInvoicesByCustomerIdSpecification.GetInvoicesByCustomerIdSpec(customerId, startDate, endDate);
 
         int totalCount = await _unitOfWork.Repository<Invoice>().CountAsync(spec);
         int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);

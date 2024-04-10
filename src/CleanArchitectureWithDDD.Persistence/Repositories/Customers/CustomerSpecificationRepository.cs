@@ -8,7 +8,8 @@ using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
 using CleanArchitectureWithDDD.Domain.Entities.Customers.Specifications;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 using CleanArchitectureWithDDD.Domain.ValueObjects;
 
 namespace CleanArchitectureWithDDD.Persistence.Repositories.Customers;
@@ -33,25 +34,25 @@ internal class CustomerSpecificationRepository : ICustomerRespository
 
     public async Task<CustomList<Customer>?> GetAllCustomers(CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Customer> spec = GetAllCustomersSpecification.GetAllCustomersSpec();
+        BaseSpecification<Customer> spec = GetAllCustomersSpecification.GetAllCustomersSpec();
         return await _unitOfWork.Repository<Customer>().CustomListAsync(spec, false);
     }
 
     public async Task<Customer?> GetByIdAsync(string customerId, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Customer> spec = GetCustomerByIdSpecification.GetCustomerByIdSpec(customerId);
+        BaseSpecification<Customer> spec = GetCustomerByIdSpecification.GetCustomerByIdSpec(customerId);
         return await _unitOfWork.Repository<Customer>().FirstOrDefaultAsync(spec, false, cancellationToken);
     }
 
     public async Task<Customer?> GetCustomerInvoicesById(string customerId, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Customer> spec = GetCustomerInvoicesByIdSpecification.GetCustomerInvoicesByIdSpec(customerId);
+        BaseSpecification<Customer> spec = GetCustomerInvoicesByIdSpecification.GetCustomerInvoicesByIdSpec(customerId);
         return await _unitOfWork.Repository<Customer>().FirstOrDefaultAsync(spec, false, cancellationToken);
     }
 
     public async Task<bool> IsEmailUniqueAsync(Email value, CancellationToken cancellationToken = default)
     {
-        Domain.Specifications.BaseSpecification<Customer> spec = IsEmailUniqueSpecification.IsEmailUniqueSpec(value);
+        BaseSpecification<Customer> spec = IsEmailUniqueSpecification.IsEmailUniqueSpec(value);
         return !await _unitOfWork.Repository<Customer>().AnyAsync(spec, false, cancellationToken);
     }
 

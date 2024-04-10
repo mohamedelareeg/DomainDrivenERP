@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 public interface IBaseRepositoryAsync<T>

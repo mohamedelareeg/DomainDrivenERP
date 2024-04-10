@@ -9,7 +9,8 @@ using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Guards;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Journals;
 public sealed class Journal : AggregateRoot
@@ -19,6 +20,10 @@ public sealed class Journal : AggregateRoot
     public Journal(Guid id, string? description, bool isOpening, DateTime journalDate, JournalStatus status)
         : base(id)
     {
+        Guard.Against.NullOrEmpty(id.ToString(), nameof(id));
+        Guard.Against.NullOrEmpty(journalDate.ToString(), nameof(journalDate));
+        Guard.Against.Null(status, nameof(status));
+
         Id = id;
         Description = description;
         IsOpening = isOpening;
@@ -27,6 +32,9 @@ public sealed class Journal : AggregateRoot
     }
     public static Result<Journal> Create(string? description, bool isOpening, DateTime journalDate, List<TransactionDto> transactions)
     {
+        Guard.Against.NullOrEmpty(journalDate.ToString(), nameof(journalDate));
+        Guard.Against.Null(transactions, nameof(transactions));
+
         if (transactions is null)
         {
             return Result.Failure<Journal>(new Error("Journal.Create", "Transactions list cannot be null."));
@@ -39,6 +47,7 @@ public sealed class Journal : AggregateRoot
     }
     public Result UpdateJournalStatus(JournalStatus newStatus)
     {
+        Guard.Against.Null(newStatus, nameof(newStatus));
         if (newStatus == Status)
         {
             return Result.Failure<Journal>(new Error("Journal.UpdateStatus", "New status is the same as the current status."));
@@ -49,6 +58,7 @@ public sealed class Journal : AggregateRoot
     }
     public void AddTransactions(params Transaction[] transactions)
     {
+        Guard.Against.Null(transactions, nameof(transactions));
         if (transactions == null || transactions.Length == 0)
         {
             throw new ArgumentException("At least one transaction must be provided.", nameof(transactions));
@@ -65,6 +75,8 @@ public sealed class Journal : AggregateRoot
     }
     public Result AddTransactions(List<TransactionDto> transactions)
     {
+        Guard.Against.Null(transactions, nameof(transactions));
+
         if (transactions is null)
         {
             return Result.Failure<Journal>(new Error("Journal.AddTransactions", "Transactions list cannot be null."));
@@ -84,6 +96,7 @@ public sealed class Journal : AggregateRoot
 
     public Result UpdateTransactions(List<Transaction> updatedTransactions)
     {
+        Guard.Against.Null(updatedTransactions, nameof(updatedTransactions));
         if (updatedTransactions is null)
         {
             return Result.Failure<Journal>(new Error("Journal.UpdateTransactions", "Updated transactions list cannot be null."));
@@ -96,6 +109,7 @@ public sealed class Journal : AggregateRoot
 
     public Result RemoveTransaction(Transaction transactionToRemove)
     {
+        Guard.Against.Null(transactionToRemove, nameof(transactionToRemove));
         if (!_transactions.Contains(transactionToRemove))
         {
             return Result.Failure<Journal>(new Error("Journal.RemoveTransaction", "Transaction to remove does not exist."));

@@ -7,7 +7,7 @@ using CleanArchitectureWithDDD.Application.Features.Journals.Commands.CreateJour
 using CleanArchitectureWithDDD.Application.Features.Journals.Queries.GetJournalById;
 using CleanArchitectureWithDDD.Domain.Dtos;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;
-using CleanArchitectureWithDDD.Domain.Shared;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
 using CleanArchitectureWithDDD.Presentation.Base;
 using MediatR;
 using Microsoft.AspNetCore.Components;

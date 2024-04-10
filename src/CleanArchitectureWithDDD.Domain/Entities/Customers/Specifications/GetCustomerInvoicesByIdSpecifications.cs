@@ -1,4 +1,4 @@
-﻿using CleanArchitectureWithDDD.Domain.Specifications;
+﻿using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Customers.Specifications;
 

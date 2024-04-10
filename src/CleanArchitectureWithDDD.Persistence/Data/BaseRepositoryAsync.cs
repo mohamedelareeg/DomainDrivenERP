@@ -8,8 +8,8 @@ using CleanArchitectureWithDDD.Application.Extentions;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Data;
 using CleanArchitectureWithDDD.Domain.Exceptions;
 using CleanArchitectureWithDDD.Domain.Primitives;
-using CleanArchitectureWithDDD.Domain.Shared;
-using CleanArchitectureWithDDD.Domain.Specifications;
+using CleanArchitectureWithDDD.Domain.Shared.Results;
+using CleanArchitectureWithDDD.Domain.Shared.Specifications;
 using CleanArchitectureWithDDD.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 

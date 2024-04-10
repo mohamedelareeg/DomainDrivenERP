@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Entities.COAs;
 using CleanArchitectureWithDDD.Domain.Entities.Journals;
 using CleanArchitectureWithDDD.Domain.Primitives;
+using CleanArchitectureWithDDD.Domain.Shared.Guards;
 
 namespace CleanArchitectureWithDDD.Domain.Entities.Transactions;
 public sealed class Transaction : BaseEntity
@@ -16,6 +17,12 @@ public sealed class Transaction : BaseEntity
     }
     internal Transaction(Guid transactionId, Guid journalId, string cOAId, double debit, double credit)
     {
+        Guard.Against.NullOrWhiteSpace(transactionId.ToString(), nameof(transactionId));
+        Guard.Against.NullOrWhiteSpace(journalId.ToString(), nameof(journalId));
+        Guard.Against.NullOrWhiteSpace(cOAId, nameof(cOAId));
+        Guard.Against.NumberNegativeOrZero(debit, nameof(debit));
+        Guard.Against.NumberNegativeOrZero(credit, nameof(credit));
+
         TransactionId = transactionId;
         JournalId = journalId;
         COAId = cOAId;

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureWithDDD.Domain.Primitives;
 
-namespace CleanArchitectureWithDDD.Domain.Specifications;
+namespace CleanArchitectureWithDDD.Domain.Shared.Specifications;
 public class BaseSpecification<T> : ISpecification<T>
 {
     public BaseSpecification() { }
