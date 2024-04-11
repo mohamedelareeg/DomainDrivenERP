@@ -9,4 +9,8 @@ internal static class TableNames
     internal const string Coas = nameof(Coas);
     internal const string Journals = nameof(Journals);
     internal const string Transactions = nameof(Transactions);
+    internal const string Products = nameof(Products);
+    internal const string Categories = nameof(Categories);
+    internal const string Orders = nameof(Orders);
+    internal const string LineItems = nameof(LineItems);
 }

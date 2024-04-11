@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.COAs.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
@@ -70,7 +70,7 @@ public sealed class COA : AggregateRoot
 
             var coa = new COA(headCode, headName, parentCoa.HeadCode, isGl, parentCoa.Type, headLevel);
             parentCoa._coas.Add(coa);
-            coa.RaiseDomainEvent(new CreateCOADomainEvent(Guid.NewGuid(), headName, parentCoa.HeadCode, parentCoa.Type));
+            coa.RaiseDomainEvent(new CreateCOADomainEvent(headName, parentCoa.HeadCode, parentCoa.Type));
 
             return coa;
         }
@@ -92,7 +92,7 @@ public sealed class COA : AggregateRoot
         try
         {
             var coa = new COA(headCode, headName, isGl, type);
-            coa.RaiseDomainEvent(new CreateFirstLevelCoaDomainEvent(Guid.NewGuid(), coa.HeadName, coa.Type));
+            coa.RaiseDomainEvent(new CreateFirstLevelCoaDomainEvent(coa.HeadName, coa.Type));
             return coa;
         }
         catch (Exception ex)

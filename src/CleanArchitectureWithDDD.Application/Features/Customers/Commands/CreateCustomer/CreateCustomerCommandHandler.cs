@@ -32,7 +32,6 @@ internal class CreateCustomerCommandHandler : ICommandHandler<CreateCustomerComm
         }
         bool isEmailUnique = await _customerRespository.IsEmailUniqueAsync(emailResult.Value, cancellationToken);
         Result<Customer> customer = Customer.Create(// Achieve the 3 Principles
-            Guid.NewGuid(),
             firstNameResult.Value,
             lastNameResult.Value,
             emailResult.Value,

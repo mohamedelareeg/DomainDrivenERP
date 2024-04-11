@@ -1,6 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.DomainEvents;
+using CleanArchitectureWithDDD.Domain.Entities.Customers.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Entities.Invoices;
+using CleanArchitectureWithDDD.Domain.Entities.Orders;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Errors;
 using CleanArchitectureWithDDD.Domain.Exceptions;
@@ -14,6 +15,8 @@ namespace CleanArchitectureWithDDD.Domain.Entities.Customers;
 public sealed class Customer : AggregateRoot, IAuditableEntity
 {
     private readonly List<Invoice> _invoices = new();
+    private readonly List<Order> _orders = new();
+
     private Customer() { }
     private Customer(
         Guid id,
@@ -30,7 +33,6 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
     }
 
     public static Customer Create(// Factory Method
-      Guid id,
       FirstName firstName,
       LastName lastName,
       Email email,
@@ -41,25 +43,28 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         Guard.Against.NullOrEmpty(email.Value, nameof(email));
         Guard.Against.NullOrEmpty(phone, nameof(phone));
 
+        var id = Guid.NewGuid();
         var customer = new Customer(id, firstName, lastName, email, phone);
-        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
+        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
         return customer;
     }
 
     // Completeness & Performance
     public static async Task<Result<Customer>> Create(// Domain Model Completeness & Domain Model Performance & Losing Domain Model Purity
-        Guid id,
         FirstName firstName,
         LastName lastName,
         Email email,
         string phone,
         ICustomerRespository customerRespository)
     {
+
         Guard.Against.NullOrEmpty(firstName.Value, nameof(firstName));
         Guard.Against.NullOrEmpty(lastName.Value, nameof(lastName));
         Guard.Against.NullOrEmpty(email.Value, nameof(email));
         Guard.Against.NullOrEmpty(phone, nameof(phone));
         Guard.Against.Null(customerRespository, nameof(customerRespository));
+
+        var id = Guid.NewGuid();
 
         if (!await customerRespository.IsEmailUniqueAsync(email))
         {
@@ -67,13 +72,12 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         }
 
         var customer = new Customer(id, firstName, lastName, email, phone);
-        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
+        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
         return customer;
     }
 
     // Completeness & Purity
     public static async Task<Result<Customer>> Create(// Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
-       Guid id,
        FirstName firstName,
        LastName lastName,
        Email email,
@@ -86,19 +90,20 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         Guard.Against.NullOrEmpty(phone, nameof(phone));
         Guard.Against.Null(customers, nameof(customers));
 
+        var id = Guid.NewGuid();
+
         if (customers.Any(m => m.Email == email))
         {
             return Result.Failure<Customer>(new Error("Customer.CreateCustomer", "Email Already Exist"));
         }
         var customer = new Customer(id, firstName, lastName, email, phone);
-        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
+        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
         return customer;
 
     }
 
     // Completeness & Purity & Performance Are Achieved
     public static Result<Customer> Create(// Domain Model Completeness & Domain Model Purity & Losing Domain Model Performance
-       Guid id,
        FirstName firstName,
        LastName lastName,
        Email email,
@@ -110,12 +115,14 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         Guard.Against.NullOrEmpty(email.Value, nameof(email));
         Guard.Against.NullOrEmpty(phone, nameof(phone));
 
+        var id = Guid.NewGuid();
+
         if (!isEmailUnique)
         {
             return Result.Failure<Customer>(DomainErrors.CustomerErrors.IsCustomerEmailAlreadyExist);
         }
         var customer = new Customer(id, firstName, lastName, email, phone);
-        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(Guid.NewGuid(), customer.Id));
+        customer.RaiseDomainEvent(new CreateCustomerDomainEvent(customer.Id));
         return customer;
 
     }
@@ -124,6 +131,7 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
     public Email Email { get; private set; }
     public string Phone { get; private set; }
     public IReadOnlyCollection<Invoice> Invoices => _invoices;
+    public IReadOnlyCollection<Order> Orders => _orders;
 
     public DateTime CreatedOnUtc { get; set; }
 
@@ -165,7 +173,7 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
 
         var invoice = new Invoice(Guid.NewGuid(), invoiceSerial, invoiceDate, invoiceAmount, invoiceDiscount, invoiceTax, invoiceTotal, Id);
         _invoices.Add(invoice);
-        RaiseDomainEvent(new CreateInvoiceDomainEvent(Guid.NewGuid(), Id, invoice));
+        RaiseDomainEvent(new CreateInvoiceDomainEvent(Id, invoice));
         return invoice;
     }
     public void AddInvoice(params Invoice[] invoices)
@@ -205,7 +213,7 @@ public sealed class Customer : AggregateRoot, IAuditableEntity
         }
 
         invoiceToUpdate.UpdateInvoiceStatus(newStatus);
-        RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Guid.NewGuid(), Id, invoice, newStatus));
+        RaiseDomainEvent(new UpdateInvoiceStatusDomainEvent(Id, invoice, newStatus));
         return invoiceToUpdate;
     }
     public CustomerSnapshot ToSnapShot()

@@ -280,4 +280,9 @@ public class Result
 
     public static Result Timeout(string message = "The operation timed out.") =>
         new Result(false, new Error("Timeout", message), HttpStatusCode.RequestTimeout);
+
+    internal static Result<T> Failure<T>(object invalidStockQuantity)
+    {
+        throw new NotImplementedException();
+    }
 }

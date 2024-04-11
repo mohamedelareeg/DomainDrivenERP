@@ -1,7 +1,7 @@
 ﻿using CleanArchitectureWithDDD.Domain.Abstractions.Infrastructure.Services;
 using CleanArchitectureWithDDD.Domain.Abstractions.Persistence.Repositories;
-using CleanArchitectureWithDDD.Domain.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Entities.Customers;
+using CleanArchitectureWithDDD.Domain.Entities.Customers.DomainEvents;
 using MediatR;
 
 namespace CleanArchitectureWithDDD.Application.Features.Invoices.Events;

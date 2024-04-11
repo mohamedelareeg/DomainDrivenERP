@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitectureWithDDD.Domain.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Dtos;
+using CleanArchitectureWithDDD.Domain.Entities.Journals.DomainEvents;
 using CleanArchitectureWithDDD.Domain.Entities.Transactions;
 using CleanArchitectureWithDDD.Domain.Enums;
 using CleanArchitectureWithDDD.Domain.Primitives;
@@ -42,7 +42,7 @@ public sealed class Journal : AggregateRoot
         var journal = new Journal(Guid.NewGuid(), description, isOpening, journalDate, JournalStatus.Pending);
         journal.AddTransactions(transactions);
 
-        journal.RaiseDomainEvent(new JournalCreatedDomainEvent(Guid.NewGuid(), journal.Id, description, journalDate));
+        journal.RaiseDomainEvent(new JournalCreatedDomainEvent(journal.Id, description, journalDate));
         return journal;
     }
     public Result UpdateJournalStatus(JournalStatus newStatus)

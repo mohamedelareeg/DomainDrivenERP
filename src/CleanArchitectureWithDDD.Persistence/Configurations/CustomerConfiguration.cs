@@ -29,5 +29,9 @@ internal sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .HasMany(x => x.Invoices)
             .WithOne()
             .HasForeignKey(x => x.CustomerId);
+
+        builder.HasMany(c => c.Orders)
+            .WithOne()
+            .HasForeignKey(o => o.CustomerId);
     }
 }

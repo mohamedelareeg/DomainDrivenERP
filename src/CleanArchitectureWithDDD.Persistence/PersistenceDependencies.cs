@@ -7,11 +7,14 @@ using CleanArchitectureWithDDD.Persistence.Clients;
 using CleanArchitectureWithDDD.Persistence.Data;
 using CleanArchitectureWithDDD.Persistence.Idempotence;
 using CleanArchitectureWithDDD.Persistence.Interceptors;
+using CleanArchitectureWithDDD.Persistence.Repositories.Categories;
 using CleanArchitectureWithDDD.Persistence.Repositories.Coa;
 using CleanArchitectureWithDDD.Persistence.Repositories.Coas;
 using CleanArchitectureWithDDD.Persistence.Repositories.Customers;
 using CleanArchitectureWithDDD.Persistence.Repositories.Invoices;
 using CleanArchitectureWithDDD.Persistence.Repositories.Journals;
+using CleanArchitectureWithDDD.Persistence.Repositories.Orders;
+using CleanArchitectureWithDDD.Persistence.Repositories.Products;
 using CleanArchitectureWithDDD.Persistence.Repositories.Transactions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -63,15 +66,18 @@ public static class PersistenceDependencies
         services.AddScoped<ICoaRepository, CoaRepository>();
         services.AddScoped<IJournalRepository, JournalRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-        // Repositories with Dapper ( Same Logic Like The EF )
+        // Repositories with Dapper ( Same Logic Like The EF ) || I Recreate some of them only for showing the Difference only
         services.AddScoped<ICustomerRespository, CustomerSqlRepository>();
         services.AddScoped<IInvoiceRepository, InvoiceSqlRepository>();
         services.AddScoped<ICoaRepository, CoaSqlRepository>();
         services.AddScoped<IJournalRepository, JournalSqlRepository>();
         services.AddScoped<ITransactionRepository, TransactionSqlRepository>();
 
-        // Repositories with GenericRepository and Specification Pattern
+        // Repositories with GenericRepository and Specification Pattern || I Recreate some of them only for showing the Difference only
         services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
         services.AddScoped<ICustomerRespository, CustomerSpecificationRepository>();
         services.AddScoped<IInvoiceRepository, InvoicesSpecificationRepository>();
@@ -95,6 +101,9 @@ public static class PersistenceDependencies
         services.Decorate<ICoaRepository, CachedCoaRepository>();
         services.Decorate<IJournalRepository, CachedJournalRepository>();
         services.Decorate<ITransactionRepository, CachedTransactionRepository>();
+        services.Decorate<IProductRepository, CachedProductRepository>();
+        services.Decorate<IOrderRepository, CachedOrderRepository>();
+        services.Decorate<ICategoryRepository, CachedCategoryRepository>();
 
         services.AddStackExchangeRedisCache(redisOptions => {
             string connectionString = configuration.GetConnectionString("Redis");

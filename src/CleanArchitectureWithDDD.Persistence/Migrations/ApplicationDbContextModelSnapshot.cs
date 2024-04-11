@@ -56,6 +56,30 @@ namespace CleanArchitectureWithDDD.Persistence.Migrations
                     b.ToTable("Coas", (string)null);
                 });
 
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
             modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -163,6 +187,103 @@ namespace CleanArchitectureWithDDD.Persistence.Migrations
                     b.ToTable("Journals", (string)null);
                 });
 
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.LineItems.LineItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("LineItems", (string)null);
+                });
+
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Products.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products", (string)null);
+                });
+
             modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Transactions.Transaction", b =>
                 {
                     b.Property<Guid>("TransactionId")
@@ -171,6 +292,9 @@ namespace CleanArchitectureWithDDD.Persistence.Migrations
 
                     b.Property<string>("COAId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Credit")
                         .HasColumnType("float");
@@ -249,6 +373,83 @@ namespace CleanArchitectureWithDDD.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.LineItems.LineItem", b =>
+                {
+                    b.HasOne("CleanArchitectureWithDDD.Domain.Entities.Orders.Order", null)
+                        .WithMany("LineItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("CleanArchitectureWithDDD.Domain.Entities.LineItems.LineItem.UnitPrice#CleanArchitectureWithDDD.Domain.ValueObjects.Price", "UnitPrice", b1 =>
+                        {
+                            b1.Property<Guid>("LineItemId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("UnitPriceAmount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("UnitPriceCurrency");
+
+                            b1.HasKey("LineItemId");
+
+                            b1.ToTable("LineItems", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("LineItemId");
+                        });
+
+                    b.Navigation("UnitPrice")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("CleanArchitectureWithDDD.Domain.Entities.Customers.Customer", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Products.Product", b =>
+                {
+                    b.HasOne("CleanArchitectureWithDDD.Domain.Entities.Categories.Category", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("CleanArchitectureWithDDD.Domain.Entities.Products.Product.Price#CleanArchitectureWithDDD.Domain.ValueObjects.Price", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("PriceAmount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("PriceCurrency");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Products", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.Navigation("Price")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Transactions.Transaction", b =>
                 {
                     b.HasOne("CleanArchitectureWithDDD.Domain.Entities.COAs.COA", "COA")
@@ -273,14 +474,26 @@ namespace CleanArchitectureWithDDD.Persistence.Migrations
                     b.Navigation("Transactions");
                 });
 
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Categories.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Navigation("Invoices");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Journals.Journal", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("CleanArchitectureWithDDD.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("LineItems");
                 });
 #pragma warning restore 612, 618
         }
