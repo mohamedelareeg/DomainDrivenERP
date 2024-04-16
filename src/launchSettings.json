@@ -4,8 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "cleanarchitecturewithddd": "StartDebugging",
-        "cleanarchitecturewithddd.api": "StartDebugging"
+        "DomainDrivenERP": "StartDebugging",
+        "DomainDrivenERP.api": "StartDebugging"
       }
     }
   }

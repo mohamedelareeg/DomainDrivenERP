@@ -1,0 +1,110 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34607.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{633704CF-81E7-4BF2-B5A9-B91CAA4849A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F3708195-EA58-4CAB-92F0-1CF606CFD168}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Application.UnitTests", "test\DomainDrivenERP.Application.UnitTests\DomainDrivenERP.Application.UnitTests.csproj", "{E5BC0D28-C61B-468F-A56D-F51CC6C04168}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A98AE82-2ACB-46B4-B85A-2B04828E5CE0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{7CD4E658-E205-4B4A-977F-BA4534478945}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.RepositoriesPerformance", "benchmark\DomainDrivenERP.RepositoriesPerformance\DomainDrivenERP.RepositoriesPerformance.csproj", "{9EEA21DC-9F86-4632-8C3C-97234E524602}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Application", "DomainDrivenERP.Application\DomainDrivenERP.Application.csproj", "{1A752116-0A00-4815-9FB7-40A410F9D554}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Domain", "DomainDrivenERP.Domain\DomainDrivenERP.Domain.csproj", "{D136F9EA-7A79-466C-9A9E-EDFA13D96939}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Infrastructure", "DomainDrivenERP.Infrastructure\DomainDrivenERP.Infrastructure.csproj", "{189DFB28-51A2-498D-A7D0-98A01B3B760B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Persistence", "DomainDrivenERP.Persistence\DomainDrivenERP.Persistence.csproj", "{16263136-E736-4231-A778-E0C033DA3E91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.Presentation", "DomainDrivenERP.Presentation\DomainDrivenERP.Presentation.csproj", "{B07F3E0D-56D9-43DA-AB88-71C19218E858}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9F0982CB-6906-47A2-AB65-6CA9FF6ABCAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{06C345FF-95D0-40C6-9219-E18FCE7B4531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{1F995937-56BE-4708-AE90-8ABB9C7B7022}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{2A935720-D27B-4177-B223-DE8CBE39EEC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainDrivenERP.API", "DomainDrivenERP.API\DomainDrivenERP.API.csproj", "{9F17C750-D903-4802-B4F8-63743D18750F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8D33BC10-23BD-4699-824A-E538CA1AA6F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F89C6494-13A8-45A6-8BEA-820F3370535B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5BC0D28-C61B-468F-A56D-F51CC6C04168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EEA21DC-9F86-4632-8C3C-97234E524602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A752116-0A00-4815-9FB7-40A410F9D554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A752116-0A00-4815-9FB7-40A410F9D554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A752116-0A00-4815-9FB7-40A410F9D554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A752116-0A00-4815-9FB7-40A410F9D554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D136F9EA-7A79-466C-9A9E-EDFA13D96939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D136F9EA-7A79-466C-9A9E-EDFA13D96939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D136F9EA-7A79-466C-9A9E-EDFA13D96939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D136F9EA-7A79-466C-9A9E-EDFA13D96939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{189DFB28-51A2-498D-A7D0-98A01B3B760B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{189DFB28-51A2-498D-A7D0-98A01B3B760B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{189DFB28-51A2-498D-A7D0-98A01B3B760B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{189DFB28-51A2-498D-A7D0-98A01B3B760B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16263136-E736-4231-A778-E0C033DA3E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16263136-E736-4231-A778-E0C033DA3E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16263136-E736-4231-A778-E0C033DA3E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16263136-E736-4231-A778-E0C033DA3E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07F3E0D-56D9-43DA-AB88-71C19218E858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07F3E0D-56D9-43DA-AB88-71C19218E858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07F3E0D-56D9-43DA-AB88-71C19218E858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07F3E0D-56D9-43DA-AB88-71C19218E858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F17C750-D903-4802-B4F8-63743D18750F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F17C750-D903-4802-B4F8-63743D18750F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F17C750-D903-4802-B4F8-63743D18750F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F17C750-D903-4802-B4F8-63743D18750F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D33BC10-23BD-4699-824A-E538CA1AA6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D33BC10-23BD-4699-824A-E538CA1AA6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D33BC10-23BD-4699-824A-E538CA1AA6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D33BC10-23BD-4699-824A-E538CA1AA6F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5BC0D28-C61B-468F-A56D-F51CC6C04168} = {F3708195-EA58-4CAB-92F0-1CF606CFD168}
+		{9EEA21DC-9F86-4632-8C3C-97234E524602} = {7CD4E658-E205-4B4A-977F-BA4534478945}
+		{1A752116-0A00-4815-9FB7-40A410F9D554} = {9F0982CB-6906-47A2-AB65-6CA9FF6ABCAA}
+		{D136F9EA-7A79-466C-9A9E-EDFA13D96939} = {9F0982CB-6906-47A2-AB65-6CA9FF6ABCAA}
+		{189DFB28-51A2-498D-A7D0-98A01B3B760B} = {06C345FF-95D0-40C6-9219-E18FCE7B4531}
+		{16263136-E736-4231-A778-E0C033DA3E91} = {06C345FF-95D0-40C6-9219-E18FCE7B4531}
+		{B07F3E0D-56D9-43DA-AB88-71C19218E858} = {1F995937-56BE-4708-AE90-8ABB9C7B7022}
+		{9F0982CB-6906-47A2-AB65-6CA9FF6ABCAA} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
+		{06C345FF-95D0-40C6-9219-E18FCE7B4531} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
+		{1F995937-56BE-4708-AE90-8ABB9C7B7022} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
+		{2A935720-D27B-4177-B223-DE8CBE39EEC4} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
+		{9F17C750-D903-4802-B4F8-63743D18750F} = {2A935720-D27B-4177-B223-DE8CBE39EEC4}
+		{F89C6494-13A8-45A6-8BEA-820F3370535B} = {633704CF-81E7-4BF2-B5A9-B91CAA4849A5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57AF0084-BA39-4242-BDC7-BBAC3C4A73C4}
+	EndGlobalSection
+EndGlobal

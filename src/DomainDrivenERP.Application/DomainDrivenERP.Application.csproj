@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomainDrivenERP.Domain\DomainDrivenERP.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+	  <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+		  <_Parameter1>DomainDrivenERP.Application.UnitTests</_Parameter1>
+	  </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

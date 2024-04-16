@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  cleanarchitecturewithddd.api:
+  DomainDrivenERP.api:
     image: ${DOCKER_REGISTRY-}cleanarchitecturewithdddapi
     container_name: Api
     build:
       context: .
-      dockerfile: CleanArchitectureWithDDD.API/Dockerfile
+      dockerfile: DomainDrivenERP.API/Dockerfile
     ports:
       - "8080:8080"
       - "8081:8081"

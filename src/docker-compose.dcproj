@@ -7,7 +7,7 @@
     <ProjectGuid>8d33bc10-23bd-4699-824a-e538ca1aa6f0</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>cleanarchitecturewithddd.api</DockerServiceName>
+    <DockerServiceName>DomainDrivenERP.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
