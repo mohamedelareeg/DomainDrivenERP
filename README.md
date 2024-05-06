@@ -150,10 +150,6 @@ Unit tests verify the correctness of individual units of code, such as methods a
 
 This Web API provides a basic structure adhering to Clean Architecture. Customize it based on your specific application needs.
 
-## Contributing
-
-Contributions are welcome! Follow the contribution guidelines in the [CONTRIBUTING.md](https://github.com/mohamedelareeg/DomainDrivenERP/blob/main/CONTRIBUTING.md) file to get started.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/mohamedelareeg/DomainDrivenERP/blob/main/LICENSE) file for details.
