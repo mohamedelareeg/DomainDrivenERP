@@ -1,22 +1,5 @@
 # Domain Driven Design ERP
 
-## Table of Contents
-1. [Overview](#overview)
-2. [Project Structure](#project-structure)
-   - [Domain Layer](#domain-layer)
-   - [Application Layer](#application-layer)
-   - [Infrastructure Layer](#infrastructure-layer)
-   - [Identity Layer](#identity-layer)
-   - [Persistence Layer](#persistence-layer)
-   - [API Layer](#api-layer)
-3. [Features and Patterns](#features-and-patterns)
-4. [Usage](#usage)
-5. [Learn More](#learn-more)
-6. [Docker](#docker)
-7. [Testing](#testing)
-   - [Unit Testing](#unit-testing)
-8. [Contributing](#contributing)
-9. [License](#license)
 
 ## Overview
 
