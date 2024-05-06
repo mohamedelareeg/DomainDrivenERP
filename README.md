@@ -64,7 +64,6 @@ The [Identity](./Identity) layer is responsible for user identity and authentica
 - **Distributed Caching (Redis)**: Leveraging Redis for distributed caching to improve application performance and scalability.
 - **Logging with Serilog**: Incorporating Serilog for structured logging and log analysis.
 - **Docker-Compose**: Containerizing the application components for easy deployment and scalability using Docker Compose.
-- **Memento Pattern**: Implementing the memento pattern for capturing and restoring the state of domain objects.
 - **Static Code Analysis**: Applying StyleCop.Analyzers and SonarAnalyzer.CSharp for enforcing code quality standards.
 - **Authentication & Authorization**: Implementing authentication and authorization mechanisms for securing the application.
 - **Unit Testing with XUnit, Moq, and FluentAssertions**: Writing unit tests for command handlers and application services using XUnit, Moq, and FluentAssertions.
