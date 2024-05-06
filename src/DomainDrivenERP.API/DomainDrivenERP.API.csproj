@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DomainDrivenERP.Identity\DomainDrivenERP.Identity.csproj" />
     <ProjectReference Include="..\DomainDrivenERP.Infrastructure\DomainDrivenERP.Infrastructure.csproj" />
     <ProjectReference Include="..\DomainDrivenERP.Persistence\DomainDrivenERP.Persistence.csproj" />
     <ProjectReference Include="..\DomainDrivenERP.Presentation\DomainDrivenERP.Presentation.csproj" />

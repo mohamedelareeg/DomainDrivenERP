@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace DomainDrivenERP.Domain.Shared.Results;
+
 public class BaseResponse<T>
 {
     public BaseResponse()
@@ -17,29 +13,29 @@ public class BaseResponse<T>
         Succeeded = true;
         Message = message ?? (Succeeded ? "Success" : "Failure");
         Data = data;
-        StatusCode = statusCode;
+        StatusCode = (int)statusCode;
     }
     public BaseResponse(HttpStatusCode statusCode, string message)
     {
         Succeeded = false;
         Message = message ?? (Succeeded ? "Success" : "Failure");
-        StatusCode = statusCode;
+        StatusCode = (int)statusCode;
     }
     public BaseResponse(string message, HttpStatusCode statusCode, bool succeeded)
     {
         Succeeded = succeeded;
         Message = message ?? (Succeeded ? "Success" : "Failure");
-        StatusCode = statusCode;
+        StatusCode = (int)statusCode;
     }
     public BaseResponse(string message, List<string> errors, HttpStatusCode statusCode, bool succeeded)
     {
         Succeeded = succeeded;
         Errors = errors;
         Message = message ?? (Succeeded ? "Success" : "Failure");
-        StatusCode = statusCode;
+        StatusCode = (int)statusCode;
     }
 
-    public HttpStatusCode StatusCode { get; set; }
+    public int StatusCode { get; set; }
     public object Meta { get; set; }
 
     public bool Succeeded { get; set; }

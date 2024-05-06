@@ -16,6 +16,7 @@ public static class ApplicationDependencies
         //MediatR PopleLines
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPiplineBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
 
         //Fluent Validation
         services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);

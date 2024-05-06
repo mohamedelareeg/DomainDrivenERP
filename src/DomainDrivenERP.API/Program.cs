@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DomainDrivenERP.Application;
+using DomainDrivenERP.Identity;
 using DomainDrivenERP.Infrastructure;
 using DomainDrivenERP.MiddleWares;
 using DomainDrivenERP.Persistence;
@@ -26,7 +27,8 @@ builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddApplicationDependencies()
                 .AddInfrustructureDependencies()
-                .AddPersistenceDependencies(builder.Configuration);
+                .AddPersistenceDependencies(builder.Configuration)
+                .AddIdentityDependencies(builder.Configuration);
 
 builder.Host.UseSerilog((context, loggerConfig) =>
 loggerConfig.ReadFrom.Configuration(context.Configuration));
@@ -51,6 +53,7 @@ app.UseHttpsRedirection();
 app.UseSerilogRequestLogging();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleWare>();
+
 app.UseAuthorization();
 
 app.MapControllers();
