@@ -9,27 +9,27 @@ This repository is an ERP (Enterprise Resource Planning) Web API developed with 
 
 ### 1. Domain Layer
 
-The [Domain](./Domain) layer houses the core domain entities, domain validations, value objects, and aggregate roots. It represents the heart of the application, encapsulating business logic and rules.
+The Domain layer houses the core domain entities, domain validations, value objects, and aggregate roots. It represents the heart of the application, encapsulating business logic and rules.
 
 ### 2. Application Layer
 
-[Application](./Application) contains application-specific logic, including use cases, domain services, and application services. It acts as an intermediary between the domain layer and the infrastructure layer.
+Application contains application-specific logic, including use cases, domain services, and application services. It acts as an intermediary between the domain layer and the infrastructure layer.
 
 ### 3. Infrastructure Layer
 
-[Infrastructure](./Infrastructure) encompasses implementation details that are external to the application, such as data access, external services, and infrastructure concerns like logging and caching.
+Infrastructure encompasses implementation details that are external to the application, such as data access, external services, and infrastructure concerns like logging and caching.
 
 ### 4. Identity Layer
 
-The [Identity](./Identity) layer is responsible for user identity and authentication functionalities, managing user-related operations.
+The Identity layer is responsible for user identity and authentication functionalities, managing user-related operations.
 
 ### 5. Persistence Layer
 
-[Persistence](./Persistence) focuses on data storage and retrieval, utilizing technologies like Entity Framework Core for interacting with the database.
+Persistence focuses on data storage and retrieval, utilizing technologies like Entity Framework Core for interacting with the database.
 
 ### 6. API Layer
 
-[API](./API) serves as the entry point for the Web API application, handling incoming HTTP requests, and coordinating actions across different layers of the application.
+API serves as the entry point for the Web API application, handling incoming HTTP requests, and coordinating actions across different layers of the application.
 
 
 ## Features and Patterns
